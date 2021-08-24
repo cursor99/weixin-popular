@@ -41,7 +41,7 @@ public class HttpClientFactory{
 	
 	private static HttpHost proxy;
 	
-	public static CloseableHttpClient createHttpClient() {
+	public static CloseableHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
 		return createHttpClient(100,10,5000,2);
 	}
 	
@@ -61,9 +61,10 @@ public class HttpClientFactory{
 	 * @param timeout timeout
 	 * @param retryExecutionCount retryExecutionCount
 	 * @return CloseableHttpClient
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyManagementException 
 	 */
-	public static CloseableHttpClient createHttpClient(int maxTotal,int maxPerRoute,int timeout,int retryExecutionCount) {
-		try {
+	public static CloseableHttpClient createHttpClient(int maxTotal,int maxPerRoute,int timeout,int retryExecutionCount) throws KeyManagementException, NoSuchAlgorithmException {
 			SSLContext sslContext = SSLContexts.custom().useSSL().build();
 			SSLConnectionSocketFactory sf = new SSLConnectionSocketFactory(sslContext,SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 			PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
@@ -79,12 +80,6 @@ public class HttpClientFactory{
 						  .setSSLSocketFactory(sf)
 						  .setRetryHandler(new HttpRequestRetryHandlerImpl(retryExecutionCount))
 						  .build();
-		} catch (KeyManagementException e) {
-			logger.error("", e);
-		} catch (NoSuchAlgorithmException e) {
-			logger.error("", e);
-		}
-		return null;
 	}
 
 	/**

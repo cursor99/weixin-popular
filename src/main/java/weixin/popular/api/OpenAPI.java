@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -24,8 +26,10 @@ public class OpenAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @param appid 授权公众号或小程序的appid
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static OpenResult create(String access_token,String appid){
+	public static OpenResult create(String access_token,String appid) throws ClientProtocolException, IOException{
 		String json = String.format("{\"appid\":\"%s\"}", appid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -43,8 +47,10 @@ public class OpenAPI extends BaseAPI {
 	 * @param appid 授权公众号或小程序的appid
 	 * @param open_appid 开放平台帐号appid
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BaseResult bind(String access_token,String appid,String open_appid){
+	public static BaseResult bind(String access_token,String appid,String open_appid) throws ClientProtocolException, IOException{
 		String json = String.format("{\"appid\":\"%s\",\"open_appid\":\"%s\"}", appid,open_appid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -62,8 +68,10 @@ public class OpenAPI extends BaseAPI {
 	 * @param appid 授权公众号或小程序的appid
 	 * @param open_appid 开放平台帐号appid
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BaseResult unbind(String access_token,String appid,String open_appid){
+	public static BaseResult unbind(String access_token,String appid,String open_appid) throws ClientProtocolException, IOException{
 		String json = String.format("{\"appid\":\"%s\",\"open_appid\":\"%s\"}", appid,open_appid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -81,8 +89,10 @@ public class OpenAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @param appid 授权公众号或小程序的appid
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static OpenResult get(String access_token,String appid){
+	public static OpenResult get(String access_token,String appid) throws ClientProtocolException, IOException{
 		String json = String.format("{\"appid\":\"%s\"}", appid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)

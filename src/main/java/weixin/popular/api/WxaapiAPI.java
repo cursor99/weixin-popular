@@ -1,5 +1,6 @@
 package weixin.popular.api;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -9,6 +10,7 @@ import weixin.popular.bean.wxaapi.GetCategoryResult;
 import weixin.popular.client.LocalHttpClient;
 import weixin.popular.util.JsonUtil;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -27,8 +29,10 @@ public class WxaapiAPI extends BaseAPI {
      * @param kidList 模板关键词id组合
      * @param sceneDesc 模板服务场景描述
      * @return result
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static AddTemplateResult addTemplate(String access_token, String tid, List<Integer> kidList, String sceneDesc){
+    public static AddTemplateResult addTemplate(String access_token, String tid, List<Integer> kidList, String sceneDesc) throws ClientProtocolException, IOException{
         String json = String.format("{\"tid\":\"%s\",\"kidList\":%s,\"sceneDesc\":\"%s\"}",
                 tid, JsonUtil.toJSONString(kidList), sceneDesc);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -48,7 +52,7 @@ public class WxaapiAPI extends BaseAPI {
      * @param priTmplId 个人模板id
      * @return result
      */
-    public static BaseResult delTemplate(String access_token, String priTmplId){
+    public static BaseResult delTemplate(String access_token, String priTmplId) throws ClientProtocolException, IOException {
         String json = String.format("{\"priTmplId\":\"%s\"}", priTmplId);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -66,7 +70,7 @@ public class WxaapiAPI extends BaseAPI {
      * @param access_token access_token
      * @return result
      */
-    public static GetCategoryResult getCategory(String access_token){
+    public static GetCategoryResult getCategory(String access_token) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.get()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/wxaapi/newtmpl/getcategory")
@@ -85,7 +89,7 @@ public class WxaapiAPI extends BaseAPI {
     public static GetPubTemplateTitlesResult getPubTemplateTitles(String access_token,
                                                                   String ids,
                                                                   Integer start,
-                                                                  Integer limit){
+                                                                  Integer limit) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.get()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/wxaapi/newtmpl/getpubtemplatetitles")
@@ -104,7 +108,7 @@ public class WxaapiAPI extends BaseAPI {
      * @param access_token access_token
      * @return result
      */
-    public static GetPubTemplateKeywordsResult getPubTemplateKeywords(String access_token, String tid){
+    public static GetPubTemplateKeywordsResult getPubTemplateKeywords(String access_token, String tid) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.get()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/wxaapi/newtmpl/getpubtemplatekeywords")
@@ -121,7 +125,7 @@ public class WxaapiAPI extends BaseAPI {
      * @param access_token access_token
      * @return result
      */
-    public static GetPriTemplateListResult getPriTemplateList(String access_token){
+    public static GetPriTemplateListResult getPriTemplateList(String access_token) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.get()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/wxaapi/newtmpl/gettemplate")

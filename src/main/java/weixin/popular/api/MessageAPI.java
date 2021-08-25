@@ -1,11 +1,13 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -49,8 +51,10 @@ public class MessageAPI extends BaseAPI {
      * @param access_token access_token
      * @param messageJson  messageJson
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult messageCustomSend(String access_token, String messageJson) {
+    public static BaseResult messageCustomSend(String access_token, String messageJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/cgi-bin/message/custom/send")
@@ -67,7 +71,7 @@ public class MessageAPI extends BaseAPI {
      * @param message      message
      * @return BaseResult
      */
-    public static BaseResult messageCustomSend(String access_token, Message message) {
+    public static BaseResult messageCustomSend(String access_token, Message message) throws ClientProtocolException, IOException {
         String str = JsonUtil.toJSONString(message);
         return messageCustomSend(access_token, str);
     }
@@ -82,7 +86,7 @@ public class MessageAPI extends BaseAPI {
      *  "CancelTyping"：取消对用户的”正在输入"状态
      * @return BaseResult
      */
-    public static BaseResult messageCustomTyping(String access_token, String touser, String command) {
+    public static BaseResult messageCustomTyping(String access_token, String touser, String command) throws ClientProtocolException, IOException {
     	String json = String.format("{\"touser\":\"%s\",\"command\":\"%s\"}", touser, command);
     	HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -100,7 +104,7 @@ public class MessageAPI extends BaseAPI {
      * @param articles     图文信息 1-10 个
      * @return Media
      */
-    public static Media mediaUploadnews(String access_token, List<Article> articles) {
+    public static Media mediaUploadnews(String access_token, List<Article> articles) throws ClientProtocolException, IOException {
         return MediaAPI.mediaUploadnews(access_token, articles);
     }
 
@@ -111,7 +115,7 @@ public class MessageAPI extends BaseAPI {
      * @param messageJson  messageJson
      * @return result
      */
-    public static Media mediaUploadnews(String access_token, String messageJson) {
+    public static Media mediaUploadnews(String access_token, String messageJson) throws ClientProtocolException, IOException {
         return MediaAPI.mediaUploadnews(access_token, messageJson);
     }
 
@@ -122,7 +126,7 @@ public class MessageAPI extends BaseAPI {
      * @param uploadvideo  uploadvideo
      * @return Media
      */
-    public static Media mediaUploadvideo(String access_token, Uploadvideo uploadvideo) {
+    public static Media mediaUploadvideo(String access_token, Uploadvideo uploadvideo) throws ClientProtocolException, IOException {
         return MediaAPI.mediaUploadvideo(access_token, uploadvideo);
     }
 
@@ -133,7 +137,7 @@ public class MessageAPI extends BaseAPI {
      * @param messageJson  messageJson
      * @return MessageSendResult
      */
-    public static MessageSendResult messageMassSendall(String access_token, String messageJson) {
+    public static MessageSendResult messageMassSendall(String access_token, String messageJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/cgi-bin/message/mass/sendall")
@@ -150,7 +154,7 @@ public class MessageAPI extends BaseAPI {
      * @param massMessage  massMessage
      * @return MessageSendResult
      */
-    public static MessageSendResult messageMassSendall(String access_token, MassMessage massMessage) {
+    public static MessageSendResult messageMassSendall(String access_token, MassMessage massMessage) throws ClientProtocolException, IOException {
         String str = JsonUtil.toJSONString(massMessage);
         return messageMassSendall(access_token, str);
     }
@@ -163,7 +167,7 @@ public class MessageAPI extends BaseAPI {
      * @param messageJson  messageJson
      * @return MessageSendResult
      */
-    public static MessageSendResult messageMassSend(String access_token, String messageJson) {
+    public static MessageSendResult messageMassSend(String access_token, String messageJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/cgi-bin/message/mass/send")
@@ -180,7 +184,7 @@ public class MessageAPI extends BaseAPI {
      * @param massMessage  massMessage
      * @return MessageSendResult
      */
-    public static MessageSendResult messageMassSend(String access_token, MassMessage massMessage) {
+    public static MessageSendResult messageMassSend(String access_token, MassMessage massMessage) throws ClientProtocolException, IOException {
         String str = JsonUtil.toJSONString(massMessage);
         return messageMassSend(access_token, str);
     }
@@ -197,7 +201,7 @@ public class MessageAPI extends BaseAPI {
      * @param msg_id       msg_id
      * @return BaseResult
      */
-    public static BaseResult messageMassDelete(String access_token, String msg_id) {
+    public static BaseResult messageMassDelete(String access_token, String msg_id) throws ClientProtocolException, IOException {
         return messageMassDelete(access_token, msg_id, 0);
     }
 
@@ -214,7 +218,7 @@ public class MessageAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.10
      */
-    public static BaseResult messageMassDelete(String access_token, String msg_id, Integer article_idx) {
+    public static BaseResult messageMassDelete(String access_token, String msg_id, Integer article_idx) throws ClientProtocolException, IOException {
         String messageJson = String.format("{\"msg_id\":\"%s\",\"article_idx\":%d}", msg_id, article_idx);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -233,7 +237,7 @@ public class MessageAPI extends BaseAPI {
      * @return MessageSendResult
      * @since 2.6.3
      */
-    public static MessageSendResult messageMassPreview(String access_token, Preview preview) {
+    public static MessageSendResult messageMassPreview(String access_token, Preview preview) throws ClientProtocolException, IOException {
         String previewJson = JsonUtil.toJSONString(preview);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -252,7 +256,7 @@ public class MessageAPI extends BaseAPI {
      * @return MessageSendResult
      * @since 2.6.3
      */
-    public static MessageSendResult messageMassGet(String access_token, String msg_id) {
+    public static MessageSendResult messageMassGet(String access_token, String msg_id) throws ClientProtocolException, IOException {
         String messageJson = String.format("{\"msg_id\":\"%s\"}", msg_id);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -273,7 +277,7 @@ public class MessageAPI extends BaseAPI {
      * @param templateMessage templateMessage
      * @return TemplateMessageResult
      */
-    public static TemplateMessageResult messageTemplateSend(String access_token, TemplateMessage templateMessage) {
+    public static TemplateMessageResult messageTemplateSend(String access_token, TemplateMessage templateMessage) throws ClientProtocolException, IOException {
         String messageJson = JsonUtil.toJSONString(templateMessage);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -335,7 +339,7 @@ public class MessageAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.6.1
      */
-    public static BaseResult templateApi_set_industry(String access_token, String... industrys) {
+    public static BaseResult templateApi_set_industry(String access_token, String... industrys) throws ClientProtocolException, IOException {
         Map<String, String> map = new LinkedHashMap<String, String>();
         for (int i = 1; i <= industrys.length; i++) {
             map.put("industry_id" + i, industrys[i - 1]);
@@ -357,7 +361,7 @@ public class MessageAPI extends BaseAPI {
      * @return GetIndustryResult
      * @since 2.6.1
      */
-    public static GetIndustryResult templateGet_industry(String access_token) {
+    public static GetIndustryResult templateGet_industry(String access_token) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setUri(BASE_URI + "/cgi-bin/template/get_industry")
                 .addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -373,7 +377,7 @@ public class MessageAPI extends BaseAPI {
      * @return ApiAddTemplateResult
      * @since 2.6.1
      */
-    public static ApiAddTemplateResult templateApi_add_template(String access_token, String template_id_short) {
+    public static ApiAddTemplateResult templateApi_add_template(String access_token, String template_id_short) throws ClientProtocolException, IOException {
         String json = String.format("{\"template_id_short\":\"%s\"}", template_id_short);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -391,7 +395,7 @@ public class MessageAPI extends BaseAPI {
      * @return GetAllPrivateTemplateResult
      * @since 2.6.1
      */
-    public static GetAllPrivateTemplateResult templateGet_all_private_template(String access_token) {
+    public static GetAllPrivateTemplateResult templateGet_all_private_template(String access_token) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setUri(BASE_URI + "/cgi-bin/template/get_all_private_template")
                 .addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -407,7 +411,7 @@ public class MessageAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.6.1
      */
-    public static BaseResult templateDel_private_template(String access_token, String template_id) {
+    public static BaseResult templateDel_private_template(String access_token, String template_id) throws ClientProtocolException, IOException {
         String json = String.format("{\"template_id\":\"%s\"}", template_id);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -425,7 +429,7 @@ public class MessageAPI extends BaseAPI {
      * @return CurrentAutoreplyInfo
      * @since 2.6.3
      */
-    public static CurrentAutoreplyInfo get_current_autoreply_info(String access_token) {
+    public static CurrentAutoreplyInfo get_current_autoreply_info(String access_token) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setUri(BASE_URI + "/cgi-bin/get_current_autoreply_info")
                 .addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -440,7 +444,7 @@ public class MessageAPI extends BaseAPI {
      * @return result
      * @since 2.8.30
      */
-    public static BaseResult messageSubscribeSend(String access_token, SubscribeSend subscribeSend) {
+    public static BaseResult messageSubscribeSend(String access_token, SubscribeSend subscribeSend) throws ClientProtocolException, IOException {
         String messageJson = JsonUtil.toJSONString(subscribeSend);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -458,7 +462,7 @@ public class MessageAPI extends BaseAPI {
      * @return result
      * @since 2.8.31
      */
-    public static BaseResult messageSubscribeBizsend(String access_token, SubscribeBizSend subscribeBizSend) {
+    public static BaseResult messageSubscribeBizsend(String access_token, SubscribeBizSend subscribeBizSend) throws ClientProtocolException, IOException {
         String messageJson = JsonUtil.toJSONString(subscribeBizSend);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)

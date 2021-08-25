@@ -25,8 +25,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * httpclient 4.3.x
@@ -34,8 +32,6 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class HttpClientFactory{
-	
-	private static Logger logger = LoggerFactory.getLogger(HttpClientFactory.class);
 	
 	private static final String[] supportedProtocols = new String[]{"TLSv1"};
 	
@@ -89,8 +85,12 @@ public class HttpClientFactory{
 	 * @param timeout timeout
 	 * @param retryExecutionCount retryExecutionCount
 	 * @return CloseableHttpClient
+	 * @throws KeyStoreException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnrecoverableKeyException 
+	 * @throws KeyManagementException 
 	 */
-	public static CloseableHttpClient createKeyMaterialHttpClient(KeyStore keystore,String keyPassword,int timeout,int retryExecutionCount) {
+	public static CloseableHttpClient createKeyMaterialHttpClient(KeyStore keystore,String keyPassword,int timeout,int retryExecutionCount) throws KeyManagementException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException {
 		return createKeyMaterialHttpClient(keystore, keyPassword, supportedProtocols,timeout,retryExecutionCount);
 	}
 	
@@ -102,31 +102,24 @@ public class HttpClientFactory{
 	 * @param timeout timeout
 	 * @param retryExecutionCount retryExecutionCount
 	 * @return CloseableHttpClient
+	 * @throws KeyStoreException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnrecoverableKeyException 
+	 * @throws KeyManagementException 
 	 */
-	public static CloseableHttpClient createKeyMaterialHttpClient(KeyStore keystore,String keyPassword,String[] supportedProtocols,int timeout,int retryExecutionCount) {
-		try {
-			SSLContext sslContext = SSLContexts.custom().useSSL().loadKeyMaterial(keystore, keyPassword.toCharArray()).build();
-			SSLConnectionSocketFactory sf = new SSLConnectionSocketFactory(sslContext,supportedProtocols,
-	                null,SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-			SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(timeout).build();
-			HttpClientBuilder builder = HttpClientBuilder.create();
-			if(proxy != null){
-				builder.setProxy(proxy);
-			}
-			return builder.setDefaultSocketConfig(socketConfig)
-						  .setSSLSocketFactory(sf)
-						  .setRetryHandler(new HttpRequestRetryHandlerImpl(retryExecutionCount))
-						  .build();
-		} catch (KeyManagementException e) {
-			logger.error("", e);
-		} catch (NoSuchAlgorithmException e) {
-			logger.error("", e);
-		} catch (UnrecoverableKeyException e) {
-			logger.error("", e);
-		} catch (KeyStoreException e) {
-			logger.error("", e);
+	public static CloseableHttpClient createKeyMaterialHttpClient(KeyStore keystore,String keyPassword,String[] supportedProtocols,int timeout,int retryExecutionCount) throws KeyManagementException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException {
+		SSLContext sslContext = SSLContexts.custom().useSSL().loadKeyMaterial(keystore, keyPassword.toCharArray()).build();
+		SSLConnectionSocketFactory sf = new SSLConnectionSocketFactory(sslContext,supportedProtocols,
+                null,SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+		SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(timeout).build();
+		HttpClientBuilder builder = HttpClientBuilder.create();
+		if(proxy != null){
+			builder.setProxy(proxy);
 		}
-		return null;
+		return builder.setDefaultSocketConfig(socketConfig)
+					  .setSSLSocketFactory(sf)
+					  .setRetryHandler(new HttpRequestRetryHandlerImpl(retryExecutionCount))
+					  .build();
 	}
 
 	/**

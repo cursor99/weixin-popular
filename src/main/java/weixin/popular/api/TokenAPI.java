@@ -1,5 +1,8 @@
 package weixin.popular.api;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 
@@ -18,8 +21,10 @@ public class TokenAPI extends BaseAPI{
 	 * @param appid appid
 	 * @param secret secret
 	 * @return Token
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static Token token(String appid,String secret){
+	public static Token token(String appid,String secret) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/cgi-bin/token")
 				.addParameter("grant_type","client_credential")

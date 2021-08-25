@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -14,8 +15,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import weixin.popular.bean.BaseResult;
 import weixin.popular.bean.shakearound.account.auditstatus.AccountAuditStatusResult;
 import weixin.popular.bean.shakearound.account.register.AccountRegister;
@@ -84,15 +83,15 @@ import weixin.popular.util.StreamUtils;
  */
 public class ShakeAroundAPI extends BaseAPI {
 
-    private static Logger logger = LoggerFactory.getLogger(ShakeAroundAPI.class);
-
     /**
      * 申请开通功能－查询审核状态
      *
      * @param accessToken accessToken
      * @return result
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static AccountAuditStatusResult accountAuditStatus(String accessToken) {
+    public static AccountAuditStatusResult accountAuditStatus(String accessToken) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/shakearound/account/auditstatus")
@@ -109,7 +108,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static AccountRegisterResult accountRegister(String accessToken,
-                                                        AccountRegister accountRegister) {
+                                                        AccountRegister accountRegister) throws ClientProtocolException, IOException {
         return accountRegister(accessToken,
                 JsonUtil.toJSONString(accountRegister));
     }
@@ -122,7 +121,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static AccountRegisterResult accountRegister(String accessToken,
-                                                        String postJson) {
+                                                        String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -142,7 +141,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceApplyIdResult deviceApplyId(String accessToken,
-                                                    DeviceApplyId deviceApplyId) {
+                                                    DeviceApplyId deviceApplyId) throws ClientProtocolException, IOException {
         return deviceApplyId(accessToken, JsonUtil.toJSONString(deviceApplyId));
     }
 
@@ -154,7 +153,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceApplyIdResult deviceApplyId(String accessToken,
-                                                    String postJson) {
+                                                    String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -174,7 +173,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceApplyStatusResult deviceApplyStatus(String accessToken,
-                                                            DeviceApplyStatus deviceApplyStatus) {
+                                                            DeviceApplyStatus deviceApplyStatus) throws ClientProtocolException, IOException {
         return deviceApplyStatus(accessToken,
                 JsonUtil.toJSONString(deviceApplyStatus));
     }
@@ -187,7 +186,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceApplyStatusResult deviceApplyStatus(String accessToken,
-                                                            String postJson) {
+                                                            String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -207,7 +206,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceBindLocationResult deviceBindLocation(
-            String accessToken, DeviceBindLocation deviceBindLocation) {
+            String accessToken, DeviceBindLocation deviceBindLocation) throws ClientProtocolException, IOException {
         return deviceBindLocation(accessToken,
                 JsonUtil.toJSONString(deviceBindLocation));
     }
@@ -220,7 +219,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceBindLocationResult deviceBindLocation(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -240,7 +239,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceBindPageResult deviceBindPage(String accessToken,
-                                                      DeviceBindPage deviceBindPage) {
+                                                      DeviceBindPage deviceBindPage) throws ClientProtocolException, IOException {
         return deviceBindPage(accessToken,
                 JsonUtil.toJSONString(deviceBindPage));
     }
@@ -253,7 +252,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceBindPageResult deviceBindPage(String accessToken,
-                                                      String postJson) {
+                                                      String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -273,7 +272,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupAddResult deviceGroupAdd(String accessToken,
-                                                      DeviceGroupAdd deviceGroupAdd) {
+                                                      DeviceGroupAdd deviceGroupAdd) throws ClientProtocolException, IOException {
         return deviceGroupAdd(accessToken,
                 JsonUtil.toJSONString(deviceGroupAdd));
     }
@@ -286,7 +285,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupAddResult deviceGroupAdd(String accessToken,
-                                                      String postJson) {
+                                                      String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -306,7 +305,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupAddDeviceResult deviceGroupAddDevice(
-            String accessToken, DeviceGroupAddDevice deviceGroupAddDevice) {
+            String accessToken, DeviceGroupAddDevice deviceGroupAddDevice) throws ClientProtocolException, IOException {
         return deviceGroupAddDevice(accessToken,
                 JsonUtil.toJSONString(deviceGroupAddDevice));
     }
@@ -319,7 +318,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupAddDeviceResult deviceGroupAddDevice(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -339,7 +338,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupDeleteResult deviceGroupDelete(String accessToken,
-                                                            DeviceGroupDelete deviceGroupDelete) {
+                                                            DeviceGroupDelete deviceGroupDelete) throws ClientProtocolException, IOException {
         return deviceGroupDelete(accessToken,
                 JsonUtil.toJSONString(deviceGroupDelete));
     }
@@ -352,7 +351,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupDeleteResult deviceGroupDelete(String accessToken,
-                                                            String postJson) {
+                                                            String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -372,7 +371,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupDeleteDeviceResult deviceGroupDeleteDevice(
-            String accessToken, DeviceGroupDeleteDevice deviceGroupDeleteDevice) {
+            String accessToken, DeviceGroupDeleteDevice deviceGroupDeleteDevice) throws ClientProtocolException, IOException {
         return deviceGroupDeleteDevice(accessToken,
                 JsonUtil.toJSONString(deviceGroupDeleteDevice));
     }
@@ -385,7 +384,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupDeleteDeviceResult deviceGroupDeleteDevice(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -405,7 +404,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupGetDetailResult deviceGroupGetDetail(
-            String accessToken, DeviceGroupGetDetail deviceGroupGetDetail) {
+            String accessToken, DeviceGroupGetDetail deviceGroupGetDetail) throws ClientProtocolException, IOException {
         return deviceGroupGetDetail(accessToken,
                 JsonUtil.toJSONString(deviceGroupGetDetail));
     }
@@ -418,7 +417,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupGetDetailResult deviceGroupGetDetail(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -438,7 +437,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupGetListResult deviceGroupGetList(
-            String accessToken, DeviceGroupGetList deviceGroupGetList) {
+            String accessToken, DeviceGroupGetList deviceGroupGetList) throws ClientProtocolException, IOException {
         return deviceGroupGetList(accessToken,
                 JsonUtil.toJSONString(deviceGroupGetList));
     }
@@ -451,7 +450,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupGetListResult deviceGroupGetList(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -471,7 +470,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupUpdateResult deviceGroupUpdate(String accessToken,
-                                                            DeviceGroupUpdate deviceGroupUpdate) {
+                                                            DeviceGroupUpdate deviceGroupUpdate) throws ClientProtocolException, IOException {
         return deviceGroupUpdate(accessToken,
                 JsonUtil.toJSONString(deviceGroupUpdate));
     }
@@ -484,7 +483,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceGroupUpdateResult deviceGroupUpdate(String accessToken,
-                                                            String postJson) {
+                                                            String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -504,7 +503,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceSearchResult deviceSearch(String accessToken,
-                                                  DeviceSearch deviceSearch) {
+                                                  DeviceSearch deviceSearch) throws ClientProtocolException, IOException {
         return deviceSearch(accessToken, JsonUtil.toJSONString(deviceSearch));
     }
 
@@ -516,7 +515,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceSearchResult deviceSearch(String accessToken,
-                                                  String postJson) {
+                                                  String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -536,7 +535,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceUpdateResult deviceUpdate(String accessToken,
-                                                  DeviceUpdate deviceUpdate) {
+                                                  DeviceUpdate deviceUpdate) throws ClientProtocolException, IOException {
         return deviceUpdate(accessToken, JsonUtil.toJSONString(deviceUpdate));
     }
 
@@ -548,7 +547,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static DeviceUpdateResult deviceUpdate(String accessToken,
-                                                  String postJson) {
+                                                  String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -568,7 +567,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static LotteryAddLotteryInfoResult lotteryAddLotteryInfo(
-            String accessToken, LotteryAddLotteryInfo lotteryAddLotteryInfo) {
+            String accessToken, LotteryAddLotteryInfo lotteryAddLotteryInfo) throws ClientProtocolException, IOException {
         return lotteryAddLotteryInfo(accessToken,
                 JsonUtil.toJSONString(lotteryAddLotteryInfo));
     }
@@ -581,7 +580,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static LotteryAddLotteryInfoResult lotteryAddLotteryInfo(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -601,7 +600,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static LotteryQueryLotteryResult lotteryQueryLottery(
-            String accessToken, String lotteryId) {
+            String accessToken, String lotteryId) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/shakearound/lottery/querylottery")
@@ -620,7 +619,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static BaseResult lotterySetLotterySwitch(String accessToken,
-                                                     String lotteryId, int onoff) {
+                                                     String lotteryId, int onoff) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/shakearound/lottery/setlotteryswitch")
@@ -639,7 +638,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static LotterySetPrizeBucketResult lotterySetPrizeBucket(
-            String accessToken, LotterySetPrizeBucket lotterySetPrizeBucket) {
+            String accessToken, LotterySetPrizeBucket lotterySetPrizeBucket) throws ClientProtocolException, IOException {
         return lotterySetPrizeBucket(accessToken,
                 JsonUtil.toJSONString(lotterySetPrizeBucket));
     }
@@ -652,7 +651,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static LotterySetPrizeBucketResult lotterySetPrizeBucket(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -673,7 +672,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static MaterialAddResult materialAdd(String accessToken,
-                                                MediaType type, File media) {
+                                                MediaType type, File media) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/shakearound/material/add");
         FileBody bin = new FileBody(media);
         MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
@@ -695,16 +694,10 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static MaterialAddResult materialAdd(String accessToken,
-                                                MediaType type, InputStream inputStream) {
+                                                MediaType type, InputStream inputStream) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/shakearound/material/add");
-        byte[] data;
-        try {
-            data = StreamUtils.copyToByteArray(inputStream);
-        } catch (IOException e) {
-            logger.error("", e);
-            throw new RuntimeException(e);
-        }
-
+        byte[] data = StreamUtils.copyToByteArray(inputStream);
+        
         MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder
                 .create().addBinaryBody("media", data, ContentType.DEFAULT_BINARY, "temp." + type.fileSuffix());
         HttpEntity reqEntity = multipartEntityBuilder
@@ -723,7 +716,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @param pageAdd     pageAdd
      * @return result
      */
-    public static PageAddResult pageAdd(String accessToken, PageAdd pageAdd) {
+    public static PageAddResult pageAdd(String accessToken, PageAdd pageAdd) throws ClientProtocolException, IOException {
         return pageAdd(accessToken, JsonUtil.toJSONString(pageAdd));
     }
 
@@ -734,7 +727,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @param postJson    postJson
      * @return result
      */
-    public static PageAddResult pageAdd(String accessToken, String postJson) {
+    public static PageAddResult pageAdd(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -754,7 +747,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static PageDeleteResult pageDelete(String accessToken,
-                                              PageDelete pageDelete) {
+                                              PageDelete pageDelete) throws ClientProtocolException, IOException {
         return pageDelete(accessToken, JsonUtil.toJSONString(pageDelete));
     }
 
@@ -766,7 +759,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static PageDeleteResult pageDelete(String accessToken,
-                                              String postJson) {
+                                              String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -786,7 +779,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static PageSearchResult pageSearch(String accessToken,
-                                              PageSearch pageSearch) {
+                                              PageSearch pageSearch) throws ClientProtocolException, IOException {
         return pageSearch(accessToken, JsonUtil.toJSONString(pageSearch));
     }
 
@@ -798,7 +791,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static PageSearchResult pageSearch(String accessToken,
-                                              String postJson) {
+                                              String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -818,7 +811,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static PageUpdateResult pageUpdate(String accessToken,
-                                              PageUpdate pageUpdate) {
+                                              PageUpdate pageUpdate) throws ClientProtocolException, IOException {
         return pageUpdate(accessToken, JsonUtil.toJSONString(pageUpdate));
     }
 
@@ -830,7 +823,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static PageUpdateResult pageUpdate(String accessToken,
-                                              String postJson) {
+                                              String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -850,7 +843,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static RelationSearchResult relationSearch(String accessToken,
-                                                      RelationSearch relationSearch) {
+                                                      RelationSearch relationSearch) throws ClientProtocolException, IOException {
         return relationSearch(accessToken,
                 JsonUtil.toJSONString(relationSearch));
     }
@@ -863,7 +856,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static RelationSearchResult relationSearch(String accessToken,
-                                                      String postJson) {
+                                                      String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -883,7 +876,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsDeviceResult statisticsDevice(String accessToken,
-                                                          StatisticsDevice statisticsDevice) {
+                                                          StatisticsDevice statisticsDevice) throws ClientProtocolException, IOException {
         return statisticsDevice(accessToken,
                 JsonUtil.toJSONString(statisticsDevice));
     }
@@ -896,7 +889,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsDeviceResult statisticsDevice(String accessToken,
-                                                          String postJson) {
+                                                          String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -916,7 +909,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsDeviceListResult statisticsDeviceList(
-            String accessToken, StatisticsDeviceList statisticsDeviceList) {
+            String accessToken, StatisticsDeviceList statisticsDeviceList) throws ClientProtocolException, IOException {
         return statisticsDeviceList(accessToken,
                 JsonUtil.toJSONString(statisticsDeviceList));
     }
@@ -929,7 +922,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsDeviceListResult statisticsDeviceList(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -949,7 +942,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsPageResult statisticsPage(String accessToken,
-                                                      StatisticsPage statisticsPage) {
+                                                      StatisticsPage statisticsPage) throws ClientProtocolException, IOException {
         return statisticsPage(accessToken,
                 JsonUtil.toJSONString(statisticsPage));
     }
@@ -962,7 +955,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsPageResult statisticsPage(String accessToken,
-                                                      String postJson) {
+                                                      String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -982,7 +975,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsPageListResult statisticsPageList(
-            String accessToken, StatisticsPageList statisticsPageList) {
+            String accessToken, StatisticsPageList statisticsPageList) throws ClientProtocolException, IOException {
         return statisticsPageList(accessToken,
                 JsonUtil.toJSONString(statisticsPageList));
     }
@@ -995,7 +988,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static StatisticsPageListResult statisticsPageList(
-            String accessToken, String postJson) {
+            String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -1015,7 +1008,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static UserGetShakeInfoResult userGetShakeInfo(String accessToken,
-                                                          String postJson) {
+                                                          String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -1035,7 +1028,7 @@ public class ShakeAroundAPI extends BaseAPI {
      * @return result
      */
     public static UserGetShakeInfoResult userGetShakeInfo(String accessToken,
-                                                          UserGetShakeInfo userGetShakeInfo) {
+                                                          UserGetShakeInfo userGetShakeInfo) throws ClientProtocolException, IOException {
         return userGetShakeInfo(accessToken,
                 JsonUtil.toJSONString(userGetShakeInfo));
     }

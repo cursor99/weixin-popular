@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -28,8 +30,10 @@ public class CommentAPI extends BaseAPI{
 	 * @param msg_data_id 群发返回的msg_data_id
 	 * @param index 多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文
 	 * @return BaseResult BaseResult
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BaseResult open(String access_token,Long msg_data_id,Integer index){
+	public static BaseResult open(String access_token,Long msg_data_id,Integer index) throws ClientProtocolException, IOException{
 		String json = String.format("{\"msg_data_id\":%d,\"index\":%d}",msg_data_id,index == null?0:index);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -47,7 +51,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param index 多图文时，用来指定第几篇图文，从0开始，不带默认操作该msg_data_id的第一篇图文
 	 * @return BaseResult BaseResult
 	 */
-	public static BaseResult close(String access_token,Long msg_data_id,Integer index){
+	public static BaseResult close(String access_token,Long msg_data_id,Integer index) throws ClientProtocolException, IOException{
 		String json = String.format("{\"msg_data_id\":%d,\"index\":%d}",msg_data_id,index == null?0:index);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -64,7 +68,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param commentList commentList
 	 * @return CommentListResult CommentListResult
 	 */
-	public static CommentListResult list(String access_token,CommentList commentList){
+	public static CommentListResult list(String access_token,CommentList commentList) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(commentList);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -81,7 +85,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param markelect markelect
 	 * @return BaseResult BaseResult
 	 */
-	public static BaseResult markelect(String access_token,Params markelect){
+	public static BaseResult markelect(String access_token,Params markelect) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(markelect);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -98,7 +102,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param unmarkelect unmarkelect
 	 * @return BaseResult BaseResult
 	 */
-	public static BaseResult unmarkelect(String access_token,Params unmarkelect){
+	public static BaseResult unmarkelect(String access_token,Params unmarkelect) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(unmarkelect);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -115,7 +119,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param delete delete
 	 * @return BaseResult BaseResult
 	 */
-	public static BaseResult delete(String access_token,Params delete){
+	public static BaseResult delete(String access_token,Params delete) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(delete);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -132,7 +136,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param replyAdd replyAdd
 	 * @return BaseResult BaseResult
 	 */
-	public static BaseResult replyAdd(String access_token,ReplyAdd replyAdd){
+	public static BaseResult replyAdd(String access_token,ReplyAdd replyAdd) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(replyAdd);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -149,7 +153,7 @@ public class CommentAPI extends BaseAPI{
 	 * @param delete delete
 	 * @return BaseResult BaseResult
 	 */
-	public static BaseResult replyDelete(String access_token,Params delete){
+	public static BaseResult replyDelete(String access_token,Params delete) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(delete);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)

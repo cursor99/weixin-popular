@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 
 import javax.imageio.ImageIO;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -35,7 +36,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param qrcodeJson json 数据
 	 * @return QrcodeTicket
 	 */
-	private static QrcodeTicket qrcodeCreate(String access_token,String qrcodeJson){
+	private static QrcodeTicket qrcodeCreate(String access_token,String qrcodeJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(BASE_URI+"/cgi-bin/qrcode/create")
@@ -52,7 +53,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param scene_id		  场景值ID，32位非0整型  最多10万个
 	 * @return QrcodeTicket
 	 */
-	public static QrcodeTicket qrcodeCreateTemp(String access_token,int expire_seconds,long scene_id){
+	public static QrcodeTicket qrcodeCreateTemp(String access_token,int expire_seconds,long scene_id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"expire_seconds\": %d, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": %d}}}",expire_seconds,scene_id);
 		return qrcodeCreate(access_token,json);
 	}
@@ -65,7 +66,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param scene_str		 场景值ID（字符串形式的ID），字符串类型，长度限制为1到64
 	 * @return QrcodeTicket
 	 */
-	public static QrcodeTicket qrcodeCreateTemp(String access_token,int expire_seconds,String scene_str){
+	public static QrcodeTicket qrcodeCreateTemp(String access_token,int expire_seconds,String scene_str) throws ClientProtocolException, IOException {
 		String json = String.format("{\"expire_seconds\": %d, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"%s\"}}}", expire_seconds, scene_str);
 		return qrcodeCreate(access_token,json);
 	}
@@ -76,7 +77,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param scene_id	场景值ID 1-100000
 	 * @return QrcodeTicket
 	 */
-	public static QrcodeTicket qrcodeCreateFinal(String access_token,int scene_id){
+	public static QrcodeTicket qrcodeCreateFinal(String access_token,int scene_id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\":%d}}}", scene_id);
 		return qrcodeCreate(access_token,json);
 	}
@@ -87,7 +88,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param scene_str	场景值ID（字符串形式的ID），字符串类型，长度限制为1到64
 	 * @return QrcodeTicket
 	 */
-	public static QrcodeTicket qrcodeCreateFinal(String access_token,String scene_str){
+	public static QrcodeTicket qrcodeCreateFinal(String access_token,String scene_str) throws ClientProtocolException, IOException {
 		String json = String.format("{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"%s\"}}}", scene_str);
 		return qrcodeCreate(access_token,json);
 	}
@@ -97,7 +98,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param ticket  内部自动 UrlEncode
 	 * @return BufferedImage
 	 */
-	public static BufferedImage showqrcode(String ticket){
+	public static BufferedImage showqrcode(String ticket) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(MP_URI + "/cgi-bin/showqrcode")
 				.addParameter("ticket", ticket)
@@ -114,7 +115,7 @@ public class QrcodeAPI extends BaseAPI{
 	 * @param wxaqrcode wxaqrcode
 	 * @return BufferedImage
 	 */
-	public static BufferedImage wxaappCreatewxaqrcode(String access_token,Wxaqrcode wxaqrcode){
+	public static BufferedImage wxaappCreatewxaqrcode(String access_token,Wxaqrcode wxaqrcode) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(wxaqrcode);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 								.setHeader(jsonHeader)

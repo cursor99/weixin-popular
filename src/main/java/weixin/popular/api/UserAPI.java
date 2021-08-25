@@ -1,8 +1,10 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -41,8 +43,10 @@ public class UserAPI extends BaseAPI{
 	 * 4 HtmlDec 格式<br>
 	 * 5 PureText 纯文本<br>
 	 * @return User
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static User userInfo(String access_token,String openid,int emoji){
+	public static User userInfo(String access_token,String openid,int emoji) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI+"/cgi-bin/user/info")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -62,7 +66,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openid openid
 	 * @return User
 	 */
-	public static User userInfo(String access_token,String openid){
+	public static User userInfo(String access_token,String openid) throws ClientProtocolException, IOException {
 		return userInfo(access_token, openid, 0);
 	}
 
@@ -72,7 +76,7 @@ public class UserAPI extends BaseAPI{
 	 * @param next_openid 第一次获取使用null
 	 * @return FollowResult
 	 */
-	public static FollowResult userGet(String access_token,String next_openid){
+	public static FollowResult userGet(String access_token,String next_openid) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI+"/cgi-bin/user/get")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -96,7 +100,7 @@ public class UserAPI extends BaseAPI{
 	 * 5 PureText 纯文本<br>
 	 * @return UserInfoList
 	 */
-	public static UserInfoList userInfoBatchget(String access_token,String lang,List<String> openids,int emoji){
+	public static UserInfoList userInfoBatchget(String access_token,String lang,List<String> openids,int emoji) throws ClientProtocolException, IOException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"user_list\": [");
 		for(int i = 0;i < openids.size();i++){
@@ -130,7 +134,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openids 最多支持一次拉取100条
 	 * @return UserInfoList
 	 */
-	public static UserInfoList userInfoBatchget(String access_token,String lang,List<String> openids){
+	public static UserInfoList userInfoBatchget(String access_token,String lang,List<String> openids) throws ClientProtocolException, IOException {
 		return userInfoBatchget(access_token, lang, openids,0);
 	}
 
@@ -141,7 +145,7 @@ public class UserAPI extends BaseAPI{
 	 * @param remark remark
 	 * @return BaseResult
 	 */
-	public static BaseResult userInfoUpdateremark(String access_token,String openid,String remark){
+	public static BaseResult userInfoUpdateremark(String access_token,String openid,String remark) throws ClientProtocolException, IOException {
 		String postJson = String.format("{\"openid\":\"%1$s\",\"remark\":\"%2$s\"}", openid,remark);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -158,7 +162,7 @@ public class UserAPI extends BaseAPI{
 	 * @param name name
 	 * @return Group
 	 */
-	public static Group groupsCreate(String access_token,String name){
+	public static Group groupsCreate(String access_token,String name) throws ClientProtocolException, IOException {
 		String groupJson = String.format("{\"group\":{\"name\":\"%1$s\"}}",name);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -174,7 +178,7 @@ public class UserAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return Group
 	 */
-	public static Group groupsGet(String access_token){
+	public static Group groupsGet(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI+"/cgi-bin/groups/get")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -188,7 +192,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openid openid
 	 * @return Group
 	 */
-	public static Group groupsGetid(String access_token,String openid){
+	public static Group groupsGetid(String access_token,String openid) throws ClientProtocolException, IOException {
 		String groupJson = String.format("{\"openid\":\"%1$s\"}",openid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -206,7 +210,7 @@ public class UserAPI extends BaseAPI{
 	 * @param name	分组名
 	 * @return BaseResult
 	 */
-	public static BaseResult groupsUpdate(String access_token,String id,String name){
+	public static BaseResult groupsUpdate(String access_token,String id,String name) throws ClientProtocolException, IOException {
 		String groupJson = "{\"group\":{\"id\":"+id+",\"name\":\""+name+"\"}}";
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -224,7 +228,7 @@ public class UserAPI extends BaseAPI{
 	 * @param to_groupid to_groupid
 	 * @return BaseResult
 	 */
-	public static BaseResult groupsMembersUpdate(String access_token,String openid,String to_groupid){
+	public static BaseResult groupsMembersUpdate(String access_token,String openid,String to_groupid) throws ClientProtocolException, IOException {
 		String groupJson = "{\"openid\":\""+openid+"\",\"to_groupid\":"+to_groupid+"}";
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -243,7 +247,7 @@ public class UserAPI extends BaseAPI{
 	 * @param to_groupid to_groupid
 	 * @return BaseResult
 	 */
-	public static BaseResult groupsMembersBatchUpdate(String access_token,List<String> openid_list,String to_groupid){
+	public static BaseResult groupsMembersBatchUpdate(String access_token,List<String> openid_list,String to_groupid) throws ClientProtocolException, IOException {
 		String openidListStr = JsonUtil.toJSONString(openid_list);
 		String groupJson = "{\"openid_list\":"+openidListStr+",\"to_groupid\":"+to_groupid+"}";
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -261,7 +265,7 @@ public class UserAPI extends BaseAPI{
 	 * @param id id
 	 * @return BaseResult
 	 */
-	public static BaseResult groupsDelete(String access_token,String id){
+	public static BaseResult groupsDelete(String access_token,String id) throws ClientProtocolException, IOException {
 		String groupJson = String.format("{\"group\":{\"id\":%1$s}}",id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -280,7 +284,7 @@ public class UserAPI extends BaseAPI{
 	 * @param name name	标签名长度超过30个字节
 	 * @return result
 	 */
-	public static TagsCreatResult tagsCreate(String access_token,String name){
+	public static TagsCreatResult tagsCreate(String access_token,String name) throws ClientProtocolException, IOException {
 		String json = String.format("{\"tag\":{\"name\":\"%s\"}}",name);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -297,7 +301,7 @@ public class UserAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static TagsGetResult tagsGet(String access_token){
+	public static TagsGetResult tagsGet(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI+"/cgi-bin/tags/get")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -313,7 +317,7 @@ public class UserAPI extends BaseAPI{
 	 * @param name name	标签名长度超过30个字节
 	 * @return result
 	 */
-	public static BaseResult tagsUpdate(String access_token,Integer id,String name){
+	public static BaseResult tagsUpdate(String access_token,Integer id,String name) throws ClientProtocolException, IOException {
 		String json = String.format("{\"tag\":{\"id\":%d,\"name\":\"%s\"}}",id,name);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -333,7 +337,7 @@ public class UserAPI extends BaseAPI{
 	 * @param id id
 	 * @return result
 	 */
-	public static BaseResult tagsDelete(String access_token,Integer id){
+	public static BaseResult tagsDelete(String access_token,Integer id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"tag\":{\"id\":%d}}",id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -352,7 +356,7 @@ public class UserAPI extends BaseAPI{
 	 * @param next_openid 第一个拉取的OPENID，不填默认从头开始拉取
 	 * @return result
 	 */
-	public static UserTagGetResult userTagGet(String access_token,Integer tagid,String next_openid){
+	public static UserTagGetResult userTagGet(String access_token,Integer tagid,String next_openid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"tagid\":%d,\"next_openid\":\"%s\"}",tagid,next_openid==null?"":next_openid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -372,7 +376,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openids openids
 	 * @return result
 	 */
-	public static BaseResult tagsMembersBatchtagging(String access_token,Integer tagid,String[] openids){
+	public static BaseResult tagsMembersBatchtagging(String access_token,Integer tagid,String[] openids) throws ClientProtocolException, IOException {
 		String json = String.format("{\"tagid\":%d,\"openid_list\":%s}",tagid,JsonUtil.toJSONString(openids));
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -391,7 +395,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openids openids
 	 * @return result
 	 */
-	public static BaseResult tagsMembersBatchuntagging(String access_token,Integer tagid,String[] openids){
+	public static BaseResult tagsMembersBatchuntagging(String access_token,Integer tagid,String[] openids) throws ClientProtocolException, IOException {
 		String json = String.format("{\"tagid\":%d,\"openid_list\":%s}",tagid,JsonUtil.toJSONString(openids));
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -409,7 +413,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openid openid
 	 * @return result
 	 */
-	public static TagsGetidlistResult tagsGetidlist(String access_token,String openid){
+	public static TagsGetidlistResult tagsGetidlist(String access_token,String openid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"openid\":\"%s\"}",openid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -428,7 +432,7 @@ public class UserAPI extends BaseAPI{
 	 * @param begin_openid	当 begin_openid 为空时，默认从开头拉取。
 	 * @return result
 	 */
-	public static GetblacklistResult tagsMembersGetblacklist(String access_token,String begin_openid){
+	public static GetblacklistResult tagsMembersGetblacklist(String access_token,String begin_openid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"begin_openid\":\"%s\"}",begin_openid == null?"":begin_openid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -446,7 +450,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openid_list	需要拉入黑名单的用户的openid，一次拉黑最多允许20个
 	 * @return result
 	 */
-	public static BaseResult tagsMembersBatchblacklist(String access_token,String[] openid_list){
+	public static BaseResult tagsMembersBatchblacklist(String access_token,String[] openid_list) throws ClientProtocolException, IOException {
 		String json = String.format("{\"openid_list\":%s}",JsonUtil.toJSONString(openid_list));
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
@@ -464,7 +468,7 @@ public class UserAPI extends BaseAPI{
 	 * @param openid_list	需要取消拉入黑名单的用户的openid，一次取消拉黑最多允许20个
 	 * @return result
 	 */
-	public static BaseResult tagsMembersBatchunblacklist(String access_token,String[] openid_list){
+	public static BaseResult tagsMembersBatchunblacklist(String access_token,String[] openid_list) throws ClientProtocolException, IOException {
 		String json = String.format("{\"openid_list\":%s}",JsonUtil.toJSONString(openid_list));
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)

@@ -1,7 +1,16 @@
 package weixin.popular.api;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.nio.charset.Charset;
+
 import org.apache.http.HttpEntity;
-import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
@@ -14,6 +23,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import weixin.popular.bean.BaseResult;
 import weixin.popular.bean.media.MediaType;
 import weixin.popular.bean.semantic.queryrecoresultfortext.QueryrecoresultfortextResult;
@@ -23,11 +33,6 @@ import weixin.popular.bean.semantic.translatecontent.TranslatecontentResult;
 import weixin.popular.client.LocalHttpClient;
 import weixin.popular.util.JsonUtil;
 import weixin.popular.util.StreamUtils;
-
-import java.io.*;
-import java.net.URI;
-import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
 
 /**
  * 微信智能
@@ -47,7 +52,7 @@ public class SemanticAPI extends BaseAPI {
      * @return SemproxySearchResult
      * @since 2.8.22
      */
-    public static SemproxySearchResult semproxySearch(String accessToken, SemproxySearch semproxySearch) {
+    public static SemproxySearchResult semproxySearch(String accessToken, SemproxySearch semproxySearch) throws ClientProtocolException, IOException {
         return semproxySearch(accessToken, JsonUtil.toJSONString(semproxySearch));
     }
 
@@ -57,9 +62,11 @@ public class SemanticAPI extends BaseAPI {
      * @param accessToken access_token
      * @param postData    postData
      * @return SemproxySearchResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      * @since 2.8.22
      */
-    public static SemproxySearchResult semproxySearch(String accessToken, String postData) {
+    public static SemproxySearchResult semproxySearch(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -81,7 +88,7 @@ public class SemanticAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.22
      */
-    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, File voice) {
+    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, File voice) throws ClientProtocolException, IOException {
         return addvoicetorecofortext(accessToken, voiceId, null, voice);
     }
 
@@ -94,7 +101,7 @@ public class SemanticAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.22
      */
-    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, InputStream inputStream) {
+    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, InputStream inputStream) throws ClientProtocolException, IOException {
         return addvoicetorecofortext(accessToken, voiceId, null, inputStream);
     }
 
@@ -107,7 +114,7 @@ public class SemanticAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.22
      */
-    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, URI uri) {
+    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, URI uri) throws ClientProtocolException, IOException {
         return addvoicetorecofortext(accessToken, voiceId, null, uri);
     }
 
@@ -121,7 +128,7 @@ public class SemanticAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.22
      */
-    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, String lang, File voice) {
+    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, String lang, File voice) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/cgi-bin/media/voice/addvoicetorecofortext");
         FileBody bin = new FileBody(voice);
         HttpEntity reqEntity = MultipartEntityBuilder.create()
@@ -146,7 +153,7 @@ public class SemanticAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.22
      */
-    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, String lang, InputStream inputStream) {
+    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, String lang, InputStream inputStream) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/cgi-bin/media/voice/addvoicetorecofortext");
         byte[] data;
         try {
@@ -178,31 +185,21 @@ public class SemanticAPI extends BaseAPI {
      * @return BaseResult
      * @since 2.8.22
      */
-    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, String lang, URI uri) {
+    public static BaseResult addvoicetorecofortext(String accessToken, String voiceId, String lang, URI uri) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/cgi-bin/media/voice/addvoicetorecofortext");
         CloseableHttpClient tempHttpClient = HttpClients.createDefault();
-        try {
-            HttpEntity entity = tempHttpClient.execute(RequestBuilder.get().setUri(uri).build()).getEntity();
-            HttpEntity reqEntity = MultipartEntityBuilder.create()
-                    .addBinaryBody("media", EntityUtils.toByteArray(entity), ContentType.get(entity), "temp." + MediaType.voice_mp3.fileSuffix())
-                    .addTextBody(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
-                    .addTextBody("format", MediaType.voice_mp3.fileSuffix())
-                    .addTextBody("voice_id", voiceId)
-                    .addTextBody("lang", lang == null || lang.isEmpty() ? "zh_CN" : lang)
-                    .build();
-            httpPost.setEntity(reqEntity);
 
-            return LocalHttpClient.executeJsonResult(httpPost, BaseResult.class);
-        } catch (UnsupportedCharsetException | ParseException | IOException e) {
-            logger.error("", e);
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                tempHttpClient.close();
-            } catch (IOException e) {
-                logger.error("", e);
-            }
-        }
+        HttpEntity entity = tempHttpClient.execute(RequestBuilder.get().setUri(uri).build()).getEntity();
+        HttpEntity reqEntity = MultipartEntityBuilder.create()
+                .addBinaryBody("media", EntityUtils.toByteArray(entity), ContentType.get(entity), "temp." + MediaType.voice_mp3.fileSuffix())
+                .addTextBody(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+                .addTextBody("format", MediaType.voice_mp3.fileSuffix())
+                .addTextBody("voice_id", voiceId)
+                .addTextBody("lang", lang == null || lang.isEmpty() ? "zh_CN" : lang)
+                .build();
+        httpPost.setEntity(reqEntity);
+
+        return LocalHttpClient.executeJsonResult(httpPost, BaseResult.class);
     }
 
     /**
@@ -213,7 +210,7 @@ public class SemanticAPI extends BaseAPI {
      * @return QueryrecoresultfortextResult
      * @since 2.8.22
      */
-    public static QueryrecoresultfortextResult queryrecoresultfortext(String accessToken, String voiceId) {
+    public static QueryrecoresultfortextResult queryrecoresultfortext(String accessToken, String voiceId) throws ClientProtocolException, IOException {
         return queryrecoresultfortext(accessToken, voiceId, null);
     }
 
@@ -226,7 +223,7 @@ public class SemanticAPI extends BaseAPI {
      * @return QueryrecoresultfortextResult
      * @since 2.8.22
      */
-    public static QueryrecoresultfortextResult queryrecoresultfortext(String accessToken, String voiceId, String lang) {
+    public static QueryrecoresultfortextResult queryrecoresultfortext(String accessToken, String voiceId, String lang) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setUri(BASE_URI + "/cgi-bin/media/voice/queryrecoresultfortext")
                 .addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
@@ -249,7 +246,7 @@ public class SemanticAPI extends BaseAPI {
      * @return TranslatecontentResult
      * @since 2.8.22
      */
-    public static TranslatecontentResult translatecontent(String accessToken, String lfrom, String lto, File content, String charsetName) {
+    public static TranslatecontentResult translatecontent(String accessToken, String lfrom, String lto, File content, String charsetName) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/cgi-bin/media/voice/translatecontent");
 
         byte[] data;
@@ -289,7 +286,7 @@ public class SemanticAPI extends BaseAPI {
      * @return TranslatecontentResult
      * @since 2.8.22
      */
-    public static TranslatecontentResult translatecontent(String accessToken, String lfrom, String lto, InputStream inputStream, String charsetName) {
+    public static TranslatecontentResult translatecontent(String accessToken, String lfrom, String lto, InputStream inputStream, String charsetName) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/cgi-bin/media/voice/translatecontent");
 
         byte[] data;
@@ -327,7 +324,7 @@ public class SemanticAPI extends BaseAPI {
      * @return TranslatecontentResult
      * @since 2.8.22
      */
-    public static TranslatecontentResult translatecontent(String accessToken, String lfrom, String lto, String content) {
+    public static TranslatecontentResult translatecontent(String accessToken, String lfrom, String lto, String content) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(BASE_URI + "/cgi-bin/media/voice/translatecontent");
         byte[] data;
         try {

@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -22,8 +24,10 @@ public class ShorturlAPI extends BaseAPI{
 	 * @param action 此处填long2short，代表长链接转短链接
 	 * @param long_url 需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url
 	 * @return Shorturl
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static Shorturl shorturl(String access_token,String action,String long_url){
+	public static Shorturl shorturl(String access_token,String action,String long_url) throws ClientProtocolException, IOException{
 		String json = "{\"action\":\""+action+"\",\"long_url\":\""+long_url+"\"}";
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -39,8 +43,10 @@ public class ShorturlAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @param long_url long_url
 	 * @return Shorturl
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static Shorturl shorturl(String access_token,String long_url){
+	public static Shorturl shorturl(String access_token,String long_url) throws ClientProtocolException, IOException{
 		return shorturl(access_token,"long2short", long_url);
 	}
 

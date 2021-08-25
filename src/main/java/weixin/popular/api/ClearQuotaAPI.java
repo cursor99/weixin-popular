@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -25,8 +27,10 @@ public class ClearQuotaAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @param appid appid
 	 * @return BaseResult
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BaseResult clear_quota(String access_token,String appid){
+	public static BaseResult clear_quota(String access_token,String appid) throws ClientProtocolException, IOException{
 		String json = String.format("{\"appid\":\"%s\"}", appid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)

@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -71,8 +73,10 @@ public class CardAPI extends BaseAPI {
 	 * @param accessToken accessToken
 	 * @param batchget batchget
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BatchGetResult batchGet(String accessToken, BatchGet batchget) {
+	public static BatchGetResult batchGet(String accessToken, BatchGet batchget) throws ClientProtocolException, IOException {
 		return batchGet(accessToken, JsonUtil.toJSONString(batchget));
 	}
 
@@ -81,8 +85,10 @@ public class CardAPI extends BaseAPI {
 	 * @param accessToken accessToken
 	 * @param postJson postJson
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BatchGetResult batchGet(String accessToken, String postJson) {
+	public static BatchGetResult batchGet(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -100,7 +106,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeCheck codeCheck
 	 * @return result
 	 */
-	public static CodeCheckCodeResult codeCheckCode(String accessToken, CodeCheckCode codeCheck) {
+	public static CodeCheckCodeResult codeCheckCode(String accessToken, CodeCheckCode codeCheck) throws ClientProtocolException, IOException{
 		return codeCheckCode(accessToken, JsonUtil.toJSONString(codeCheck));
 	}
 
@@ -110,7 +116,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static CodeCheckCodeResult codeCheckCode(String accessToken, String postJson) {
+	public static CodeCheckCodeResult codeCheckCode(String accessToken, String postJson) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -128,7 +134,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeConsume codeConsume
 	 * @return result
 	 */
-	public static CodeConsumeResult codeConsume(String accessToken, CodeConsume codeConsume) {
+	public static CodeConsumeResult codeConsume(String accessToken, CodeConsume codeConsume) throws ClientProtocolException, IOException {
 		return codeConsume(accessToken, JsonUtil.toJSONString(codeConsume));
 	}
 
@@ -138,7 +144,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static CodeConsumeResult codeConsume(String accessToken, String postJson) {
+	public static CodeConsumeResult codeConsume(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -160,7 +166,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeDecrypt codeDecrypt
 	 * @return result
 	 */
-	public static CodeDecryptResult codeDecrypt(String accessToken, CodeDecrypt codeDecrypt) {
+	public static CodeDecryptResult codeDecrypt(String accessToken, CodeDecrypt codeDecrypt) throws ClientProtocolException, IOException {
 		return codeDecrypt(accessToken, JsonUtil.toJSONString(codeDecrypt));
 	}
 
@@ -174,7 +180,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static CodeDecryptResult codeDecrypt(String accessToken, String postJson) {
+	public static CodeDecryptResult codeDecrypt(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -192,7 +198,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeDeposit codeDeposit
 	 * @return result
 	 */
-	public static CodeDepositResult codeDeposit(String accessToken, CodeDeposit codeDeposit) {
+	public static CodeDepositResult codeDeposit(String accessToken, CodeDeposit codeDeposit) throws ClientProtocolException, IOException {
 		return codeDeposit(accessToken, JsonUtil.toJSONString(codeDeposit));
 	}
 
@@ -202,7 +208,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result 
 	 */
-	public static CodeDepositResult codeDeposit(String accessToken, String postJson) {
+	public static CodeDepositResult codeDeposit(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -220,7 +226,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeGet codeGet
 	 * @return result  
 	 */
-	public static CodeGetResult codeGet(String accessToken, CodeGet codeGet) {
+	public static CodeGetResult codeGet(String accessToken, CodeGet codeGet) throws ClientProtocolException, IOException {
 		return codeGet(accessToken, JsonUtil.toJSONString(codeGet));
 	}
 
@@ -230,7 +236,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result 
 	 */
-	public static CodeGetResult codeGet(String accessToken, String postJson) {
+	public static CodeGetResult codeGet(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -248,7 +254,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeCount codeCount
 	 * @return result  
 	 */
-	public static CodeGetDepositCountResult codeGetDepositCount(String accessToken, CodeGetDepositCount codeCount) {
+	public static CodeGetDepositCountResult codeGetDepositCount(String accessToken, CodeGetDepositCount codeCount) throws ClientProtocolException, IOException {
 		return codeGetDepositCount(accessToken,
 				JsonUtil.toJSONString(codeCount));
 	}
@@ -259,7 +265,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result   
 	 */
-	public static CodeGetDepositCountResult codeGetDepositCount( String accessToken, String postJson) {
+	public static CodeGetDepositCountResult codeGetDepositCount( String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -277,7 +283,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeUnavailable codeUnavailable
 	 * @return result   
 	 */
-	public static BaseResult codeUnavailable(String accessToken, CodeUnavailable codeUnavailable) {
+	public static BaseResult codeUnavailable(String accessToken, CodeUnavailable codeUnavailable) throws ClientProtocolException, IOException {
 		return codeUnavailable(accessToken,
 				JsonUtil.toJSONString(codeUnavailable));
 	}
@@ -288,7 +294,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result  
 	 */
-	public static BaseResult codeUnavailable(String accessToken, String postJson) {
+	public static BaseResult codeUnavailable(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -306,7 +312,7 @@ public class CardAPI extends BaseAPI {
 	 * @param code code
 	 * @return result
 	 */
-	public static BaseResult codeUnavailableByCode(String accessToken, String code) {
+	public static BaseResult codeUnavailableByCode(String accessToken, String code) throws ClientProtocolException, IOException {
 		return codeUnavailable(accessToken, String.format("{\"code\": \"%s\"}", code));
 	}
 
@@ -316,7 +322,7 @@ public class CardAPI extends BaseAPI {
 	 * @param codeUpdate codeUpdate
 	 * @return result
 	 */
-	public static BaseResult codeUpdate(String accessToken, CodeUpdate codeUpdate) {
+	public static BaseResult codeUpdate(String accessToken, CodeUpdate codeUpdate) throws ClientProtocolException, IOException {
 		return codeUpdate(accessToken, JsonUtil.toJSONString(codeUpdate));
 	}
 
@@ -326,7 +332,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult codeUpdate(String accessToken, String postJson) {
+	public static BaseResult codeUpdate(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -344,7 +350,7 @@ public class CardAPI extends BaseAPI {
 	 * @param card card
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, Create<?> card) {
+	public static CreateResult create(String accessToken, Create<?> card) throws ClientProtocolException, IOException {
 		return create(accessToken, JsonUtil.toJSONString(card));
 	}
 
@@ -354,7 +360,7 @@ public class CardAPI extends BaseAPI {
 	 * @param cashCard cashCard
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, CashCard cashCard) {
+	public static CreateResult create(String accessToken, CashCard cashCard) throws ClientProtocolException, IOException {
 		Create<CashCard> card = new Create<CashCard>();
 		card.setCard(cashCard);
 		return create(accessToken, card);
@@ -366,7 +372,7 @@ public class CardAPI extends BaseAPI {
 	 * @param discountCard discountCard
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, DiscountCard discountCard) {
+	public static CreateResult create(String accessToken, DiscountCard discountCard) throws ClientProtocolException, IOException {
 		Create<DiscountCard> card = new Create<DiscountCard>();
 		card.setCard(discountCard);
 		return create(accessToken, card);
@@ -378,7 +384,7 @@ public class CardAPI extends BaseAPI {
 	 * @param generalCouponCard generalCouponCard
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, GeneralCouponCard generalCouponCard) {
+	public static CreateResult create(String accessToken, GeneralCouponCard generalCouponCard) throws ClientProtocolException, IOException {
 		Create<GeneralCouponCard> card = new Create<GeneralCouponCard>();
 		card.setCard(generalCouponCard);
 		return create(accessToken, card);
@@ -390,7 +396,7 @@ public class CardAPI extends BaseAPI {
 	 * @param giftCard giftCard
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, GiftCard giftCard) {
+	public static CreateResult create(String accessToken, GiftCard giftCard) throws ClientProtocolException, IOException {
 		Create<GiftCard> card = new Create<GiftCard>();
 		card.setCard(giftCard);
 		return create(accessToken, card);
@@ -402,7 +408,7 @@ public class CardAPI extends BaseAPI {
 	 * @param grouponCard grouponCard
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, GrouponCard grouponCard) {
+	public static CreateResult create(String accessToken, GrouponCard grouponCard) throws ClientProtocolException, IOException {
 		Create<GrouponCard> card = new Create<GrouponCard>();
 		card.setCard(grouponCard);
 		return create(accessToken, card);
@@ -414,7 +420,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static CreateResult create(String accessToken, String postJson) {
+	public static CreateResult create(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -432,7 +438,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult delete(String accessToken, String postJson) {
+	public static BaseResult delete(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -450,7 +456,7 @@ public class CardAPI extends BaseAPI {
 	 * @param cardId cardId
 	 * @return result
 	 */
-	public static BaseResult deleteByCardId(String accessToken, String cardId) {
+	public static BaseResult deleteByCardId(String accessToken, String cardId) throws ClientProtocolException, IOException {
 		return delete(accessToken, String.format("{\"card_id\": \"%s\"}", cardId));
 	}
 
@@ -460,7 +466,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static GetResult<?> get(String accessToken, String postJson) {
+	public static GetResult<?> get(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -505,7 +511,7 @@ public class CardAPI extends BaseAPI {
 	 * @param cardId cardId
 	 * @return result
 	 */
-	public static GetResult<?> getByCardId(String accessToken, String cardId) {
+	public static GetResult<?> getByCardId(String accessToken, String cardId) throws ClientProtocolException, IOException {
 		return get(accessToken, String.format("{\"card_id\": \"%s\"}", cardId));
 	}
 
@@ -515,7 +521,7 @@ public class CardAPI extends BaseAPI {
 	 * @param landingPage landingPage
 	 * @return result
 	 */
-	public static LandingPageCreateResult landingPageCreate(String accessToken, LandingPageCreate landingPage) {
+	public static LandingPageCreateResult landingPageCreate(String accessToken, LandingPageCreate landingPage) throws ClientProtocolException, IOException {
 		return landingPageCreate(accessToken,
 				JsonUtil.toJSONString(landingPage));
 	}
@@ -526,7 +532,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static LandingPageCreateResult landingPageCreate(String accessToken, String postJson) {
+	public static LandingPageCreateResult landingPageCreate(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -544,7 +550,7 @@ public class CardAPI extends BaseAPI {
 	 * @param modifystock modifystock
 	 * @return result
 	 */
-	public static BaseResult modifyStock(String accessToken, ModifyStock modifystock) {
+	public static BaseResult modifyStock(String accessToken, ModifyStock modifystock) throws ClientProtocolException, IOException {
 		return modifyStock(accessToken, JsonUtil.toJSONString(modifystock));
 	}
 
@@ -554,7 +560,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult modifyStock(String accessToken, String postJson) {
+	public static BaseResult modifyStock(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -572,7 +578,7 @@ public class CardAPI extends BaseAPI {
 	 * @param mpnews mpnews
 	 * @return result
 	 */
-	public static MpNewsGetHtmlResult mpNewsGetHtml(String accessToken, MpNewsGetHtml mpnews) {
+	public static MpNewsGetHtmlResult mpNewsGetHtml(String accessToken, MpNewsGetHtml mpnews) throws ClientProtocolException, IOException {
 		return mpNewsGetHtml(accessToken, JsonUtil.toJSONString(mpnews));
 	}
 
@@ -583,7 +589,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static MpNewsGetHtmlResult mpNewsGetHtml(String accessToken,
-			String postJson) {
+			String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -601,7 +607,7 @@ public class CardAPI extends BaseAPI {
 	 * @param cardSet cardSet
 	 * @return result
 	 */
-	public static BaseResult payCellSet(String accessToken, PaySellSet cardSet) {
+	public static BaseResult payCellSet(String accessToken, PaySellSet cardSet) throws ClientProtocolException, IOException {
 		return payCellSet(accessToken, JsonUtil.toJSONString(cardSet));
 	}
 
@@ -611,7 +617,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult payCellSet(String accessToken, String postJson) {
+	public static BaseResult payCellSet(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -630,7 +636,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static QrCodeCreateResult qrcodeCreate(String accessToken,
-			QrCodeCreate action) {
+			QrCodeCreate action) throws ClientProtocolException, IOException {
 		return qrcodeCreate(accessToken, JsonUtil.toJSONString(action));
 	}
 
@@ -641,7 +647,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static QrCodeCreateResult qrcodeCreate(String accessToken,
-			QrCodeCreateMultiple action) {
+			QrCodeCreateMultiple action) throws ClientProtocolException, IOException {
 		return qrcodeCreate(accessToken, JsonUtil.toJSONString(action));
 	}
 
@@ -652,7 +658,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static QrCodeCreateResult qrcodeCreate(String accessToken,
-			String postJson) {
+			String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -671,7 +677,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static BaseResult selfconsumecellSet(String accessToken,
-			PaySellSet cardSet) {
+			PaySellSet cardSet) throws ClientProtocolException, IOException {
 		return selfconsumecellSet(accessToken, JsonUtil.toJSONString(cardSet));
 	}
 
@@ -682,7 +688,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static BaseResult selfconsumecellSet(String accessToken,
-			String postJson) {
+			String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -701,7 +707,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static BaseResult testWhiteListSet(String accessToken,
-			String postJson) {
+			String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -720,7 +726,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static BaseResult testWhiteListSet(String accessToken,
-			TestWhiteListSet whiteList) {
+			TestWhiteListSet whiteList) throws ClientProtocolException, IOException {
 		return testWhiteListSet(accessToken, JsonUtil.toJSONString(whiteList));
 	}
 
@@ -730,7 +736,7 @@ public class CardAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static UpdateResult update(String accessToken, String postJson) {
+	public static UpdateResult update(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -748,7 +754,7 @@ public class CardAPI extends BaseAPI {
 	 * @param updateCash updateCash
 	 * @return result
 	 */
-	public static UpdateResult update(String accessToken, UpdateCash updateCash) {
+	public static UpdateResult update(String accessToken, UpdateCash updateCash) throws ClientProtocolException, IOException {
 		return update(accessToken, JsonUtil.toJSONString(updateCash));
 	}
 
@@ -759,7 +765,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static UpdateResult update(String accessToken,
-			UpdateDiscount updateDiscount) {
+			UpdateDiscount updateDiscount) throws ClientProtocolException, IOException {
 		return update(accessToken, JsonUtil.toJSONString(updateDiscount));
 	}
 
@@ -770,7 +776,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static UpdateResult update(String accessToken,
-			UpdateGeneralCoupon updateGeneralCoupon) {
+			UpdateGeneralCoupon updateGeneralCoupon) throws ClientProtocolException, IOException {
 		return update(accessToken, JsonUtil.toJSONString(updateGeneralCoupon));
 	}
 
@@ -780,7 +786,7 @@ public class CardAPI extends BaseAPI {
 	 * @param updateGift updateGift
 	 * @return result
 	 */
-	public static UpdateResult update(String accessToken, UpdateGift updateGift) {
+	public static UpdateResult update(String accessToken, UpdateGift updateGift) throws ClientProtocolException, IOException {
 		return update(accessToken, JsonUtil.toJSONString(updateGift));
 	}
 
@@ -791,7 +797,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static UpdateResult update(String accessToken,
-			UpdateGroupon updateGroupon) {
+			UpdateGroupon updateGroupon) throws ClientProtocolException, IOException {
 		return update(accessToken, JsonUtil.toJSONString(updateGroupon));
 	}
 
@@ -802,7 +808,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static UserGetCardListResult userGetCardList(String accessToken,
-			String postJson) {
+			String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -821,7 +827,7 @@ public class CardAPI extends BaseAPI {
 	 * @return result
 	 */
 	public static UserGetCardListResult userGetCardList(String accessToken,
-			UserGetCardList userGetCardList) {
+			UserGetCardList userGetCardList) throws ClientProtocolException, IOException {
 		return userGetCardList(accessToken,
 				JsonUtil.toJSONString(userGetCardList));
 	}

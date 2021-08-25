@@ -1,5 +1,8 @@
 package weixin.popular.api;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 
@@ -19,7 +22,7 @@ public class IpAPI extends BaseAPI{
 	 * @return Callbackip
 	 * @since 2.8.31
 	 */
-	public static Callbackip get_api_domain_ip(String access_token){
+	public static Callbackip get_api_domain_ip(String access_token) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/cgi-bin/get_api_domain_ip")
 				.addParameter(PARAM_ACCESS_TOKEN,API.accessToken(access_token))
@@ -32,7 +35,7 @@ public class IpAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return Callbackip
 	 */
-	public static Callbackip getcallbackip(String access_token){
+	public static Callbackip getcallbackip(String access_token) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/cgi-bin/getcallbackip")
 				.addParameter(PARAM_ACCESS_TOKEN,API.accessToken(access_token))

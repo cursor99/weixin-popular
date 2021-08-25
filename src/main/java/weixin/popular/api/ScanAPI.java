@@ -1,16 +1,30 @@
 package weixin.popular.api;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
+
 import weixin.popular.bean.BaseResult;
 import weixin.popular.bean.scan.base.ProductGet;
-import weixin.popular.bean.scan.crud.*;
-import weixin.popular.bean.scan.result.*;
+import weixin.popular.bean.scan.crud.ProductCreate;
+import weixin.popular.bean.scan.crud.ProductGetlist;
+import weixin.popular.bean.scan.crud.ProductGetqrcode;
+import weixin.popular.bean.scan.crud.ProductStatus;
+import weixin.popular.bean.scan.crud.ProductUpdate;
+import weixin.popular.bean.scan.crud.TicketCheck;
+import weixin.popular.bean.scan.crud.WhiteUsers;
+import weixin.popular.bean.scan.result.MerchantinfoGetResult;
+import weixin.popular.bean.scan.result.ProductCreateResult;
+import weixin.popular.bean.scan.result.ProductGetResult;
+import weixin.popular.bean.scan.result.ProductGetlistResult;
+import weixin.popular.bean.scan.result.ProductGetqrcodeResult;
+import weixin.popular.bean.scan.result.TicketCheckResult;
 import weixin.popular.client.LocalHttpClient;
 import weixin.popular.util.JsonUtil;
-
-import java.nio.charset.Charset;
 
 /**
  * 微信扫一扫
@@ -26,7 +40,7 @@ public class ScanAPI extends BaseAPI {
      * @param accessToken accessToken
      * @return MerchantinfoGetResult
      */
-    public static MerchantinfoGetResult merchantinfoGet(String accessToken) {
+    public static MerchantinfoGetResult merchantinfoGet(String accessToken) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/merchantinfo/get")
@@ -43,7 +57,7 @@ public class ScanAPI extends BaseAPI {
      * @param productCreate productCreate
      * @return ProductCreateResult
      */
-    public static ProductCreateResult productCreate(String accessToken, ProductCreate productCreate) {
+    public static ProductCreateResult productCreate(String accessToken, ProductCreate productCreate) throws ClientProtocolException, IOException {
         return productCreate(accessToken, JsonUtil.toJSONString(productCreate));
     }
 
@@ -54,7 +68,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return ProductCreateResult
      */
-    public static ProductCreateResult productCreate(String accessToken, String postJson) {
+    public static ProductCreateResult productCreate(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/create")
@@ -72,7 +86,7 @@ public class ScanAPI extends BaseAPI {
      * @param productStatus productStatus
      * @return BaseResult
      */
-    public static BaseResult productModstatus(String accessToken, ProductStatus productStatus) {
+    public static BaseResult productModstatus(String accessToken, ProductStatus productStatus) throws ClientProtocolException, IOException {
         return productModstatus(accessToken, JsonUtil.toJSONString(productStatus));
     }
 
@@ -83,7 +97,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return BaseResult
      */
-    public static BaseResult productModstatus(String accessToken, String postJson) {
+    public static BaseResult productModstatus(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/modstatus")
@@ -101,7 +115,7 @@ public class ScanAPI extends BaseAPI {
      * @param whiteUsers  whiteUsers
      * @return BaseResult
      */
-    public static BaseResult testwhitelistSet(String accessToken, WhiteUsers whiteUsers) {
+    public static BaseResult testwhitelistSet(String accessToken, WhiteUsers whiteUsers) throws ClientProtocolException, IOException {
         return testwhitelistSet(accessToken, JsonUtil.toJSONString(whiteUsers));
     }
 
@@ -112,7 +126,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return BaseResult
      */
-    public static BaseResult testwhitelistSet(String accessToken, String postJson) {
+    public static BaseResult testwhitelistSet(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/testwhitelist/set")
@@ -130,7 +144,7 @@ public class ScanAPI extends BaseAPI {
      * @param productGetqrcode productGetqrcode
      * @return ProductGetqrcodeResult
      */
-    public static ProductGetqrcodeResult productGetqrcode(String accessToken, ProductGetqrcode productGetqrcode) {
+    public static ProductGetqrcodeResult productGetqrcode(String accessToken, ProductGetqrcode productGetqrcode) throws ClientProtocolException, IOException {
         return productGetqrcode(accessToken, JsonUtil.toJSONString(productGetqrcode));
     }
 
@@ -141,7 +155,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return ProductGetqrcodeResult
      */
-    public static ProductGetqrcodeResult productGetqrcode(String accessToken, String postJson) {
+    public static ProductGetqrcodeResult productGetqrcode(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/getqrcode")
@@ -159,7 +173,7 @@ public class ScanAPI extends BaseAPI {
      * @param productGet  productGet
      * @return ProductGetResult
      */
-    public static ProductGetResult productGet(String accessToken, ProductGet productGet) {
+    public static ProductGetResult productGet(String accessToken, ProductGet productGet) throws ClientProtocolException, IOException {
         return productGet(accessToken, JsonUtil.toJSONString(productGet));
     }
 
@@ -170,7 +184,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return ProductGetResult
      */
-    public static ProductGetResult productGet(String accessToken, String postJson) {
+    public static ProductGetResult productGet(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/get")
@@ -188,7 +202,7 @@ public class ScanAPI extends BaseAPI {
      * @param productGetlist productGetlist
      * @return ProductGetlistResult
      */
-    public static ProductGetlistResult productGetlist(String accessToken, ProductGetlist productGetlist) {
+    public static ProductGetlistResult productGetlist(String accessToken, ProductGetlist productGetlist) throws ClientProtocolException, IOException {
         return productGetlist(accessToken, JsonUtil.toJSONString(productGetlist));
     }
 
@@ -199,7 +213,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return ProductGetlistResult
      */
-    public static ProductGetlistResult productGetlist(String accessToken, String postJson) {
+    public static ProductGetlistResult productGetlist(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/getlist")
@@ -217,7 +231,7 @@ public class ScanAPI extends BaseAPI {
      * @param productUpdate productUpdate
      * @return ProductCreateResult
      */
-    public static ProductCreateResult productUpdate(String accessToken, ProductUpdate productUpdate) {
+    public static ProductCreateResult productUpdate(String accessToken, ProductUpdate productUpdate) throws ClientProtocolException, IOException {
         return productUpdate(accessToken, JsonUtil.toJSONString(productUpdate));
     }
 
@@ -228,7 +242,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return ProductCreateResult
      */
-    public static ProductCreateResult productUpdate(String accessToken, String postJson) {
+    public static ProductCreateResult productUpdate(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/update")
@@ -246,7 +260,7 @@ public class ScanAPI extends BaseAPI {
      * @param productGet  productGet
      * @return BaseResult
      */
-    public static BaseResult productClear(String accessToken, ProductGet productGet) {
+    public static BaseResult productClear(String accessToken, ProductGet productGet) throws ClientProtocolException, IOException {
         return productClear(accessToken, JsonUtil.toJSONString(productGet));
     }
 
@@ -257,7 +271,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return BaseResult
      */
-    public static BaseResult productClear(String accessToken, String postJson) {
+    public static BaseResult productClear(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/product/clear")
@@ -275,7 +289,7 @@ public class ScanAPI extends BaseAPI {
      * @param ticket      ticket
      * @return TicketCheckResult
      */
-    public static TicketCheckResult ticketCheck(String accessToken, String ticket) {
+    public static TicketCheckResult ticketCheck(String accessToken, String ticket) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/scanticket/check")
@@ -293,7 +307,7 @@ public class ScanAPI extends BaseAPI {
      * @param ticketCheck ticketCheck
      * @return BaseResult
      */
-    public static BaseResult clearTicketCheck(String accessToken, TicketCheck ticketCheck) {
+    public static BaseResult clearTicketCheck(String accessToken, TicketCheck ticketCheck) throws ClientProtocolException, IOException {
         return clearTicketCheck(accessToken, JsonUtil.toJSONString(ticketCheck));
     }
 
@@ -304,7 +318,7 @@ public class ScanAPI extends BaseAPI {
      * @param postJson    postJson
      * @return BaseResult
      */
-    public static BaseResult clearTicketCheck(String accessToken, String postJson) {
+    public static BaseResult clearTicketCheck(String accessToken, String postJson) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
                 .setUri(BASE_URI + "/scan/scanticket/check")

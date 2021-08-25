@@ -1,8 +1,10 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -29,8 +31,10 @@ public class WxopenAPI extends BaseAPI {
 	 * @since 2.8.18
 	 * @param access_token access_token
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static WxamplinkgetResult wxamplinkget(String access_token){
+	public static WxamplinkgetResult wxamplinkget(String access_token) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI+"/cgi-bin/wxopen/wxamplinkget")
@@ -46,7 +50,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param wxamplink wxamplink
 	 * @return result
 	 */
-	public static BaseResult wxamplink(String access_token,Wxamplink wxamplink){
+	public static BaseResult wxamplink(String access_token,Wxamplink wxamplink) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(wxamplink);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -64,7 +68,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param appid appid
 	 * @return result
 	 */
-	public static BaseResult wxampunlink(String access_token,String appid){
+	public static BaseResult wxampunlink(String access_token,String appid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"appid\":\"%s\"}", appid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -83,7 +87,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param count offset和count用于分页，表示从offset开始，拉取count条记录，offset从0开始，count最大为20。
 	 * @return result
 	 */
-	public static TemplateLibraryListResult templateLibraryList(String access_token,int offset,int count){
+	public static TemplateLibraryListResult templateLibraryList(String access_token,int offset,int count) throws ClientProtocolException, IOException {
 		String json = String.format("{\"offset\":%d,\"count\":%d}", offset, count);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -101,7 +105,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param id 模板标题id，可通过接口获取，也可登录小程序后台查看获取
 	 * @return result
 	 */
-	public static TemplateLibraryGetResult templateLibraryGet(String access_token,String id){
+	public static TemplateLibraryGetResult templateLibraryGet(String access_token,String id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"id\":\"%s\"}", id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -120,7 +124,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param keyword_id_list 开发者自行组合好的模板关键词列表，关键词顺序可以自由搭配（例如[3,5,4]或[4,5,3]），最多支持10个关键词组合
 	 * @return result
 	 */
-	public static TemplateAddResult templateAdd(String access_token,String id,List<Integer> keyword_id_list){
+	public static TemplateAddResult templateAdd(String access_token,String id,List<Integer> keyword_id_list) throws ClientProtocolException, IOException {
 		String json = String.format("{\"id\":\"%s\",\"keyword_id_list\":%s}", id,JsonUtil.toJSONString(keyword_id_list));
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -139,7 +143,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param count offset和count用于分页，表示从offset开始，拉取count条记录，offset从0开始，count最大为20。最后一页的list长度可能小于请求的count
 	 * @return result
 	 */
-	public static TemplateListResult templateList(String access_token,int offset,int count){
+	public static TemplateListResult templateList(String access_token,int offset,int count) throws ClientProtocolException, IOException {
 		String json = String.format("{\"offset\":%d,\"count\":%d}", offset, count);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -157,7 +161,7 @@ public class WxopenAPI extends BaseAPI {
 	 * @param template_id 要删除的模板id
 	 * @return result
 	 */
-	public static BaseResult templateDel(String access_token,String template_id){
+	public static BaseResult templateDel(String access_token,String template_id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"template_id\":\"%s\"}", template_id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)

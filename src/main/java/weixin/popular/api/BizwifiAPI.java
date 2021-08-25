@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -46,8 +48,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken     accessToken
      * @param openPluginToken openpluginToken
      * @return OpenpluginTokenResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static OpenPluginTokenResult openpluginToken(String accessToken, OpenPluginToken openPluginToken) {
+    public static OpenPluginTokenResult openpluginToken(String accessToken, OpenPluginToken openPluginToken) throws ClientProtocolException, IOException {
         return openpluginToken(accessToken, JsonUtil.toJSONString(openPluginToken));
     }
 
@@ -57,8 +61,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return OpenpluginTokenResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static OpenPluginTokenResult openpluginToken(String accessToken, String postData) {
+    public static OpenPluginTokenResult openpluginToken(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -95,8 +101,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken   accessToken
      * @param finishPageSet finishPageSet
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult finishpageSet(String accessToken, FinishPageSet finishPageSet) {
+    public static BaseResult finishpageSet(String accessToken, FinishPageSet finishPageSet) throws ClientProtocolException, IOException {
         return finishpageSet(accessToken, JsonUtil.toJSONString(finishPageSet));
     }
 
@@ -107,8 +115,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken   accessToken
      * @param finishPageSet finishPageSet
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult businessfinishPageSet(String accessToken, FinishPageSet finishPageSet) {
+    public static BaseResult businessfinishPageSet(String accessToken, FinishPageSet finishPageSet) throws ClientProtocolException, IOException {
         return finishpageSet(accessToken, JsonUtil.toJSONString(finishPageSet));
     }
 
@@ -118,8 +128,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult finishpageSet(String accessToken, String postData) {
+    public static BaseResult finishpageSet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -141,8 +153,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param homePageSet homePageSet
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult homepageSet(String accessToken, HomePageSet homePageSet) {
+    public static BaseResult homepageSet(String accessToken, HomePageSet homePageSet) throws ClientProtocolException, IOException {
         return homepageSet(accessToken, JsonUtil.toJSONString(homePageSet));
     }
 
@@ -153,8 +167,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param homePageSet homePageSet
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult businesshomePageSet(String accessToken, HomePageSet homePageSet) {
+    public static BaseResult businesshomePageSet(String accessToken, HomePageSet homePageSet) throws ClientProtocolException, IOException {
         return homepageSet(accessToken, JsonUtil.toJSONString(homePageSet));
     }
 
@@ -164,8 +180,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult homepageSet(String accessToken, String postData) {
+    public static BaseResult homepageSet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -184,8 +202,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopInfo    shopInfo
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ShopGetResult shopGet(String accessToken, ShopInfo shopInfo) {
+    public static ShopGetResult shopGet(String accessToken, ShopInfo shopInfo) throws ClientProtocolException, IOException {
         return shopGet(accessToken, JsonUtil.toJSONString(shopInfo));
     }
 
@@ -195,8 +215,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ShopGetResult shopGet(String accessToken, String postData) {
+    public static ShopGetResult shopGet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -217,8 +239,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopList    shopList
      * @return ShopListResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ShopListResult shopList(String accessToken, ShopList shopList) {
+    public static ShopListResult shopList(String accessToken, ShopList shopList) throws ClientProtocolException, IOException {
         return shopList(accessToken, JsonUtil.toJSONString(shopList));
     }
 
@@ -230,8 +254,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return ShopListResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ShopListResult shopList(String accessToken, String postData) {
+    public static ShopListResult shopList(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -250,8 +276,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopUpdate  shopUpdate
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult shopUpdate(String accessToken, ShopUpdate shopUpdate) {
+    public static BaseResult shopUpdate(String accessToken, ShopUpdate shopUpdate) throws ClientProtocolException, IOException {
         return shopUpdate(accessToken, JsonUtil.toJSONString(shopUpdate));
     }
 
@@ -261,8 +289,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult shopUpdate(String accessToken, String postData) {
+    public static BaseResult shopUpdate(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -281,8 +311,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopInfo    shopInfo
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult shopClean(String accessToken, ShopInfo shopInfo) {
+    public static BaseResult shopClean(String accessToken, ShopInfo shopInfo) throws ClientProtocolException, IOException {
         return shopClean(accessToken, JsonUtil.toJSONString(shopInfo));
     }
 
@@ -292,8 +324,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult shopClean(String accessToken, String postData) {
+    public static BaseResult shopClean(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -312,8 +346,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopInfo    shopInfo
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult deviceAdd(String accessToken, ShopInfo shopInfo) {
+    public static BaseResult deviceAdd(String accessToken, ShopInfo shopInfo) throws ClientProtocolException, IOException {
         return deviceAdd(accessToken, JsonUtil.toJSONString(shopInfo));
     }
 
@@ -323,8 +359,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult deviceAdd(String accessToken, String postData) {
+    public static BaseResult deviceAdd(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -343,8 +381,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken      accessToken
      * @param apportalRegister apportalRegister
      * @return ApportalRegisterResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ApportalRegisterResult apportalRegister(String accessToken, ApportalRegister apportalRegister) {
+    public static ApportalRegisterResult apportalRegister(String accessToken, ApportalRegister apportalRegister) throws ClientProtocolException, IOException {
         return apportalRegister(accessToken, JsonUtil.toJSONString(apportalRegister));
     }
 
@@ -354,8 +394,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return ApportalRegisterResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ApportalRegisterResult apportalRegister(String accessToken, String postData) {
+    public static ApportalRegisterResult apportalRegister(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -375,8 +417,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param deviceList  deviceList
      * @return DeviceListResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static DeviceListResult deviceList(String accessToken, DeviceList deviceList) {
+    public static DeviceListResult deviceList(String accessToken, DeviceList deviceList) throws ClientProtocolException, IOException {
         return deviceList(accessToken, JsonUtil.toJSONString(deviceList));
     }
 
@@ -387,8 +431,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return DeviceListResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static DeviceListResult deviceList(String accessToken, String postData) {
+    public static DeviceListResult deviceList(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -407,8 +453,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken  accessToken
      * @param deviceDelete deviceDelete
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult deviceDelete(String accessToken, DeviceDelete deviceDelete) {
+    public static BaseResult deviceDelete(String accessToken, DeviceDelete deviceDelete) throws ClientProtocolException, IOException {
         return deviceDelete(accessToken, JsonUtil.toJSONString(deviceDelete));
     }
 
@@ -418,8 +466,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult deviceDelete(String accessToken, String postData) {
+    public static BaseResult deviceDelete(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -440,8 +490,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param qrcodeGet   qrcodeGet
      * @return QrcodeGetResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static QrcodeGetResult qrcodeGet(String accessToken, QrcodeGet qrcodeGet) {
+    public static QrcodeGetResult qrcodeGet(String accessToken, QrcodeGet qrcodeGet) throws ClientProtocolException, IOException {
         return qrcodeGet(accessToken, JsonUtil.toJSONString(qrcodeGet));
     }
 
@@ -453,8 +505,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return QrcodeGetResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static QrcodeGetResult qrcodeGet(String accessToken, String postData) {
+    public static QrcodeGetResult qrcodeGet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -473,8 +527,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopInfo    shopInfo
      * @return HomePageGetResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static HomePageGetResult homepageGet(String accessToken, ShopInfo shopInfo) {
+    public static HomePageGetResult homepageGet(String accessToken, ShopInfo shopInfo) throws ClientProtocolException, IOException {
         return homepageGet(accessToken, JsonUtil.toJSONString(shopInfo));
     }
 
@@ -484,8 +540,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return HomePageGetResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static HomePageGetResult homepageGet(String accessToken, String postData) {
+    public static HomePageGetResult homepageGet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -505,8 +563,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param barSet      barSet
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult barSet(String accessToken, BarSet barSet) {
+    public static BaseResult barSet(String accessToken, BarSet barSet) throws ClientProtocolException, IOException {
         return barSet(accessToken, JsonUtil.toJSONString(barSet));
     }
 
@@ -517,8 +577,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult barSet(String accessToken, String postData) {
+    public static BaseResult barSet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -538,8 +600,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken  accessToken
      * @param couponputSet couponputSet
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult couponputSet(String accessToken, CouponputSet couponputSet) {
+    public static BaseResult couponputSet(String accessToken, CouponputSet couponputSet) throws ClientProtocolException, IOException {
         return couponputSet(accessToken, JsonUtil.toJSONString(couponputSet));
     }
 
@@ -550,8 +614,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return BaseResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static BaseResult couponputSet(String accessToken, String postData) {
+    public static BaseResult couponputSet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -571,8 +637,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param shopInfo    shopInfo
      * @return CouponputGetResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static CouponputGetResult couponputGet(String accessToken, ShopInfo shopInfo) {
+    public static CouponputGetResult couponputGet(String accessToken, ShopInfo shopInfo) throws ClientProtocolException, IOException {
         return couponputGet(accessToken, JsonUtil.toJSONString(shopInfo));
     }
 
@@ -583,8 +651,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return CouponputGetResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static CouponputGetResult couponputGet(String accessToken, String postData) {
+    public static CouponputGetResult couponputGet(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)
@@ -605,8 +675,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken    accessToken
      * @param statisticsList statisticsList
      * @return StatisticsListResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static StatisticsListResult statisticsList(String accessToken, StatisticsList statisticsList) {
+    public static StatisticsListResult statisticsList(String accessToken, StatisticsList statisticsList) throws ClientProtocolException, IOException {
         return statisticsList(accessToken, JsonUtil.toJSONString(statisticsList));
     }
 
@@ -618,8 +690,10 @@ public class BizwifiAPI extends BaseAPI {
      * @param accessToken accessToken
      * @param postData    postData
      * @return StatisticsListResult
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static StatisticsListResult statisticsList(String accessToken, String postData) {
+    public static StatisticsListResult statisticsList(String accessToken, String postData) throws ClientProtocolException, IOException {
         HttpUriRequest httpUriRequest = RequestBuilder
                 .post()
                 .setHeader(jsonHeader)

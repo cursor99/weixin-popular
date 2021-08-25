@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -28,7 +30,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param menuJson 菜单json 数据 例如{\"button\":[{\"type\":\"click\",\"name\":\"今日歌曲\",\"key\":\"V1001_TODAY_MUSIC\"},{\"type\":\"click\",\"name\":\"歌手简介\",\"key\":\"V1001_TODAY_SINGER\"},{\"name\":\"菜单\",\"sub_button\":[{\"type\":\"view\",\"name\":\"搜索\",\"url\":\"http://www.soso.com/\"},{\"type\":\"view\",\"name\":\"视频\",\"url\":\"http://v.qq.com/\"},{\"type\":\"click\",\"name\":\"赞一下我们\",\"key\":\"V1001_GOOD\"}]}]}
 	 * @return BaseResult
 	 */
-	public static BaseResult menuCreate(String access_token,String menuJson){
+	public static BaseResult menuCreate(String access_token,String menuJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(BASE_URI+"/cgi-bin/menu/create")
@@ -44,7 +46,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param menuButtons menuButtons
 	 * @return BaseResult
 	 */
-	public static BaseResult menuCreate(String access_token,MenuButtons menuButtons){
+	public static BaseResult menuCreate(String access_token,MenuButtons menuButtons) throws ClientProtocolException, IOException {
 		String str = JsonUtil.toJSONString(menuButtons);
 		return menuCreate(access_token,str);
 	}
@@ -54,7 +56,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return Menu
 	 */
-	public static Menu menuGet(String access_token){
+	public static Menu menuGet(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 					.setUri(BASE_URI+"/cgi-bin/menu/get")
 					.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -67,7 +69,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return BaseResult
 	 */
-	public static BaseResult menuDelete(String access_token){
+	public static BaseResult menuDelete(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI+"/cgi-bin/menu/delete")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -85,7 +87,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return CurrentSelfmenuInfo
 	 */
-	public static CurrentSelfmenuInfo get_current_selfmenu_info(String access_token){
+	public static CurrentSelfmenuInfo get_current_selfmenu_info(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI+"/cgi-bin/get_current_selfmenu_info")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -99,7 +101,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param menuButtons menuButtons
 	 * @return BaseResult
 	 */
-	public static MenuAddconditionalResult menuAddconditional(String access_token,MenuButtons menuButtons){
+	public static MenuAddconditionalResult menuAddconditional(String access_token,MenuButtons menuButtons) throws ClientProtocolException, IOException {
 		String menuJson = JsonUtil.toJSONString(menuButtons);
 		return menuAddconditional(access_token,menuJson);
 	}
@@ -111,7 +113,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param menuJson menuJson
 	 * @return BaseResult
 	 */
-	public static MenuAddconditionalResult menuAddconditional(String access_token,String menuJson){
+	public static MenuAddconditionalResult menuAddconditional(String access_token,String menuJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI+"/cgi-bin/menu/addconditional")
@@ -127,7 +129,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param menuid menuid
 	 * @return BaseResult
 	 */
-	public static BaseResult menuDelconditional(String access_token,String menuid){
+	public static BaseResult menuDelconditional(String access_token,String menuid) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI+"/cgi-bin/menu/delconditional")
@@ -143,7 +145,7 @@ public class MenuAPI extends BaseAPI{
 	 * @param user_id 可以是粉丝的OpenID，也可以是粉丝的微信号。
 	 * @return TrymatchResult
 	 */
-	public static TrymatchResult menuTrymatch(String access_token,String user_id){
+	public static TrymatchResult menuTrymatch(String access_token,String user_id) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI+"/cgi-bin/menu/trymatch")

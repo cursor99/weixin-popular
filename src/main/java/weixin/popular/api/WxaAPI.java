@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -46,8 +47,10 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @param modifyDomain modifyDomain
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static ModifyDomainResult modify_domain(String access_token,ModifyDomain modifyDomain){
+	public static ModifyDomainResult modify_domain(String access_token,ModifyDomain modifyDomain) throws ClientProtocolException, IOException{
 		String json = JsonUtil.toJSONString(modifyDomain);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -66,7 +69,7 @@ public class WxaAPI extends BaseAPI {
      * @param setWebviewDomain setWebviewDomain
      * @return result
      */
-    public static BaseResult setwebviewdomain(String access_token, SetWebviewDomain setWebviewDomain){
+    public static BaseResult setwebviewdomain(String access_token, SetWebviewDomain setWebviewDomain) throws ClientProtocolException, IOException {
         String json = JsonUtil.toJSONString(setWebviewDomain);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -85,7 +88,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param wechatid 微信号
 	 * @return result
 	 */
-	public static BaseResult bind_tester(String access_token,String wechatid){
+	public static BaseResult bind_tester(String access_token,String wechatid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"wechatid\":\"%s\"}",wechatid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -104,7 +107,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param wechatid 微信号
 	 * @return result
 	 */
-	public static BaseResult unbind_tester(String access_token,String wechatid){
+	public static BaseResult unbind_tester(String access_token,String wechatid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"wechatid\":\"%s\"}",wechatid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -123,7 +126,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param commit commit
 	 * @return result
 	 */
-	public static BaseResult commit(String access_token,Commit commit){
+	public static BaseResult commit(String access_token,Commit commit) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(commit);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -142,7 +145,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GetQrcodeResult get_qrcode(String access_token){
+	public static GetQrcodeResult get_qrcode(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 								.setUri(BASE_URI + "/wxa/get_qrcode")
 								.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -181,7 +184,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GetCategoryResult get_category(String access_token){
+	public static GetCategoryResult get_category(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/wxa/get_category")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -196,7 +199,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GetPageResult get_page(String access_token){
+	public static GetPageResult get_page(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/wxa/get_page")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -212,7 +215,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param submitAudit submitAudit
 	 * @return result
 	 */
-	public static SubmitAuditResult submit_audit(String access_token,SubmitAudit submitAudit){
+	public static SubmitAuditResult submit_audit(String access_token,SubmitAudit submitAudit) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(submitAudit);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -231,7 +234,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param auditid 审核ID
 	 * @return result
 	 */
-	public static GetAuditstatusResult get_auditstatus(String access_token,String auditid){
+	public static GetAuditstatusResult get_auditstatus(String access_token,String auditid) throws ClientProtocolException, IOException {
 		String json = String.format("{\"auditid\":\"%s\"}",auditid);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -249,7 +252,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GetAuditstatusResult get_latest_auditstatus(String access_token){
+	public static GetAuditstatusResult get_latest_auditstatus(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/get_latest_auditstatus")
@@ -265,7 +268,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static BaseResult release(String access_token){
+	public static BaseResult release(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/release")
@@ -281,8 +284,10 @@ public class WxaAPI extends BaseAPI {
 	 * @since 2.8.30
 	 * @param access_token access_token
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BaseResult undocodeaudit(String access_token) {
+	public static BaseResult undocodeaudit(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/undocodeaudit")
@@ -297,8 +302,10 @@ public class WxaAPI extends BaseAPI {
 	 * @since 2.8.30
 	 * @param access_token access_token
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static BaseResult revertcoderelease(String access_token) {
+	public static BaseResult revertcoderelease(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/revertcoderelease")
@@ -315,7 +322,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param action 设置可访问状态，发布后默认可访问，close为不可见，open为可见
 	 * @return result
 	 */
-	public static BaseResult change_visitstatus(String access_token,String action){
+	public static BaseResult change_visitstatus(String access_token,String action) throws ClientProtocolException, IOException {
 		String json = String.format("{\"action\":\"%s\"}",action);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -335,7 +342,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param getwxacode getwxacode
 	 * @return BufferedImage BufferedImage
 	 */
-	public static BufferedImage getwxacode(String access_token,Getwxacode getwxacode){
+	public static BufferedImage getwxacode(String access_token,Getwxacode getwxacode) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(getwxacode);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -371,7 +378,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param getwxacodeunlimit getwxacodeunlimit
 	 * @return BufferedImage BufferedImage
 	 */
-	public static BufferedImage getwxacodeunlimit(String access_token,Getwxacodeunlimit getwxacodeunlimit){
+	public static BufferedImage getwxacodeunlimit(String access_token,Getwxacodeunlimit getwxacodeunlimit) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(getwxacodeunlimit);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -407,7 +414,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param getwxacodeunlimit getwxacodeunlimit
 	 * @return WxaCodeResult WxaCodeResult
 	 */
-	public static WxaCodeResult getwxacodeunlimitresult(String access_token,Getwxacodeunlimit getwxacodeunlimit){
+	public static WxaCodeResult getwxacodeunlimitresult(String access_token,Getwxacodeunlimit getwxacodeunlimit) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(getwxacodeunlimit);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -453,7 +460,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param addnearbypoi addnearbypoi
 	 * @return result
 	 */
-	public static AddnearbypoiResult addnearbypoi(String access_token, Addnearbypoi addnearbypoi){
+	public static AddnearbypoiResult addnearbypoi(String access_token, Addnearbypoi addnearbypoi) throws ClientProtocolException, IOException {
 		String json = JsonUtil.toJSONString(addnearbypoi);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -472,7 +479,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param page_rows 每页展示个数（最多1000个）
 	 * @return result
 	 */
-	public static GetnearbypoilistResult getnearbypoilist(String access_token, int page, int page_rows){
+	public static GetnearbypoilistResult getnearbypoilist(String access_token, int page, int page_rows) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/getnearbypoilist")
@@ -490,7 +497,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param poi_id 附近地点ID
 	 * @return result
 	 */
-	public static BaseResult delnearbypoi(String access_token, String poi_id){
+	public static BaseResult delnearbypoi(String access_token, String poi_id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"poi_id\":\"%s\"}", poi_id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -509,7 +516,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param status 0：取消展示；1：展示
 	 * @return result
 	 */
-	public static BaseResult setnearbypoishowstatus(String access_token, String poi_id, int status){
+	public static BaseResult setnearbypoishowstatus(String access_token, String poi_id, int status) throws ClientProtocolException, IOException {
 		String json = String.format("{\"poi_id\":\"%s\",\"status\":%d}", poi_id, status);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -527,7 +534,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GettemplatedraftlistResult gettemplatedraftlist(String access_token){
+	public static GettemplatedraftlistResult gettemplatedraftlist(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/gettemplatedraftlist")
@@ -543,7 +550,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GettemplatelistResult gettemplatelist(String access_token){
+	public static GettemplatelistResult gettemplatelist(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/gettemplatelist")
@@ -560,7 +567,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param draft_id draft_id
 	 * @return result
 	 */
-	public static BaseResult addtotemplate(String access_token,long draft_id){
+	public static BaseResult addtotemplate(String access_token,long draft_id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"draft_id\":%d}", draft_id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -579,7 +586,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param template_id template_id
 	 * @return result
 	 */
-	public static BaseResult deletetemplate(String access_token,long template_id){
+	public static BaseResult deletetemplate(String access_token,long template_id) throws ClientProtocolException, IOException {
 		String json = String.format("{\"template_id\":%d}", template_id);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -598,7 +605,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param status 1表示不可搜索，0表示可搜索
 	 * @return result
 	 */
-	public static BaseResult changewxasearchtustas(String access_token,int status){
+	public static BaseResult changewxasearchtustas(String access_token,int status) throws ClientProtocolException, IOException {
 		String json = String.format("{\"status\":%d}", status);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -616,7 +623,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param access_token access_token
 	 * @return result
 	 */
-	public static GetwxasearchstatusResult getwxasearchstatus(String access_token){
+	public static GetwxasearchstatusResult getwxasearchstatus(String access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setHeader(jsonHeader)
 				.setUri(BASE_URI + "/wxa/getwxasearchstatus")
@@ -639,7 +646,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param content 要检测的文本内容，长度不超过 500KB
 	 * @return result
 	 */
-	public static BaseResult msg_sec_check(String access_token,String content){
+	public static BaseResult msg_sec_check(String access_token,String content) throws ClientProtocolException, IOException {
 		String json = String.format("{\"content\":\"%s\"}", content);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -663,7 +670,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param media 要检测的图片文件，格式支持PNG、JPEG、JPG、GIF，图片尺寸不超过 750px * 1334px
 	 * @return result
 	 */
-	public static BaseResult img_sec_check(String access_token,InputStream media){
+	public static BaseResult img_sec_check(String access_token,InputStream media) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI + "/wxa/img_sec_check");
 		byte[] data = null;
 		try {
@@ -692,7 +699,7 @@ public class WxaAPI extends BaseAPI {
 	 * @param media 要检测的图片文件，格式支持PNG、JPEG、JPG、GIF，图片尺寸不超过 750px * 1334px
 	 * @return result
 	 */
-	public static BaseResult img_sec_check(String access_token,File media){
+	public static BaseResult img_sec_check(String access_token,File media) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI + "/wxa/img_sec_check");
 		FileBody bin = new FileBody(media);
         HttpEntity reqEntity = MultipartEntityBuilder.create()

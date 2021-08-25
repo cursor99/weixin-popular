@@ -52,7 +52,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param articles articles
 	 * @return Media
 	 */
-	public static Media add_news(String access_token,List<Article> articles){
+	public static Media add_news(String access_token,List<Article> articles) throws ClientProtocolException, IOException{
 		String str = JsonUtil.toJSONString(articles);
 		String messageJson = "{\"articles\":"+str+"}";
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -77,7 +77,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param description 视频文件类型额外字段，其它类型不用添加
 	 * @return Media
 	 */
-	public static Media add_material(String access_token,MediaType mediaType,File media,Description description){
+	public static Media add_material(String access_token,MediaType mediaType,File media,Description description) throws ClientProtocolException, IOException{
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/material/add_material");
 		FileBody bin = new FileBody(media);
 		MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create()
@@ -104,7 +104,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param description 视频文件类型额外字段，其它类型不用添加
 	 * @return Media
 	 */
-	public static Media add_material(String access_token,MediaType mediaType,InputStream inputStream,Description description){
+	public static Media add_material(String access_token,MediaType mediaType,InputStream inputStream,Description description) throws ClientProtocolException, IOException{
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/material/add_material");
 		byte[] data = null;
 		try {
@@ -137,7 +137,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param description 视频文件类型额外字段，其它类型不用添加
 	 * @return Media
 	 */
-	public static Media add_material(String access_token,MediaType mediaType,URI uri,Description description){
+	public static Media add_material(String access_token,MediaType mediaType,URI uri,Description description) throws ClientProtocolException, IOException{
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/material/add_material");
 		CloseableHttpClient tempHttpClient = HttpClients.createDefault();
 		try {
@@ -176,7 +176,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param media_id media_id
 	 * @return MaterialGetResult
 	 */
-	public static MaterialGetResult get_material(String access_token,String media_id){
+	public static MaterialGetResult get_material(String access_token,String media_id) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 					.setHeader(jsonHeader)
 					.setUri(BASE_URI+"/cgi-bin/material/get_material")
@@ -193,7 +193,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param media_id media_id
 	 * @return BaseResult
 	 */
-	public static BaseResult del_material(String access_token,String media_id){
+	public static BaseResult del_material(String access_token,String media_id) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 					.setHeader(jsonHeader)
 					.setUri(BASE_URI+"/cgi-bin/material/del_material")
@@ -211,7 +211,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param articles articles
 	 * @return BaseResult
 	 */
-	public static BaseResult update_news(String access_token,String media_id,int index,List<Article> articles){
+	public static BaseResult update_news(String access_token,String media_id,int index,List<Article> articles) throws ClientProtocolException, IOException{
 		return update_news(access_token, media_id, index, JsonUtil.toJSONString(articles));
 	}
 	
@@ -224,7 +224,7 @@ public class MaterialAPI extends BaseAPI{
  	 * @param articlesJson articlesJson
  	 * @return BaseResult
  	 */
- 	public static BaseResult update_news(String access_token,String media_id,int index,String articlesJson){
+ 	public static BaseResult update_news(String access_token,String media_id,int index,String articlesJson) throws ClientProtocolException, IOException{
  		String messageJson = "{\"media_id\":\""+media_id+"\",\"index\":"+index+",\"articles\":"+articlesJson+"}";
  		HttpUriRequest httpUriRequest = RequestBuilder.post()
  										.setHeader(jsonHeader)
@@ -241,7 +241,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param access_token access_token
 	 * @return MaterialcountResult
 	 */
-	public static MaterialcountResult get_materialcount(String access_token){
+	public static MaterialcountResult get_materialcount(String access_token) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setUri(BASE_URI+"/cgi-bin/material/get_materialcount")
 										.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -258,7 +258,7 @@ public class MaterialAPI extends BaseAPI{
 	 * @param count		返回素材的数量，取值在1到20之间
 	 * @return MaterialBatchgetResult
 	 */
-	public static MaterialBatchgetResult batchget_material(String access_token,String type,int offset,int count){
+	public static MaterialBatchgetResult batchget_material(String access_token,String type,int offset,int count) throws ClientProtocolException, IOException{
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 					.setHeader(jsonHeader)
 					.setUri(BASE_URI+"/cgi-bin/material/batchget_material")

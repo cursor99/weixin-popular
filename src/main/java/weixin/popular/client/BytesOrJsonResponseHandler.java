@@ -39,8 +39,7 @@ public class BytesOrJsonResponseHandler{
 		}
 
 		@Override
-		public T handleResponse(HttpResponse response)
-				throws ClientProtocolException, IOException {
+		public T handleResponse(HttpResponse response) throws IOException,ClientProtocolException {
 			int status = response.getStatusLine().getStatusCode();
             if (status >= 200 && status < 300) {
             	ContentType contentType = ContentType.get(response.getEntity());
@@ -55,30 +54,27 @@ public class BytesOrJsonResponseHandler{
 	                 return JsonUtil.parseObject(str, clazz);
     			}else{
     				//bytes data
-    				try {
-						T t = clazz.newInstance();
-						MediaGetResult mediaGetResult = (MediaGetResult)t;
-						Header contentDisposition = response.getFirstHeader("Content-disposition");
-						if(contentDisposition != null){
-							String filename = contentDisposition.getValue().replaceAll(".*filename=\"(.*)\".*", "$1");
-							mediaGetResult.setFilename(filename);
-						}
-						mediaGetResult.setContentType(contentTypeStr);
-						mediaGetResult.setBytes(EntityUtils.toByteArray(response.getEntity()));
-						logger.info("URI[{}]ContentType:{} elapsed time:{} ms RESPONSE DATA:{}",super.uriId,contentTypeStr,System.currentTimeMillis()-super.startTime,"");
-						return t;
-					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
-						logger.error("", e);
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						logger.error("", e);
+					T t = null;
+					try {
+						t = clazz.newInstance();
+					}  catch (Exception e) {
+						new ClientProtocolException(e);
 					}
+					MediaGetResult mediaGetResult = (MediaGetResult)t;
+					Header contentDisposition = response.getFirstHeader("Content-disposition");
+					if(contentDisposition != null){
+						String filename = contentDisposition.getValue().replaceAll(".*filename=\"(.*)\".*", "$1");
+						mediaGetResult.setFilename(filename);
+					}
+					mediaGetResult.setContentType(contentTypeStr);
+					mediaGetResult.setBytes(EntityUtils.toByteArray(response.getEntity()));
+					logger.info("URI[{}]ContentType:{} elapsed time:{} ms RESPONSE DATA:{}",super.uriId,contentTypeStr,System.currentTimeMillis()-super.startTime,"");
+					return t;
+					
     			}
             } else {
                 throw new ClientProtocolException("Unexpected response status: " + status);
             }
-            return null;
 		}
 		
 	}

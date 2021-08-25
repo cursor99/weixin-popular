@@ -2,10 +2,14 @@ package weixin.popular.client;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -35,14 +40,21 @@ public class LocalHttpClient {
 	
 	private static int retryExecutionCount = 2;
 
-	protected static CloseableHttpClient httpClient = HttpClientFactory.createHttpClient(100,10,timeout,retryExecutionCount);
-
+	protected static CloseableHttpClient httpClient;
+	
 	private static Map<String,CloseableHttpClient> httpClient_mchKeyStore = new ConcurrentHashMap<String, CloseableHttpClient>();
 	
 	private static ResultErrorHandler resultErrorHandler;
 	
 	protected static final Header userAgentHeader = new BasicHeader(HttpHeaders.USER_AGENT,"weixin-popular sdk java v" + Version.VERSION);
 	
+	static {
+		try {
+			httpClient = HttpClientFactory.createHttpClient(100,10,timeout,retryExecutionCount);
+		} catch (KeyManagementException | NoSuchAlgorithmException e) {
+			logger.error(e.getMessage(),e);
+		}
+	}
 	/**
 	 * @since 2.7.0
 	 * @param timeout timeout
@@ -71,8 +83,10 @@ public class LocalHttpClient {
 	 * 
 	 * @param maxTotal maxTotal
 	 * @param maxPerRoute maxPerRoute
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyManagementException 
 	 */
-	public static void init(int maxTotal,int maxPerRoute){
+	public static void init(int maxTotal,int maxPerRoute) throws KeyManagementException, NoSuchAlgorithmException{
 		try {
 			httpClient.close();
 		} catch (IOException e) {
@@ -85,13 +99,15 @@ public class LocalHttpClient {
 	 * 初始化   MCH HttpClient KeyStore
 	 * @param mch_id mch_id
 	 * @param keyStoreFilePath keyStoreFilePath
+	 * @throws IOException 
+	 * @throws CertificateException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws KeyStoreException 
+	 * @throws UnrecoverableKeyException 
+	 * @throws KeyManagementException 
 	 */
-	public static void initMchKeyStore(String mch_id,String keyStoreFilePath){
-		try {
-			initMchKeyStore(mch_id, new FileInputStream(new File(keyStoreFilePath)));
-		} catch (FileNotFoundException e) {
-			logger.error("init error", e);
-		}
+	public static void initMchKeyStore(String mch_id,String keyStoreFilePath) throws KeyManagementException, UnrecoverableKeyException, KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException{
+		initMchKeyStore(mch_id, new FileInputStream(new File(keyStoreFilePath)));
 	}
 	
 	/**
@@ -99,48 +115,39 @@ public class LocalHttpClient {
 	 * @since 2.8.7
 	 * @param mch_id mch_id
 	 * @param inputStream p12 文件流
+	 * @throws KeyStoreException 
+	 * @throws IOException 
+	 * @throws CertificateException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws UnrecoverableKeyException 
+	 * @throws KeyManagementException 
 	 */
-	public static void initMchKeyStore(String mch_id, InputStream inputStream) {
-		try {
-			 KeyStore keyStore = KeyStore.getInstance("PKCS12");
-			 keyStore.load(inputStream,mch_id.toCharArray());
-			 inputStream.close();
-			 CloseableHttpClient httpClient = HttpClientFactory.createKeyMaterialHttpClient(keyStore, mch_id,timeout,retryExecutionCount);
-			 httpClient_mchKeyStore.put(mch_id, httpClient);
-		} catch (Exception e) {
-			logger.error("init mch error", e);
-		}
+	public static void initMchKeyStore(String mch_id, InputStream inputStream) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException, KeyManagementException, UnrecoverableKeyException {
+		 KeyStore keyStore = KeyStore.getInstance("PKCS12");
+		 keyStore.load(inputStream,mch_id.toCharArray());
+		 inputStream.close();
+		 CloseableHttpClient httpClient = HttpClientFactory.createKeyMaterialHttpClient(keyStore, mch_id,timeout,retryExecutionCount);
+		 httpClient_mchKeyStore.put(mch_id, httpClient);
 	}
 
-
-	public static CloseableHttpResponse execute(HttpUriRequest request){
+	public static CloseableHttpResponse execute(HttpUriRequest request) throws ClientProtocolException, IOException{
 		loggerRequest(request);
 		userAgent(request);
-		try {
-			return httpClient.execute(request,HttpClientContext.create());
-		} catch (Exception e) {
-			logger.error("execute error", e);
-		}
-		return null;
+		return httpClient.execute(request,HttpClientContext.create());
 	}
 
-	public static <T> T execute(HttpUriRequest request,ResponseHandler<T> responseHandler){
+	public static <T> T execute(HttpUriRequest request,ResponseHandler<T> responseHandler) throws ClientProtocolException, IOException{
 		String uriId = loggerRequest(request);
 		userAgent(request);
 		if(responseHandler instanceof LocalResponseHandler){
 			LocalResponseHandler lrh = (LocalResponseHandler) responseHandler;
 			lrh.setUriId(uriId);
 		}
-		try {
-			T t = httpClient.execute(request, responseHandler,HttpClientContext.create());
-			if(resultErrorHandler != null){
-				resultErrorHandler.doHandle(uriId, request, t);
-			}
-			return t;
-		} catch (Exception e) {
-			logger.error("execute error", e);
+		T t = httpClient.execute(request, responseHandler,HttpClientContext.create());
+		if(resultErrorHandler != null){
+			resultErrorHandler.doHandle(uriId, request, t);
 		}
-		return null;
+		return t;
 	}
 	
 	
@@ -151,8 +158,10 @@ public class LocalHttpClient {
 	 * @param clazz clazz
 	 * @param <T> T
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static <T> T executeJsonResult(HttpUriRequest request,Class<T> clazz){
+	public static <T> T executeJsonResult(HttpUriRequest request,Class<T> clazz) throws ClientProtocolException, IOException{
 		return execute(request,JsonResponseHandler.createResponseHandler(clazz));
 	}
 
@@ -162,8 +171,10 @@ public class LocalHttpClient {
 	 * @param clazz clazz
 	 * @param <T> T
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static <T> T executeXmlResult(HttpUriRequest request,Class<T> clazz){
+	public static <T> T executeXmlResult(HttpUriRequest request,Class<T> clazz) throws ClientProtocolException, IOException{
 		return execute(request,XmlResponseHandler.createResponseHandler(clazz));
 	}
 	
@@ -175,9 +186,11 @@ public class LocalHttpClient {
 	 * @param key 数据返回验证签名key
 	 * @param <T> T
 	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 * @since 2.8.5
 	 */
-	public static <T> T executeXmlResult(HttpUriRequest request,Class<T> clazz,String sign_type,String key){
+	public static <T> T executeXmlResult(HttpUriRequest request,Class<T> clazz,String sign_type,String key) throws ClientProtocolException, IOException{
 		return execute(request,XmlResponseHandler.createResponseHandler(clazz,sign_type,key));
 	}
 

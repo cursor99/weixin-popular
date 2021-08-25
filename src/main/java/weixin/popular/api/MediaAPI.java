@@ -57,7 +57,7 @@ public class MediaAPI extends BaseAPI{
 						缩略图（thumb）：64KB，支持JPG格式
 	 * @return Media
 	 */
-	public static Media mediaUpload(String access_token,MediaType mediaType,File media){
+	public static Media mediaUpload(String access_token,MediaType mediaType,File media) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/media/upload");
 		FileBody bin = new FileBody(media);
         HttpEntity reqEntity = MultipartEntityBuilder.create()
@@ -81,7 +81,7 @@ public class MediaAPI extends BaseAPI{
 						缩略图（thumb）：64KB，支持JPG格式
 	 * @return Media
 	 */
-	public static Media mediaUpload(String access_token,MediaType mediaType,InputStream inputStream){
+	public static Media mediaUpload(String access_token,MediaType mediaType,InputStream inputStream) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/media/upload");
 		byte[] data = null;
 		try {
@@ -111,7 +111,7 @@ public class MediaAPI extends BaseAPI{
 						缩略图（thumb）：64KB，支持JPG格式
 	 * @return Media
 	 */
-	public static Media mediaUpload(String access_token,MediaType mediaType,URI uri){
+	public static Media mediaUpload(String access_token,MediaType mediaType,URI uri) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/media/upload");
 		CloseableHttpClient tempHttpClient = HttpClients.createDefault();
 		try {
@@ -149,7 +149,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param use_http 视频素材使用[http] true,其它使用[https] false.
 	 * @return MediaGetResult
 	 */
-	public static MediaGetResult mediaGet(String access_token,String media_id,boolean use_http){
+	public static MediaGetResult mediaGet(String access_token,String media_id,boolean use_http) throws ClientProtocolException, IOException {
 		String http_s = use_http?BASE_URI.replace("https", "http"):BASE_URI;
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 					.setUri(http_s + "/cgi-bin/media/get")
@@ -166,7 +166,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param media_id media_id
 	 * @return MediaGetResult
 	 */
-	public static MediaGetResult mediaGet(String access_token,String media_id){
+	public static MediaGetResult mediaGet(String access_token,String media_id) throws ClientProtocolException, IOException {
 		return mediaGet(access_token, media_id, false);
 	}
 	
@@ -181,7 +181,7 @@ public class MediaAPI extends BaseAPI{
 	 * 如果speex音频格式不符合业务需求，开发者可在获取后，再自行于本地对该语音素材进行转码。<br>
      * 转码请使用speex的官方解码库 http://speex.org/downloads/ ，并结合微信的解码库（含示例代码：<a href="http://wximg.gtimg.com/shake_tv/mpwiki/declib.zip">下载地址</a>）。
 	 */
-	public static MediaGetResult mediaGetJssdk(String access_token,String media_id){
+	public static MediaGetResult mediaGetJssdk(String access_token,String media_id) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 					.setUri(BASE_URI + "/cgi-bin/media/get/jssdk")
 					.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -197,7 +197,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param media media
 	 * @return UploadimgResult
 	 */
-	public static UploadimgResult mediaUploadimg(String access_token,File media){
+	public static UploadimgResult mediaUploadimg(String access_token,File media) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/media/uploadimg");
 		FileBody bin = new FileBody(media);
         HttpEntity reqEntity = MultipartEntityBuilder.create()
@@ -215,7 +215,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param inputStream inputStream
 	 * @return UploadimgResult
 	 */
-	public static UploadimgResult mediaUploadimg(String access_token,InputStream inputStream){
+	public static UploadimgResult mediaUploadimg(String access_token,InputStream inputStream) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/media/uploadimg");
 		//InputStreamBody inputStreamBody =  new InputStreamBody(inputStream, ContentType.DEFAULT_BINARY, UUID.randomUUID().toString()+".jpg");
 		byte[] data = null;
@@ -240,27 +240,18 @@ public class MediaAPI extends BaseAPI{
 	 * @param uri uri
 	 * @return UploadimgResult
 	 */
-	public static UploadimgResult mediaUploadimg(String access_token,URI uri){
+	public static UploadimgResult mediaUploadimg(String access_token,URI uri) throws ClientProtocolException, IOException {
 		HttpPost httpPost = new HttpPost(BASE_URI+"/cgi-bin/media/uploadimg");
 		CloseableHttpClient tempHttpClient = HttpClients.createDefault();
-		try {
-			HttpEntity entity = tempHttpClient.execute(RequestBuilder.get().setUri(uri).build()).getEntity();
-			HttpEntity reqEntity = MultipartEntityBuilder.create()
-					 .addBinaryBody("media",EntityUtils.toByteArray(entity),ContentType.get(entity),UUID.randomUUID().toString()+".jpg")
-			         .addTextBody(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
-			         .build();
-			httpPost.setEntity(reqEntity);
-			return LocalHttpClient.executeJsonResult(httpPost,UploadimgResult.class);
-		} catch (Exception e) {
-			logger.error("", e);
-		} finally{
-			try {
-				tempHttpClient.close();
-			} catch (Exception e) {
-				logger.error("", e);
-			}
-		}
-		return null;
+
+		HttpEntity entity = tempHttpClient.execute(RequestBuilder.get().setUri(uri).build()).getEntity();
+		HttpEntity reqEntity = MultipartEntityBuilder.create()
+				 .addBinaryBody("media",EntityUtils.toByteArray(entity),ContentType.get(entity),UUID.randomUUID().toString()+".jpg")
+		         .addTextBody(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
+		         .build();
+		httpPost.setEntity(reqEntity);
+		return LocalHttpClient.executeJsonResult(httpPost,UploadimgResult.class);
+
 	}
 	
 	/**
@@ -269,7 +260,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param articles 图文信息 1-10 个
 	 * @return Media
 	 */
-	public static Media mediaUploadnews(String access_token,List<Article> articles){
+	public static Media mediaUploadnews(String access_token,List<Article> articles) throws ClientProtocolException, IOException {
 		String str = JsonUtil.toJSONString(articles);
 		String messageJson = "{\"articles\":"+str+"}";
 		return mediaUploadnews(access_token, messageJson);
@@ -281,7 +272,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param messageJson messageJson
 	 * @return result
 	 */
-	public static Media mediaUploadnews(String access_token,String messageJson){
+	public static Media mediaUploadnews(String access_token,String messageJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(BASE_URI+"/cgi-bin/media/uploadnews")
@@ -297,7 +288,7 @@ public class MediaAPI extends BaseAPI{
 	 * @param uploadvideo uploadvideo
 	 * @return Media
 	 */
-	public static Media mediaUploadvideo(String access_token,Uploadvideo uploadvideo){
+	public static Media mediaUploadvideo(String access_token,Uploadvideo uploadvideo) throws ClientProtocolException, IOException {
 		String messageJson = JsonUtil.toJSONString(uploadvideo);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)

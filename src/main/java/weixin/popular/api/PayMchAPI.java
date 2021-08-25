@@ -14,10 +14,64 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.io.SocketOutputBuffer;
 import org.apache.http.util.EntityUtils;
 
-import weixin.popular.bean.paymch.*;
+import weixin.popular.bean.paymch.Authcodetoopenid;
+import weixin.popular.bean.paymch.AuthcodetoopenidResult;
+import weixin.popular.bean.paymch.Closeorder;
+import weixin.popular.bean.paymch.DownloadbillResult;
+import weixin.popular.bean.paymch.Gethbinfo;
+import weixin.popular.bean.paymch.GethbinfoResult;
+import weixin.popular.bean.paymch.Gettransferinfo;
+import weixin.popular.bean.paymch.GettransferinfoResult;
+import weixin.popular.bean.paymch.MchBaseResult;
+import weixin.popular.bean.paymch.MchDownloadbill;
+import weixin.popular.bean.paymch.MchOrderInfoResult;
+import weixin.popular.bean.paymch.MchOrderquery;
+import weixin.popular.bean.paymch.MchReverse;
+import weixin.popular.bean.paymch.MchReverseResult;
+import weixin.popular.bean.paymch.MchShorturl;
+import weixin.popular.bean.paymch.MchShorturlResult;
+import weixin.popular.bean.paymch.Micropay;
+import weixin.popular.bean.paymch.MicropayResult;
+import weixin.popular.bean.paymch.PapayDeletecontract;
+import weixin.popular.bean.paymch.PapayDeletecontractResult;
+import weixin.popular.bean.paymch.PapayEntrustweb;
+import weixin.popular.bean.paymch.PapayH5entrustwebResult;
+import weixin.popular.bean.paymch.PapayQuerycontract;
+import weixin.popular.bean.paymch.PapayQuerycontractResult;
+import weixin.popular.bean.paymch.Pappayapply;
+import weixin.popular.bean.paymch.PappayapplyResult;
+import weixin.popular.bean.paymch.PayContractorder;
+import weixin.popular.bean.paymch.PayContractorderResult;
+import weixin.popular.bean.paymch.PayDownloadfundflow;
+import weixin.popular.bean.paymch.PayDownloadfundflowResult;
+import weixin.popular.bean.paymch.PayProfitsharingOperation;
+import weixin.popular.bean.paymch.PayProfitsharingquery;
+import weixin.popular.bean.paymch.PayProfitsharingqueryResult;
+import weixin.popular.bean.paymch.QueryCoupon;
+import weixin.popular.bean.paymch.QueryCouponResult;
+import weixin.popular.bean.paymch.QueryCouponStock;
+import weixin.popular.bean.paymch.QueryCouponStockResult;
+import weixin.popular.bean.paymch.Refundquery;
+import weixin.popular.bean.paymch.RefundqueryResult;
+import weixin.popular.bean.paymch.Report;
+import weixin.popular.bean.paymch.SandboxSignkey;
+import weixin.popular.bean.paymch.SecapiPayProfitsharing;
+import weixin.popular.bean.paymch.SecapiPayProfitsharingResult;
+import weixin.popular.bean.paymch.SecapiPayProfitsharingfinish;
+import weixin.popular.bean.paymch.SecapiPayProfitsharingfinishResult;
+import weixin.popular.bean.paymch.SecapiPayRefund;
+import weixin.popular.bean.paymch.SecapiPayRefundResult;
+import weixin.popular.bean.paymch.SendCoupon;
+import weixin.popular.bean.paymch.SendCouponResult;
+import weixin.popular.bean.paymch.Sendgroupredpack;
+import weixin.popular.bean.paymch.Sendredpack;
+import weixin.popular.bean.paymch.SendredpackResult;
+import weixin.popular.bean.paymch.Transfers;
+import weixin.popular.bean.paymch.TransfersResult;
+import weixin.popular.bean.paymch.Unifiedorder;
+import weixin.popular.bean.paymch.UnifiedorderResult;
 import weixin.popular.client.LocalHttpClient;
 import weixin.popular.util.JsonUtil;
 import weixin.popular.util.MapUtil;
@@ -67,9 +121,11 @@ public class PayMchAPI extends BaseAPI{
 	 * @param mch_id mch_id
 	 * @param key key
 	 * @return sandbox_signkey
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 * @since 2.8.13
 	 */
-	public static SandboxSignkey sandboxnewPayGetsignkey(String mch_id,String key){
+	public static SandboxSignkey sandboxnewPayGetsignkey(String mch_id,String key) throws ClientProtocolException, IOException{
 		MchBaseResult mchBaseResult = new MchBaseResult();
 		mchBaseResult.setMch_id(mch_id);
 		mchBaseResult.setNonce_str(UUID.randomUUID().toString().replace("-", ""));
@@ -91,7 +147,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return UnifiedorderResult
 	 */
-	public static UnifiedorderResult payUnifiedorder(Unifiedorder unifiedorder,String key){
+	public static UnifiedorderResult payUnifiedorder(Unifiedorder unifiedorder,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(unifiedorder, "detail", "scene_info");
 		//@since 2.8.8 detail 字段签名处理
 		if(unifiedorder.getDetail() != null){
@@ -120,7 +176,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MicropayResult
 	 */
-	public static MicropayResult payMicropay(Micropay micropay,String key){
+	public static MicropayResult payMicropay(Micropay micropay,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(micropay);
 		//@since 2.8.14 detail 字段签名处理
 		if(micropay.getDetail() != null){
@@ -147,7 +203,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MchOrderInfoResult
 	 */
-	public static MchOrderInfoResult payOrderquery(MchOrderquery mchOrderquery,String key){
+	public static MchOrderInfoResult payOrderquery(MchOrderquery mchOrderquery,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(mchOrderquery);
 		String sign = SignatureUtil.generateSign(map,mchOrderquery.getSign_type(),key);
 		mchOrderquery.setSign(sign);
@@ -168,7 +224,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key 商户支付密钥
 	 * @return MchBaseResult
 	 */
-	public static MchBaseResult payCloseorder(Closeorder closeorder,String key){
+	public static MchBaseResult payCloseorder(Closeorder closeorder,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(closeorder);
 		String sign = SignatureUtil.generateSign(map,closeorder.getSign_type(),key);
 		closeorder.setSign(sign);
@@ -192,7 +248,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key 商户支付密钥
 	 * @return SecapiPayRefundResult
 	 */
-	public static SecapiPayRefundResult secapiPayRefund(SecapiPayRefund secapiPayRefund,String key){
+	public static SecapiPayRefundResult secapiPayRefund(SecapiPayRefund secapiPayRefund,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( secapiPayRefund);
 		String sign = SignatureUtil.generateSign(map,secapiPayRefund.getSign_type(),key);
 		secapiPayRefund.setSign(sign);
@@ -213,7 +269,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MchReverseResult
 	 */
-	public static MchReverseResult secapiPayReverse(MchReverse mchReverse,String key){
+	public static MchReverseResult secapiPayReverse(MchReverse mchReverse,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( mchReverse);
 		String sign = SignatureUtil.generateSign(map,mchReverse.getSign_type(),key);
 		mchReverse.setSign(sign);
@@ -235,7 +291,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key 商户支付密钥
 	 * @return RefundqueryResult
 	 */
-	public static RefundqueryResult payRefundquery(Refundquery refundquery,String key){
+	public static RefundqueryResult payRefundquery(Refundquery refundquery,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(refundquery);
 		String sign = SignatureUtil.generateSign(map,refundquery.getSign_type(),key);
 		refundquery.setSign(sign);
@@ -254,7 +310,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return DownloadbillResult
 	 */
-	public static DownloadbillResult payDownloadbill(MchDownloadbill downloadbill,String key){
+	public static DownloadbillResult payDownloadbill(MchDownloadbill downloadbill,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(downloadbill);
 		String sign = SignatureUtil.generateSign(map,downloadbill.getSign_type(),key);
 		downloadbill.setSign(sign);
@@ -319,7 +375,7 @@ public class PayMchAPI extends BaseAPI{
 	 * sign_type 签名类型 <br>
 	 * sign 签名
 	 */
-	public static PayDownloadfundflowResult payDownloadfundflow(PayDownloadfundflow payDownloadfundflow,String key){
+	public static PayDownloadfundflowResult payDownloadfundflow(PayDownloadfundflow payDownloadfundflow,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(payDownloadfundflow);
 		String sign_type = map.get("sign_type");
 		//设置默认签名类型HMAC-SHA256
@@ -378,7 +434,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key 商户支付密钥
 	 * @return MchShorturlResult
 	 */
-	public static MchShorturlResult toolsShorturl(MchShorturl shorturl,String key){
+	public static MchShorturlResult toolsShorturl(MchShorturl shorturl,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(shorturl);
 		String sign = SignatureUtil.generateSign(map,shorturl.getSign_type(),key);
 		shorturl.setSign(sign);
@@ -396,8 +452,10 @@ public class PayMchAPI extends BaseAPI{
 	 * @param authcodetoopenid authcodetoopenid
 	 * @param key key
 	 * @return AuthcodetoopenidResult
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static AuthcodetoopenidResult toolsAuthcodetoopenid(Authcodetoopenid authcodetoopenid,String key){
+	public static AuthcodetoopenidResult toolsAuthcodetoopenid(Authcodetoopenid authcodetoopenid,String key) throws ClientProtocolException, IOException{
 		Map<String,String> map = MapUtil.objectToMap(authcodetoopenid);
 		String sign = SignatureUtil.generateSign(map,authcodetoopenid.getSign_type(),key);
 		authcodetoopenid.setSign(sign);
@@ -417,7 +475,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MchBaseResult
 	 */
-	public static MchBaseResult payitilReport(Report report,String key){
+	public static MchBaseResult payitilReport(Report report,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(report);
 		String sign = SignatureUtil.generateSign(map,report.getSign_type(),key);
 		report.setSign(sign);
@@ -455,7 +513,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return QueryCouponStockResult
 	 */
-	public static QueryCouponStockResult mmpaymkttransfersQuery_coupon_stock(QueryCouponStock queryCouponStock,String key){
+	public static QueryCouponStockResult mmpaymkttransfersQuery_coupon_stock(QueryCouponStock queryCouponStock,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( queryCouponStock);
 		String sign = SignatureUtil.generateSign(map,queryCouponStock.getSign_type(),key);
 		queryCouponStock.setSign(sign);
@@ -474,7 +532,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return QueryCouponResult
 	 */
-	public static QueryCouponResult promotionQuery_coupon(QueryCoupon queryCoupon,String key){
+	public static QueryCouponResult promotionQuery_coupon(QueryCoupon queryCoupon,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( queryCoupon);
 		String sign = SignatureUtil.generateSign(map,queryCoupon.getSign_type(),key);
 		queryCoupon.setSign(sign);
@@ -506,7 +564,7 @@ public class PayMchAPI extends BaseAPI{
 	 *            key
 	 * @return SendredpackResult
 	 */
-	public static SendredpackResult mmpaymkttransfersSendredpack(Sendredpack sendredpack,String key){
+	public static SendredpackResult mmpaymkttransfersSendredpack(Sendredpack sendredpack,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( sendredpack);
 		String sign = SignatureUtil.generateSign(map,sendredpack.getSign_type(),key);
 		sendredpack.setSign(sign);
@@ -526,7 +584,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return SendredpackResult
 	 */
-	public static SendredpackResult mmpaymkttransfersSendgroupredpack(Sendgroupredpack sendgroupredpack,String key){
+	public static SendredpackResult mmpaymkttransfersSendgroupredpack(Sendgroupredpack sendgroupredpack,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( sendgroupredpack);
 		String sign = SignatureUtil.generateSign(map,sendgroupredpack.getSign_type(),key);
 		sendgroupredpack.setSign(sign);
@@ -547,7 +605,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return GethbinfoResult
 	 */
-	public static GethbinfoResult mmpaymkttransfersGethbinfo(Gethbinfo gethbinfo,String key){
+	public static GethbinfoResult mmpaymkttransfersGethbinfo(Gethbinfo gethbinfo,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( gethbinfo);
 		String sign = SignatureUtil.generateSign(map,gethbinfo.getSign_type(),key);
 		gethbinfo.setSign(sign);
@@ -577,7 +635,7 @@ public class PayMchAPI extends BaseAPI{
 	 *            key
 	 * @return TransfersResult
 	 */
-	public static TransfersResult mmpaymkttransfersPromotionTransfers(Transfers transfers,String key){
+	public static TransfersResult mmpaymkttransfersPromotionTransfers(Transfers transfers,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( transfers);
 		String sign = SignatureUtil.generateSign(map,transfers.getSign_type(),key);
 		transfers.setSign(sign);
@@ -597,7 +655,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return GettransferinfoResult
 	 */
-	public static GettransferinfoResult mmpaymkttransfersGettransferinfo(Gettransferinfo gettransferinfo,String key){
+	public static GettransferinfoResult mmpaymkttransfersGettransferinfo(Gettransferinfo gettransferinfo,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( gettransferinfo);
 		String sign = SignatureUtil.generateSign(map,gettransferinfo.getSign_type(),key);
 		gettransferinfo.setSign(sign);
@@ -616,7 +674,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return PayContractorderResult
 	 */
-	public static PayContractorderResult payContractorder(PayContractorder payContractorder,String key){
+	public static PayContractorderResult payContractorder(PayContractorder payContractorder,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(payContractorder);
 		String sign = SignatureUtil.generateSign(map,payContractorder.getSign_type(),key);
 		payContractorder.setSign(sign);
@@ -635,7 +693,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return PappayapplyResult
 	 */
-	public static PappayapplyResult payPappayapply(Pappayapply pappayapply,String key){
+	public static PappayapplyResult payPappayapply(Pappayapply pappayapply,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap( pappayapply);
 		String sign = SignatureUtil.generateSign(map,pappayapply.getSign_type(),key);
 		pappayapply.setSign(sign);
@@ -654,7 +712,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MchOrderInfoResult
 	 */
-	public static MchOrderInfoResult payPaporderquery(MchOrderquery mchOrderquery,String key){
+	public static MchOrderInfoResult payPaporderquery(MchOrderquery mchOrderquery,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(mchOrderquery);
 		String sign = SignatureUtil.generateSign(map,mchOrderquery.getSign_type(),key);
 		mchOrderquery.setSign(sign);
@@ -673,7 +731,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return PapayQuerycontractResult
 	 */
-	public static PapayQuerycontractResult papayQuerycontract(PapayQuerycontract papayQuerycontract,String key){
+	public static PapayQuerycontractResult papayQuerycontract(PapayQuerycontract papayQuerycontract,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(papayQuerycontract);
 		String sign = SignatureUtil.generateSign(map,papayQuerycontract.getSign_type(),key);
 		papayQuerycontract.setSign(sign);
@@ -692,7 +750,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return PapayDeletecontractResult
 	 */
-	public static PapayDeletecontractResult papayDeletecontract(PapayDeletecontract papayDeletecontract,String key){
+	public static PapayDeletecontractResult papayDeletecontract(PapayDeletecontract papayDeletecontract,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(papayDeletecontract);
 		String sign = SignatureUtil.generateSign(map,papayDeletecontract.getSign_type(),key);
 		papayDeletecontract.setSign(sign);
@@ -713,8 +771,10 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key
 	 *            key
 	 * @return PapayH5entrustwebResult
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static PapayH5entrustwebResult papayH5entrustweb(PapayEntrustweb papayEntrustweb, String key) {
+	public static PapayH5entrustwebResult papayH5entrustweb(PapayEntrustweb papayEntrustweb, String key) throws ClientProtocolException, IOException {
 		Map<String, String> map = MapUtil.objectToMap(papayEntrustweb);
 		String sign = SignatureUtil.generateSign(map, "HMAC-SHA256", key);
 		map.put("sign", sign);
@@ -737,7 +797,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return SecapiPayProfitsharingResult
 	 */
-	public static SecapiPayProfitsharingResult secapiPayProfitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key){
+	public static SecapiPayProfitsharingResult secapiPayProfitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(secapiPayProfitsharing, "receivers");
 		if(secapiPayProfitsharing.getReceivers() != null){
 			map.put("receivers", JsonUtil.toJSONString(secapiPayProfitsharing.getReceivers()));
@@ -760,7 +820,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return SecapiPayProfitsharingResult
 	 */
-	public static SecapiPayProfitsharingResult secapiPayMultiprofitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key){
+	public static SecapiPayProfitsharingResult secapiPayMultiprofitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(secapiPayProfitsharing, "receivers");
 		if(secapiPayProfitsharing.getReceivers() != null){
 			map.put("receivers", JsonUtil.toJSONString(secapiPayProfitsharing.getReceivers()));
@@ -783,7 +843,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return SecapiPayProfitsharingfinishResult
 	 */
-	public static SecapiPayProfitsharingfinishResult secapiPayProfitsharingfinish(SecapiPayProfitsharingfinish profitsharingfinish,String key){
+	public static SecapiPayProfitsharingfinishResult secapiPayProfitsharingfinish(SecapiPayProfitsharingfinish profitsharingfinish,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(profitsharingfinish);
 		String sign = SignatureUtil.generateSign(map,profitsharingfinish.getSign_type() == null? "HMAC-SHA256": profitsharingfinish.getSign_type(),key);
 		profitsharingfinish.setSign(sign);
@@ -803,7 +863,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return PayProfitsharingqueryResult
 	 */
-	public static PayProfitsharingqueryResult payProfitsharingquery(PayProfitsharingquery payProfitsharingquery,String key){
+	public static PayProfitsharingqueryResult payProfitsharingquery(PayProfitsharingquery payProfitsharingquery,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(payProfitsharingquery);
 		String sign = SignatureUtil.generateSign(map,payProfitsharingquery.getSign_type() == null? "HMAC-SHA256": payProfitsharingquery.getSign_type(),key);
 		payProfitsharingquery.setSign(sign);
@@ -823,7 +883,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MchBaseResult
 	 */
-	public static MchBaseResult payProfitsharingaddreceiver(PayProfitsharingOperation payProfitsharingOperation,String key){
+	public static MchBaseResult payProfitsharingaddreceiver(PayProfitsharingOperation payProfitsharingOperation,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(payProfitsharingOperation, "receiver");
 		if(payProfitsharingOperation.getReceiver() != null){
 			map.put("receiver", JsonUtil.toJSONString(payProfitsharingOperation.getReceiver()));
@@ -846,7 +906,7 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key key
 	 * @return MchBaseResult
 	 */
-	public static MchBaseResult payProfitsharingremovereceiver(PayProfitsharingOperation payProfitsharingOperation,String key){
+	public static MchBaseResult payProfitsharingremovereceiver(PayProfitsharingOperation payProfitsharingOperation,String key) throws ClientProtocolException, IOException {
 		Map<String,String> map = MapUtil.objectToMap(payProfitsharingOperation, "receiver");
 		if(payProfitsharingOperation.getReceiver() != null){
 			map.put("receiver", JsonUtil.toJSONString(payProfitsharingOperation.getReceiver()));

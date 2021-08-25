@@ -1,9 +1,11 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -104,8 +106,10 @@ public class ComponentAPI extends BaseAPI {
      * @param component_appsecret     公众号第三方平台appsecret
      * @param component_verify_ticket 微信后台推送的ticket，此ticket会定时推送，具体请见本页末尾的推送说明
      * @return 公众号第三方平台access_token
+     * @throws IOException 
+     * @throws ClientProtocolException 
      */
-    public static ComponentAccessToken api_component_token(String component_appid, String component_appsecret, String component_verify_ticket) {
+    public static ComponentAccessToken api_component_token(String component_appid, String component_appsecret, String component_verify_ticket) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\" ,\"component_appsecret\": \"%2$s\",\"component_verify_ticket\": \"%3$s\"}",
                 component_appid,
                 component_appsecret,
@@ -126,7 +130,7 @@ public class ComponentAPI extends BaseAPI {
      * @param component_appid        公众号第三方平台appid
      * @return 预授权码
      */
-    public static PreAuthCode api_create_preauthcode(String component_access_token, String component_appid) {
+    public static PreAuthCode api_create_preauthcode(String component_access_token, String component_appid) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\"}",
                 component_appid);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -146,7 +150,7 @@ public class ComponentAPI extends BaseAPI {
      * @param authorization_code     授权code,会在授权成功时返回给第三方平台，详见第三方平台授权流程说明
      * @return 公众号的授权信息
      */
-    public static ApiQueryAuthResult api_query_auth(String component_access_token, String component_appid, String authorization_code) {
+    public static ApiQueryAuthResult api_query_auth(String component_access_token, String component_appid, String authorization_code) throws ClientProtocolException, IOException{
         String postJsonData = String.format("{\"component_appid\":\"%1$s\",\"authorization_code\":\"%2$s\"}",
                 component_appid,
                 authorization_code);
@@ -171,7 +175,7 @@ public class ComponentAPI extends BaseAPI {
     public static AuthorizerAccessToken api_authorizer_token(String component_access_token,
                                                              String component_appid,
                                                              String authorizer_appid,
-                                                             String authorizer_refresh_token) {
+                                                             String authorizer_refresh_token) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\",\"authorizer_appid\":\"%2$s\",\"authorizer_refresh_token\":\"%3$s\"}",
                 component_appid, authorizer_appid, authorizer_refresh_token);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -194,7 +198,7 @@ public class ComponentAPI extends BaseAPI {
      */
     public static ApiGetAuthorizerInfoResult api_get_authorizer_info(String component_access_token,
                                                                      String component_appid,
-                                                                     String authorizer_appid) {
+                                                                     String authorizer_appid) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\",\"authorizer_appid\":\"%2$s\"}",
                 component_appid, authorizer_appid);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -221,7 +225,7 @@ public class ComponentAPI extends BaseAPI {
     public static AuthorizerOption api_get_authorizer_option(String component_access_token,
                                                              String component_appid,
                                                              String authorizer_appid,
-                                                             String option_name) {
+                                                             String option_name) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\",\"authorizer_appid\":\"%2$s\",\"option_name\":\"%3$s\"}",
                 component_appid, authorizer_appid, option_name);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -250,7 +254,7 @@ public class ComponentAPI extends BaseAPI {
                                                        String component_appid,
                                                        String authorizer_appid,
                                                        String option_name,
-                                                       String option_value) {
+                                                       String option_value) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\",\"authorizer_appid\":\"%2$s\",\"option_name\":\"%3$s\",\"option_value\":\"%4$s\"}",
                 component_appid, authorizer_appid, option_name, option_value);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
@@ -270,7 +274,7 @@ public class ComponentAPI extends BaseAPI {
      * @return result
      * @since 2.8.2
      */
-    public static BaseResult clear_quota(String component_access_token, String component_appid) {
+    public static BaseResult clear_quota(String component_access_token, String component_appid) throws ClientProtocolException, IOException {
         String json = String.format("{\"component_appid\":\"%s\"}", component_appid);
         HttpUriRequest httpUriRequest = RequestBuilder.post()
                 .setHeader(jsonHeader)
@@ -290,7 +294,7 @@ public class ComponentAPI extends BaseAPI {
      * @param count                  拉取数量，最大为500
      * @return ApiGetAuthorizerListResult
      */
-    public static ApiGetAuthorizerListResult api_get_authorizer_list(String component_access_token, String component_appid, String offset, String count) {
+    public static ApiGetAuthorizerListResult api_get_authorizer_list(String component_access_token, String component_appid, String offset, String count) throws ClientProtocolException, IOException {
         String postJsonData = String.format("{\"component_appid\":\"%1$s\",\"offset\":\"%2$s\",\"count\":\"%3$s\"}",
                 component_appid, offset, count);
 

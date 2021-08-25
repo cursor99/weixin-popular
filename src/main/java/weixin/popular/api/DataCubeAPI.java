@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -44,7 +46,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @param bizuinCube bizuinCube
 	 * @return result
 	 */
-	public static BizuinInfoResult getCardBizuinInfo(String access_token, BizuinInfo bizuinCube) {
+	public static BizuinInfoResult getCardBizuinInfo(String access_token, BizuinInfo bizuinCube) throws ClientProtocolException, IOException {
 		return getCardBizuinInfo(access_token, JsonUtil.toJSONString(bizuinCube));
 	}
 	
@@ -57,7 +59,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @param requestJson post完整的json
 	 * @return result
 	 */
-	public static BizuinInfoResult getCardBizuinInfo(String access_token, String requestJson) {
+	public static BizuinInfoResult getCardBizuinInfo(String access_token, String requestJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(BASE_URI+"/datacube/getcardbizuininfo")
@@ -77,7 +79,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @param freeCardCube freeCardCube
 	 * @return result
 	 */
-	public static CardInfoResult getCardCardInfo(String access_token, CardInfo freeCardCube) {
+	public static CardInfoResult getCardCardInfo(String access_token, CardInfo freeCardCube) throws ClientProtocolException, IOException {
 		return getCardCardInfo(access_token, JsonUtil.toJSONString(freeCardCube));
 	}
 	
@@ -91,7 +93,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @param requestJson post完整的json
 	 * @return result
 	 */
-	public static CardInfoResult getCardCardInfo(String access_token, String requestJson) {
+	public static CardInfoResult getCardCardInfo(String access_token, String requestJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(BASE_URI+"/datacube/getcardcardinfo")
@@ -111,7 +113,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @param memberCardCube memberCardCube
 	 * @return result
 	 */
-	public static MemberCardInfoResult getCardMemberCardInfo(String access_token, MemberCardInfo memberCardCube) {
+	public static MemberCardInfoResult getCardMemberCardInfo(String access_token, MemberCardInfo memberCardCube) throws ClientProtocolException, IOException {
 		return getCardMemberCardInfo(access_token, JsonUtil.toJSONString(memberCardCube));
 	}
 	
@@ -124,7 +126,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @param requestJson post完整的json
 	 * @return result
 	 */
-	public static MemberCardInfoResult getCardMemberCardInfo(String access_token, String requestJson) {
+	public static MemberCardInfoResult getCardMemberCardInfo(String access_token, String requestJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 										.setHeader(jsonHeader)
 										.setUri(BASE_URI+"/datacube/getcardmembercardinfo")
@@ -145,7 +147,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UsersummaryResult getusersummary(String access_token, String begin_date,String end_date) {
+	public static UsersummaryResult getusersummary(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -164,7 +166,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UsercumulateResult getusercumulate(String access_token, String begin_date,String end_date) {
+	public static UsercumulateResult getusercumulate(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -185,7 +187,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static ArticlesummaryResult getarticlesummary(String access_token, String begin_date,String end_date) {
+	public static ArticlesummaryResult getarticlesummary(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -204,7 +206,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static ArticletotalResult getarticletotal(String access_token, String begin_date,String end_date) {
+	public static ArticletotalResult getarticletotal(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -223,7 +225,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UserreadResult getuserread(String access_token, String begin_date,String end_date) {
+	public static UserreadResult getuserread(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -242,7 +244,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UserreadResult getuserreadhour(String access_token, String begin_date,String end_date) {
+	public static UserreadResult getuserreadhour(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -261,7 +263,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UsershareResult getusershare(String access_token, String begin_date,String end_date) {
+	public static UsershareResult getusershare(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -280,7 +282,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UsershareResult getusersharehour(String access_token, String begin_date,String end_date) {
+	public static UsershareResult getusersharehour(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -301,7 +303,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsg(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsg(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -320,7 +322,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsghour(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsghour(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -339,7 +341,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsgweek(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsgweek(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -358,7 +360,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsgmonth(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsgmonth(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -377,7 +379,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsgdist(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsgdist(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -396,7 +398,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsgdistweek(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsgdistweek(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -415,7 +417,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static UpstreammsgResult getupstreammsgdistmonth(String access_token, String begin_date,String end_date) {
+	public static UpstreammsgResult getupstreammsgdistmonth(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -436,7 +438,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static InterfacesummaryResult getinterfacesummary(String access_token, String begin_date,String end_date) {
+	public static InterfacesummaryResult getinterfacesummary(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -455,7 +457,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.6
 	 */
-	public static InterfacesummaryResult getinterfacesummaryhour(String access_token, String begin_date,String end_date) {
+	public static InterfacesummaryResult getinterfacesummaryhour(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -476,7 +478,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static SummarytrendResult getweanalysisappiddailysummarytrend(String access_token, String begin_date,String end_date) {
+	public static SummarytrendResult getweanalysisappiddailysummarytrend(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -496,7 +498,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static VisittrendResult getweanalysisappiddailyvisittrend(String access_token, String begin_date,String end_date) {
+	public static VisittrendResult getweanalysisappiddailyvisittrend(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -516,7 +518,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static VisittrendResult getweanalysisappidweeklyvisittrend(String access_token, String begin_date,String end_date) {
+	public static VisittrendResult getweanalysisappidweeklyvisittrend(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -536,7 +538,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static VisittrendResult getweanalysisappidmonthlyvisittrend(String access_token, String begin_date,String end_date) {
+	public static VisittrendResult getweanalysisappidmonthlyvisittrend(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -555,7 +557,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static VisitdistributionResult getweanalysisappidvisitdistribution(String access_token, String begin_date,String end_date) {
+	public static VisitdistributionResult getweanalysisappidvisitdistribution(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -575,7 +577,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static RetaininfoResult getweanalysisappiddailyretaininfo(String access_token, String begin_date,String end_date) {
+	public static RetaininfoResult getweanalysisappiddailyretaininfo(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -595,7 +597,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static RetaininfoResult getweanalysisappidweeklyretaininfo(String access_token, String begin_date,String end_date) {
+	public static RetaininfoResult getweanalysisappidweeklyretaininfo(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -615,7 +617,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static RetaininfoResult getweanalysisappidmonthlyretaininfo(String access_token, String begin_date,String end_date) {
+	public static RetaininfoResult getweanalysisappidmonthlyretaininfo(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -634,7 +636,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.9
 	 */
-	public static VisitpageResult getweanalysisappidvisitpage(String access_token, String begin_date,String end_date) {
+	public static VisitpageResult getweanalysisappidvisitpage(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)
@@ -653,7 +655,7 @@ public class DataCubeAPI extends BaseAPI {
 	 * @return result
 	 * @since 2.8.19
 	 */
-	public static UserportraitResult getweanalysisappiduserportrait(String access_token, String begin_date,String end_date) {
+	public static UserportraitResult getweanalysisappiduserportrait(String access_token, String begin_date,String end_date) throws ClientProtocolException, IOException {
 		String requestJson = String.format("{\"begin_date\":\"%s\",\"end_date\":\"%s\"}", begin_date,end_date);
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setHeader(jsonHeader)

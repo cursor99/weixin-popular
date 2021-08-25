@@ -1,5 +1,6 @@
 package weixin.popular.util;
 
+import java.io.IOException;
 import java.security.Key;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -150,8 +152,10 @@ public abstract class PayUtil {
 	 * @param key
 	 *            key
 	 * @return url
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static String generatePapayH5EntrustwebURL(PapayEntrustweb papayEntrustweb, String key) {
+	public static String generatePapayH5EntrustwebURL(PapayEntrustweb papayEntrustweb, String key) throws ClientProtocolException, IOException {
 		PapayH5entrustwebResult result = PayMchAPI.papayH5entrustweb(papayEntrustweb, key);
 		if (result != null && "SUCCESS".equals(result.getResult_code())) {
 			return result.getRedirect_url();

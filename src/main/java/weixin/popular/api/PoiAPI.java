@@ -1,7 +1,9 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
@@ -28,7 +30,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult addPoi(String accessToken, String postJson) {
+	public static BaseResult addPoi(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -46,7 +48,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param poi poi
 	 * @return result
 	 */
-	public static BaseResult addPoi(String accessToken, Poi poi) {
+	public static BaseResult addPoi(String accessToken, Poi poi) throws ClientProtocolException, IOException {
 		return addPoi(accessToken, JsonUtil.toJSONString(poi));
 	}
 
@@ -56,7 +58,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static PoiResult getPoi(String accessToken, String postJson) {
+	public static PoiResult getPoi(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -74,7 +76,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param poi_id poi_id
 	 * @return result
 	 */
-	public static PoiResult getPoiByPoiId(String accessToken, String poi_id) {
+	public static PoiResult getPoiByPoiId(String accessToken, String poi_id) throws ClientProtocolException, IOException {
 		return getPoi(accessToken, String.format("{\"poi_id\": \"%s\"}", poi_id));
 	}
 
@@ -84,7 +86,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static PoiListResult getPoiList(String accessToken, String postJson) {
+	public static PoiListResult getPoiList(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -104,7 +106,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param limit 返回数据条数，最大允许50，默认为20
 	 * @return result
 	 */
-	public static PoiListResult getPoiList(String accessToken, int begin, int limit) {
+	public static PoiListResult getPoiList(String accessToken, int begin, int limit) throws ClientProtocolException, IOException {
 		return getPoiList(accessToken, String.format("{\"begin\":%d, \"limit\": %d}", begin, limit));
 	}
 
@@ -114,7 +116,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult updatePoi(String accessToken, String postJson) {
+	public static BaseResult updatePoi(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -132,7 +134,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param poi poi
 	 * @return result
 	 */
-	public static BaseResult updatePoi(String accessToken, Poi poi) {
+	public static BaseResult updatePoi(String accessToken, Poi poi) throws ClientProtocolException, IOException {
 		return updatePoi(accessToken, JsonUtil.toJSONString(poi));
 	}
 
@@ -142,7 +144,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param postJson postJson
 	 * @return result
 	 */
-	public static BaseResult delPoi(String accessToken, String postJson) {
+	public static BaseResult delPoi(String accessToken, String postJson) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder
 				.post()
 				.setHeader(jsonHeader)
@@ -163,7 +165,7 @@ public class PoiAPI extends BaseAPI {
 	 *            门店ID
 	 * @return result
 	 */
-	public static BaseResult delPoiByPoiId(String accessToken, String poiId) {
+	public static BaseResult delPoiByPoiId(String accessToken, String poiId) throws ClientProtocolException, IOException {
 		return delPoi(accessToken, String.format("{\"poi_id\": \"%s\"}", poiId));
 	}
 
@@ -172,7 +174,7 @@ public class PoiAPI extends BaseAPI {
 	 * @param accessToken accessToken
 	 * @return result
 	 */
-	public static CategoryListResult getWxCategory(String accessToken) {
+	public static CategoryListResult getWxCategory(String accessToken) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI + "/cgi-bin/poi/getwxcategory")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken)).build();

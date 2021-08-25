@@ -1,8 +1,10 @@
 package weixin.popular.api;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.slf4j.Logger;
@@ -31,7 +33,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param code code
 	 * @return SnsToken
 	 */
-	public static SnsToken oauth2AccessToken(String appid,String secret,String code){
+	public static SnsToken oauth2AccessToken(String appid,String secret,String code) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI + "/sns/oauth2/access_token")
 				.addParameter("appid", appid)
@@ -50,7 +52,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param component_access_token 服务开发方的access_token
 	 * @return SnsToken
 	 */
-	public static SnsToken oauth2ComponentAccessToken(String appid,String code,String component_appid,String component_access_token ){
+	public static SnsToken oauth2ComponentAccessToken(String appid,String code,String component_appid,String component_access_token ) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI + "/sns/oauth2/component/access_token")
 				.addParameter("appid", appid)
@@ -69,7 +71,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param refresh_token refresh_token
 	 * @return SnsToken
 	 */
-	public static SnsToken oauth2RefreshToken(String appid,String refresh_token){
+	public static SnsToken oauth2RefreshToken(String appid,String refresh_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI + "/sns/oauth2/refresh_token")
 				.addParameter("appid", appid)
@@ -87,7 +89,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param component_access_token 服务开发方的access_token
 	 * @return SnsToken
 	 */
-	public static SnsToken oauth2ComponentRefreshToken(String appid,String refresh_token,String component_appid,String component_access_token){
+	public static SnsToken oauth2ComponentRefreshToken(String appid,String refresh_token,String component_appid,String component_access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.post()
 				.setUri(BASE_URI + "/sns/oauth2/component/refresh_token")
 				.addParameter("appid", appid)
@@ -107,7 +109,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param openid openid
 	 * @return result
 	 */
-	public static BaseResult auth(String access_token,String openid){
+	public static BaseResult auth(String access_token,String openid) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/sns/auth")
 				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
@@ -132,7 +134,7 @@ public class SnsAPI extends BaseAPI{
 	 * 5 PureText 纯文本<br>
 	 * @return User
 	 */
-	public static User userinfo(String access_token,String openid,String lang,int emoji){
+	public static User userinfo(String access_token,String openid,String lang,int emoji) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 				.setUri(BASE_URI + "/sns/userinfo")
 				.addParameter(PARAM_ACCESS_TOKEN, access_token)
@@ -153,7 +155,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param lang 国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
 	 * @return User
 	 */
-	public static User userinfo(String access_token,String openid,String lang){
+	public static User userinfo(String access_token,String openid,String lang) throws ClientProtocolException, IOException {
 		return userinfo(access_token, openid, lang,0);
 	}
 
@@ -164,8 +166,10 @@ public class SnsAPI extends BaseAPI{
 	 * @param snsapi_userinfo snsapi_userinfo
 	 * @param state 可以为空
 	 * @return url
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static String connectOauth2Authorize(String appid,String redirect_uri,boolean snsapi_userinfo,String state){
+	public static String connectOauth2Authorize(String appid,String redirect_uri,boolean snsapi_userinfo,String state) throws ClientProtocolException, IOException {
 		return connectOauth2Authorize(appid, redirect_uri, snsapi_userinfo, state, null);
 	}
 
@@ -179,7 +183,7 @@ public class SnsAPI extends BaseAPI{
 	 * 			 服务方的appid，在申请创建公众号服务成功后，可在公众号服务详情页找到
 	 * @return url
 	 */
-	public static String connectOauth2Authorize(String appid,String redirect_uri,boolean snsapi_userinfo,String state,String component_appid){
+	public static String connectOauth2Authorize(String appid,String redirect_uri,boolean snsapi_userinfo,String state,String component_appid) throws ClientProtocolException, IOException {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append(OPEN_URI + "/connect/oauth2/authorize?")
@@ -207,7 +211,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param state 可以为空
 	 * @return url
 	 */
-	public static String connectQrconnect(String appid,String redirect_uri,String state){
+	public static String connectQrconnect(String appid,String redirect_uri,String state) throws ClientProtocolException, IOException {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append(OPEN_URI + "/connect/qrconnect?")
@@ -232,7 +236,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param js_code js_code
 	 * @return result
 	 */
-	public static Jscode2sessionResult jscode2session(String appid,String secret,String js_code){
+	public static Jscode2sessionResult jscode2session(String appid,String secret,String js_code) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 			.setUri(BASE_URI + "/sns/jscode2session")
 			.addParameter("appid",appid)
@@ -252,7 +256,7 @@ public class SnsAPI extends BaseAPI{
 	 * @param component_access_token component_access_token
 	 * @return result
 	 */
-	public static Jscode2sessionResult componentJscode2session(String appid,String js_code,String component_appid,String component_access_token){
+	public static Jscode2sessionResult componentJscode2session(String appid,String js_code,String component_appid,String component_access_token) throws ClientProtocolException, IOException {
 		HttpUriRequest httpUriRequest = RequestBuilder.get()
 			.setUri(BASE_URI + "/sns/component/jscode2session")
 			.addParameter("appid",appid)

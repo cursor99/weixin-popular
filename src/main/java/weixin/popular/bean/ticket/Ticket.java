@@ -1,5 +1,7 @@
 package weixin.popular.bean.ticket;
 
+import java.util.Date;
+
 import weixin.popular.bean.BaseResult;
 
 public class Ticket extends BaseResult{
@@ -8,6 +10,8 @@ public class Ticket extends BaseResult{
 
 	private Integer expires_in;
 
+	private long startTime;
+	
 	public String getTicket() {
 		return ticket;
 	}
@@ -24,5 +28,16 @@ public class Ticket extends BaseResult{
 		this.expires_in = expires_in;
 	}
 
+	public long getStartTime() {
+		return startTime;
+	}
 
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+	
+	public boolean isExpired() {
+		return (new Date()).getTime() - startTime >= expires_in;
+	}
+	
 }

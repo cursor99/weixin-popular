@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.liyiorg</groupId>
+    <groupId>com.simple</groupId>
     <artifactId>weixin-popular</artifactId>
     <version>2.8.31</version>
 
     <name>weixin-popular</name>
-    <description>The weixin-popular is a JAVA SDK for weixin. Weixin web url is https://mp.weixin.qq.com.</description>
-    <url>https://github.com/liyiorg/weixin-popular</url>
+    <description>The weixin-popular is a JAVA SDK for weixin forked from liyiorg/weixin-popular. Weixin web url is https://mp.weixin.qq.com.</description>
+    <url>https://github.com/cursor99/weixin-popular</url>
 
     <licenses>
         <license>
@@ -25,9 +25,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:liyiorg/weixin-popular.git</connection>
-        <developerConnection>scm:git:git@github.com:liyiorg/weixin-popular.git</developerConnection>
-        <url>git@github.com:liyiorg/weixin-popular.git</url>
+        <connection>scm:git:git@github.com:cursor99/weixin-popular.git</connection>
+        <developerConnection>scm:git:git@github.com:cursor99/weixin-popular.git</developerConnection>
+        <url>git@github.com:cursor99/weixin-popular.git</url>
     </scm>
 
     <properties>
@@ -110,10 +110,10 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
+    <!-- 
     <profiles>
         <profile>
             <id>release</id>
@@ -181,8 +181,10 @@
             </build>
         </profile>
     </profiles>
-
+    -->
+    
     <distributionManagement>
+		<!-- 
         <snapshotRepository>
             <id>oss</id>
             <name>Sonatype Nexus Snapshots</name>
@@ -193,5 +195,17 @@
             <name>Nexus Release Repository</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
+     	-->
+	    <repository>
+	        <id>simple-releases</id>
+	        <name>Releases</name>
+	        <url>https://maven.simpleinfo.cn/repository/maven-releases/</url>
+	    </repository>
+	    <snapshotRepository>
+	        <id>simple-snapshots</id>
+	        <name>Snapshot</name>
+	        <url>https://maven.simpleinfo.cn/repository/maven-snapshots/</url>
+	    </snapshotRepository>
     </distributionManagement>
+    
 </project>

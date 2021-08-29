@@ -1,5 +1,7 @@
 package weixin.popular.support;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -8,11 +10,16 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import weixin.popular.api.TicketAPI;
+import weixin.popular.bean.AppConfigInfo;
 import weixin.popular.bean.ticket.Ticket;
+import weixin.popular.client.LocalHttpClient;
 
 /**
  * TicketManager ticket(jsapi | wx_card) 自动刷新
@@ -25,7 +32,7 @@ public class TicketManager {
 
 	private static ScheduledExecutorService scheduledExecutorService;
 
-	private static Map<String,String> ticketMap = new ConcurrentHashMap<String,String>();
+	private static Map<String,Ticket> ticketMap = new ConcurrentHashMap<String,Ticket>();
 
 	private static Map<String,ScheduledFuture<?>> futureMap = new ConcurrentHashMap<String, ScheduledFuture<?>>();
 
@@ -116,7 +123,7 @@ public class TicketManager {
 			firestAppid = appid;
 		}
 		for(final String type : types){
-			final String key = appid + KEY_JOIN + type;
+			final String key = getKey(appid, type);
 			if(scheduledExecutorService == null){
 				initScheduledExecutorService();
 			}
@@ -136,19 +143,41 @@ public class TicketManager {
 			futureMap.put(key,scheduledFuture);
 		}
 	}
-	
+		
 	private static void doRun(final String appid, final String type, final String key) {
 		try {
 			String access_token = TokenManager.getToken(appid);
-			Ticket ticket = TicketAPI.ticketGetticket(access_token,type);
-			ticketMap.put(key,ticket.getTicket());
+			AppConfigInfo config = TokenManager.getConfig(appid);
+			Ticket ticket;
+			if(config.getProxy() == 1 && config.getTicketUrl() != null && !config.getTicketUrl().equals("")) 
+				ticket = proxyTicket(appid,config,type);
+			else {
+				ticket = TicketAPI.ticketGetticket(access_token,type);
+				ticket.setStartTime(new Date().getTime());
+			}
+			ticketMap.put(key,ticket);
 			logger.info("TICKET refurbish with appid:{} type:{}",appid,type);
 		} catch (Exception e) {
 			logger.error("TICKET refurbish error with appid:{} type:{}",appid,type);
 			logger.error("", e);
 		}
 	}
-
+	
+	private static String getKey(String appid, String type) {
+		return appid + KEY_JOIN + type;
+	}
+	
+	private static Ticket proxyTicket(String appid,AppConfigInfo config,String type) throws ClientProtocolException, IOException {
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+				.setUri(config.getTicketUrl())
+				.addParameter("grant_type","client_credential")
+				.addParameter("appid", appid)
+				.addParameter("secret", config.getSecret())
+				.addParameter("type", type)
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,Ticket.class);
+	}
+	
 	/**
 	 * 取消 ticket 刷新
 	 */
@@ -172,7 +201,7 @@ public class TicketManager {
 	 */
 	public static void destroyed(String appid,String... types){
 		for(String type : types){
-			String key = appid + KEY_JOIN + type;
+			String key = getKey(appid, type);
 			if(futureMap.containsKey(key)){
 				futureMap.get(key).cancel(true);
 				logger.info("destroyed appid:{} type:{}",appid,type);
@@ -184,20 +213,34 @@ public class TicketManager {
 	 * 获取 ticket(jsapi)
 	 * @param appid appid
 	 * @return ticket
+	 * @throws Exception 
 	 */
-	public static String getTicket(final String appid){
+	public static String getTicket(final String appid) throws Exception{
 		return getTicket(appid ,"jsapi");
 	}
-	
-	
+		
 	/**
 	 * 获取 ticket
 	 * @param appid appid
 	 * @param type jsapi or wx_card
 	 * @return ticket
 	 */
-	public static String getTicket(final String appid,String type){
-		return ticketMap.get(appid + KEY_JOIN + type);
+	public static String getTicket(final String appid,String type) throws Exception{
+		String key = getKey(appid, type);
+		Ticket ticket = ticketMap.get(key);
+		int maxRetries = 10,retries = 0;
+		while((ticket == null || ticket.isExpired()) && retries < maxRetries) {
+			if(retries > 0)
+				Thread.sleep(100);
+			
+			doRun(appid,type,key);
+			ticket = ticketMap.get(key);
+		}
+		
+		if(ticket == null)
+			throw new Exception("Get token exception");
+			
+		return ticket.getTicket();
 	}
 	
 
@@ -205,9 +248,10 @@ public class TicketManager {
 	 * 获取第一个appid 的第一个类型的 ticket
 	 * 适用于单一微信号
 	 * @return ticket
+	 * @throws Exception 
 	 */
-	public static String getDefaultTicket(){
-		return ticketMap.get(firestAppid);
+	public static String getDefaultTicket(String type) throws Exception{
+		return getTicket(firestAppid);
 	}
 
 }

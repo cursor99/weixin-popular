@@ -256,7 +256,129 @@ public class EventMessage {
 	
 	//扫一扫事件推送-------------------------------- END
 	
+	//卡券事件推送
+	@XmlElement(name="CardId")
+	private String cardId;
 	
+	@XmlElement(name="RefuseReason")
+	private String refuseReason;				//卡券审核不通过原因
+	
+	@XmlElement(name="IsGiveByFriend")
+	private Integer isGiveByFriend;			//是否为转赠领取，1代表是，0代表否。
+	
+	@XmlElement(name="FriendUserName")
+	private String friendUserName;				//当IsGiveByFriend为1时填入的字段，表示发起转赠用户的openid
+	
+	@XmlElement(name="UserCardCode")
+	private String userCardCode;				//code序列号。
+	
+	@XmlElement(name="OldUserCardCode")
+	private String oldUserCardCode;				//为保证安全，微信会在转赠发生后变更该卡券的code号，该字段表示转赠前的code。
+	
+	@XmlElement(name="OuterStr")
+	private String outerStr;				//领取场景值，用于领取渠道数据统计。可在生成二维码接口及添加Addcard接口中自定义该字段的字符串值。
+	
+	@XmlElement(name="IsRestoreMemberCard")
+	private Integer isRestoreMemberCard;				//用户删除会员卡后可重新找回，当用户本次操作为找回时，该值为1，否则为0
+	
+	@XmlElement(name="Detail")
+	private String detail;					//库存报警详细信息
+	
+	@XmlElement(name="ModifyBonus")
+	private String modifyBonus;		//变动积分值
+	
+	@XmlElement(name="ModifyBalance")
+	private String modifyBalance;		//变动余额值
+	
+	public String getCardId() {
+		return cardId;
+	}
+
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
+	
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
+	}
+	
+	
+	public Integer getIsGiveByFriend() {
+		return isGiveByFriend;
+	}
+
+	public void setIsGiveByFriend(Integer isGiveByFriend) {
+		this.isGiveByFriend = isGiveByFriend;
+	}
+
+	public String getFriendUserName() {
+		return friendUserName;
+	}
+
+	public void setFriendUserName(String friendUserName) {
+		this.friendUserName = friendUserName;
+	}
+
+	public String getUserCardCode() {
+		return userCardCode;
+	}
+
+	public void setUserCardCode(String userCardCode) {
+		this.userCardCode = userCardCode;
+	}
+
+	public String getOldUserCardCode() {
+		return oldUserCardCode;
+	}
+
+	public void setOldUserCardCode(String oldUserCardCode) {
+		this.oldUserCardCode = oldUserCardCode;
+	}
+
+	public String getOuterStr() {
+		return outerStr;
+	}
+
+	public void setOuterStr(String outerStr) {
+		this.outerStr = outerStr;
+	}
+
+	public Integer getIsRestoreMemberCard() {
+		return isRestoreMemberCard;
+	}
+
+	public void setIsRestoreMemberCard(Integer isRestoreMemberCard) {
+		this.isRestoreMemberCard = isRestoreMemberCard;
+	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getModifyBonus() {
+		return modifyBonus;
+	}
+
+	public void setModifyBonus(String modifyBonus) {
+		this.modifyBonus = modifyBonus;
+	}
+
+	public String getModifyBalance() {
+		return modifyBalance;
+	}
+
+	public void setModifyBalance(String modifyBalance) {
+		this.modifyBalance = modifyBalance;
+	}
+
 	/**
 	 * 其它未定义XML字段 
 	 * @since 2.8.13

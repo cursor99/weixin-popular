@@ -37,6 +37,15 @@ public class BaseInfo {
 	@JSONField(name = "code_type")
 	private String codeType;
 
+	/*
+	 * 是否设置该会员卡中部的按钮同时支持微信支付刷卡和会员卡二维码
+	 */
+	@JSONField(name = "is_pay_and_qrcode")
+	private boolean isPayAndQrcode;
+
+	@JSONField(name = "pay_info")
+	private PayInfo payInfo;
+	
 	/**
 	 * 卡券名，字数上限为9个汉字。(建议涵盖卡券属性、服务及金额)。<br>
 	 * 添加必填
@@ -91,12 +100,6 @@ public class BaseInfo {
 	 */
 	@JSONField(name = "get_limit")
 	private Integer getLimit;
-	
-	/**
-	 * 每人可核销的数量限制,不填写默认为50。
-	 */
-	@JSONField(name = "use_limit")
-	private Integer useLimit;
 
 	/**
 	 * 是否自定义Code码。 填写true或false，默认为false。 <br>
@@ -105,12 +108,6 @@ public class BaseInfo {
 	 */
 	@JSONField(name = "use_custom_code")
 	private Boolean useCustomCode;
-	
-	/**
-	 * 填入 GET_CUSTOM_CODE_MODE_DEPOSIT 表示该卡券为预存code模式卡券， 须导入超过库存数目的自定义code后方可投放， 填入该字段后，quantity字段须为0,须导入code 后再增加库存
-	 */
-	@JSONField(name = "get_custom_code_mode")
-	private String getCustomCodeMode;
 
 	/**
 	 * 是否指定用户领取，填写true或false。默认为false。 <br>
@@ -199,13 +196,29 @@ public class BaseInfo {
 	 * 不支持修改
 	 */
 	private String source;
-	
-	/**
-	 * 会员卡是否支持全部门店，填写后商户门店更新时会自动同步至卡券
-	 */
-	@JSONField(name = "use_all_locations")
-	private Boolean useAllLocations;				//2.8.20
 
+	/*
+	 * 填写true为用户点击进入会员卡时推送事件，默认为false。详情见 进入会员卡事件推送
+	 */
+	@JSONField(name = "need_push_on_view")
+	private boolean needPushOnView;
+	
+	/*
+	 * 会员卡动态码
+	 */
+	@JSONField(name = "use_dynamic_code")
+	private Boolean useDynamicCode;
+	
+	private String status;
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	/**
 	 * 卡券的商户logo。
 	 */
@@ -235,6 +248,14 @@ public class BaseInfo {
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
 	}
+	
+	public boolean isPayAndQrcode() {
+		return isPayAndQrcode;
+	}
+
+	public void setPayAndQrcode(boolean isPayAndQrcode) {
+		this.isPayAndQrcode = isPayAndQrcode;
+	}
 
 	/**
 	 * "CODE_TYPE_TEXT"，文本；<br>
@@ -259,6 +280,24 @@ public class BaseInfo {
 	 */
 	public void setCodeType(String codeType) {
 		this.codeType = codeType;
+	}
+
+	
+	
+	public PayInfo getPayInfo() {
+		return payInfo;
+	}
+
+	public void setPayInfo(PayInfo payInfo) {
+		this.payInfo = payInfo;
+	}
+
+	public boolean isNeedPushOnView() {
+		return needPushOnView;
+	}
+
+	public void setNeedPushOnView(boolean needPushOnView) {
+		this.needPushOnView = needPushOnView;
 	}
 
 	/**
@@ -610,29 +649,11 @@ public class BaseInfo {
 		this.source = source;
 	}
 
-	public Boolean getUseAllLocations() {
-		return useAllLocations;
+	public Boolean getUseDynamicCode() {
+		return useDynamicCode;
 	}
 
-	public void setUseAllLocations(Boolean useAllLocations) {
-		this.useAllLocations = useAllLocations;
+	public void setUseDynamicCode(Boolean useDynamicCode) {
+		this.useDynamicCode = useDynamicCode;
 	}
-
-	public Integer getUseLimit() {
-		return useLimit;
-	}
-
-	public void setUseLimit(Integer useLimit) {
-		this.useLimit = useLimit;
-	}
-
-	public String getGetCustomCodeMode() {
-		return getCustomCodeMode;
-	}
-
-	public void setGetCustomCodeMode(String getCustomCodeMode) {
-		this.getCustomCodeMode = getCustomCodeMode;
-	}
-	
-	
 }

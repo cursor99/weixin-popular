@@ -93,7 +93,7 @@ public class TicketManager {
 	 * @param appid appid
 	 * @param types [jsapi,wx_card]
 	 */
-	public static void init(final String appid,String types){
+	public static void init(final String appid,String... types){
 		init(appid,0,60*119,types);
 	}
 	

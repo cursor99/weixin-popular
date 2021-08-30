@@ -1,47 +1,53 @@
 package weixin.popular.bean.sns;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import weixin.popular.bean.BaseResult;
 
 public class Jscode2sessionResult extends BaseResult {
 
-	private String openid;
+	@JSONField(name = "openid")
+	private String openId;
 
-	private String session_key;
+	@JSONField(name = "session_key")
+	private String sessionKey;
 
-	private Integer expires_in;
+	@JSONField(name = "expires_in")
+	private Integer expiresIn;
 
-	private String unionid; // 2.8.16
+	@JSONField(name = "unionid")
+	private String unionId; // 2.8.16
 
-	public String getOpenid() {
-		return openid;
+	public String getOpenId() {
+		return openId;
 	}
 
-	public void setOpenid(String openid) {
-		this.openid = openid;
+	public void setOpenId(String openid) {
+		this.openId = openid;
 	}
 
-	public String getSession_key() {
-		return session_key;
+	public String getSessionKey() {
+		return sessionKey;
 	}
 
-	public void setSession_key(String session_key) {
-		this.session_key = session_key;
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
 	}
 
-	public Integer getExpires_in() {
-		return expires_in;
+	public Integer getExpiresIn() {
+		return expiresIn;
 	}
 
-	public void setExpires_in(Integer expires_in) {
-		this.expires_in = expires_in;
+	public void setExpiresIn(Integer expiresIn) {
+		this.expiresIn = expiresIn;
 	}
 
-	public String getUnionid() {
-		return unionid;
+	public String getUnionId() {
+		return unionId;
 	}
 
-	public void setUnionid(String unionid) {
-		this.unionid = unionid;
+	public void setUnionId(String unionid) {
+		this.unionId = unionid;
 	}
 
 }

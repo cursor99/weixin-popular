@@ -29,6 +29,9 @@ public class CodeGet {
 	@JSONField(name = "check_consume")
 	private Boolean checkConsume;
 
+	@JSONField(name = "is_expire_dynamic_code")
+	private Boolean isExpireDynamicCode;
+	
 	/**
 	 * 卡券ID代表一类卡券。自定义code卡券必填。
 	 * @return 卡券ID
@@ -76,5 +79,13 @@ public class CodeGet {
 	 */
 	public void setCheckConsume(Boolean checkConsume) {
 		this.checkConsume = checkConsume;
+	}
+	
+	public Boolean getIsExpireDynamicCode() {
+		return isExpireDynamicCode;
+	}
+
+	public void setIsExpireDynamicCode(Boolean isExpireDynamicCode) {
+		this.isExpireDynamicCode = isExpireDynamicCode;
 	}
 }

@@ -9,12 +9,15 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
 
 import weixin.popular.bean.BaseResult;
+import weixin.popular.bean.card.ActivateBean;
+import weixin.popular.bean.card.ActivateForm;
 import weixin.popular.bean.card.CardType;
 import weixin.popular.bean.card.CashCard;
 import weixin.popular.bean.card.DiscountCard;
 import weixin.popular.bean.card.GeneralCouponCard;
 import weixin.popular.bean.card.GiftCard;
 import weixin.popular.bean.card.GrouponCard;
+import weixin.popular.bean.card.MemberCard;
 import weixin.popular.bean.card.batchget.BatchGet;
 import weixin.popular.bean.card.batchget.BatchGetResult;
 import weixin.popular.bean.card.code.checkcode.CodeCheckCode;
@@ -27,6 +30,8 @@ import weixin.popular.bean.card.code.deposit.CodeDeposit;
 import weixin.popular.bean.card.code.deposit.CodeDepositResult;
 import weixin.popular.bean.card.code.get.CodeGet;
 import weixin.popular.bean.card.code.get.CodeGetResult;
+import weixin.popular.bean.card.code.get.MemberGet;
+import weixin.popular.bean.card.code.get.MemberGetResult;
 import weixin.popular.bean.card.code.getdepositcount.CodeGetDepositCount;
 import weixin.popular.bean.card.code.getdepositcount.CodeGetDepositCountResult;
 import weixin.popular.bean.card.code.unavailable.CodeUnavailable;
@@ -45,6 +50,8 @@ import weixin.popular.bean.card.modifystock.ModifyStock;
 import weixin.popular.bean.card.mpnews.gethtml.MpNewsGetHtml;
 import weixin.popular.bean.card.mpnews.gethtml.MpNewsGetHtmlResult;
 import weixin.popular.bean.card.paycell.set.PaySellSet;
+import weixin.popular.bean.card.paygift.PayGiftResult;
+import weixin.popular.bean.card.paygift.PayGiftRule;
 import weixin.popular.bean.card.qrcode.create.QrCodeCreate;
 import weixin.popular.bean.card.qrcode.create.QrCodeCreateMultiple;
 import weixin.popular.bean.card.qrcode.create.QrCodeCreateResult;
@@ -54,6 +61,9 @@ import weixin.popular.bean.card.update.UpdateDiscount;
 import weixin.popular.bean.card.update.UpdateGeneralCoupon;
 import weixin.popular.bean.card.update.UpdateGift;
 import weixin.popular.bean.card.update.UpdateGroupon;
+import weixin.popular.bean.card.update.UpdateMember;
+import weixin.popular.bean.card.update.UpdateMemberCard;
+import weixin.popular.bean.card.update.UpdateMemberResult;
 import weixin.popular.bean.card.update.UpdateResult;
 import weixin.popular.bean.card.user.getcardlist.UserGetCardList;
 import weixin.popular.bean.card.user.getcardlist.UserGetCardListResult;
@@ -248,6 +258,46 @@ public class CardAPI extends BaseAPI {
 				CodeGetResult.class);
 	}
 
+	/*
+	 * 查询会员信息
+	 * 
+	 */
+	public static MemberGetResult memberGet(String accessToken,String postJson) throws ClientProtocolException, IOException{
+		HttpUriRequest httpUriRequest = RequestBuilder
+				.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/card/membercard/userinfo/get")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+				.setEntity(new StringEntity(postJson, Charset.forName("utf-8")))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,
+				MemberGetResult.class);
+	}
+	
+	public static MemberGetResult memberGet(String accessToken,MemberGet memberGet) throws ClientProtocolException, IOException{ 
+		return memberGet(accessToken,JsonUtil.toJSONString(memberGet));
+	}
+
+	/*
+	 * 更新会员信息
+	 * 
+	 */
+	public static UpdateMemberResult updateMemberInfo(String accessToken,String postJson) throws ClientProtocolException, IOException{
+		HttpUriRequest httpUriRequest = RequestBuilder
+				.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/card/membercard/updateuser")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+				.setEntity(new StringEntity(postJson, Charset.forName("utf-8")))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,
+				UpdateMemberResult.class);
+	}
+	
+	public static UpdateMemberResult updateMemberInfo(String accessToken,UpdateMember updateMember) throws ClientProtocolException, IOException{
+		return updateMemberInfo(accessToken,JsonUtil.toJSONString(updateMember));
+	}
+	
 	/**
 	 * 查询导入code数目
 	 * @param accessToken accessToken
@@ -258,7 +308,25 @@ public class CardAPI extends BaseAPI {
 		return codeGetDepositCount(accessToken,
 				JsonUtil.toJSONString(codeCount));
 	}
-
+	/*
+	 * 激活
+	 */
+	public static BaseResult activate(String accessToken,String postJson) throws ClientProtocolException, IOException{
+		HttpUriRequest httpUriRequest = RequestBuilder
+				.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/card/membercard/activate")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+				.setEntity(new StringEntity(postJson, Charset.forName("utf-8")))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,
+				MemberGetResult.class);
+	}
+	
+	public static BaseResult activate(String accessToken,ActivateBean form) throws ClientProtocolException, IOException{
+		return activate(accessToken,JsonUtil.toJSONString(form));
+	}
+	
 	/**
 	 * 查询导入code数目
 	 * @param accessToken accessToken
@@ -276,7 +344,26 @@ public class CardAPI extends BaseAPI {
 		return LocalHttpClient.executeJsonResult(httpUriRequest,
 				CodeGetDepositCountResult.class);
 	}
-
+	/*
+	 * 设置开卡字段
+	 * 
+	 */
+	public static BaseResult setActivateForm(String accessToken,String postJson) throws ClientProtocolException, IOException{
+		HttpUriRequest httpUriRequest = RequestBuilder
+				.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/card/membercard/activateuserform/set")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+				.setEntity(new StringEntity(postJson, Charset.forName("utf-8")))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,
+				MemberGetResult.class);
+	}
+	
+	public static BaseResult setActivateForm(String accessToken,ActivateForm form) throws ClientProtocolException, IOException{
+		return setActivateForm(accessToken,JsonUtil.toJSONString(form));
+	}
+	
 	/**
 	 * 设置卡券失效
 	 * @param accessToken accessToken
@@ -353,7 +440,21 @@ public class CardAPI extends BaseAPI {
 	public static CreateResult create(String accessToken, Create<?> card) throws ClientProtocolException, IOException {
 		return create(accessToken, JsonUtil.toJSONString(card));
 	}
-
+	
+	/**
+	 * 创建会员卡
+	 * @param accessToken accessToken
+	 * @param memberCard memberCard
+	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	public static CreateResult create(String accessToken, MemberCard memberCard) throws ClientProtocolException, IOException {
+		Create<MemberCard> card = new Create<MemberCard>();
+		card.setCard(memberCard);
+		return create(accessToken, card);
+	}
+	
 	/**
 	 * 创建代金券
 	 * @param accessToken accessToken
@@ -802,6 +903,18 @@ public class CardAPI extends BaseAPI {
 	}
 
 	/**
+	 * 更改卡券信息接口(会员卡)
+	 * @param accessToken accessToken
+	 * @param updateMember updateMember
+	 * @return result
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	public static UpdateResult update(String accessToken, UpdateMemberCard updateMember) throws ClientProtocolException, IOException {
+		return update(accessToken, JsonUtil.toJSONString(updateMember));
+	}
+
+	/**
 	 * 获取用户已领取卡券
 	 * @param accessToken accessToken
 	 * @param postJson postJson
@@ -830,6 +943,53 @@ public class CardAPI extends BaseAPI {
 			UserGetCardList userGetCardList) throws ClientProtocolException, IOException {
 		return userGetCardList(accessToken,
 				JsonUtil.toJSONString(userGetCardList));
+	}
+
+	/*
+	 * 添加支付后投放卡券规则
+	 */
+	public static PayGiftResult payGiftCardAdd(String accessToken,String postJson) throws ClientProtocolException, IOException {
+		
+		HttpUriRequest httpUriRequest = RequestBuilder
+				.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/card/paygiftcard/add")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+				.setEntity(new StringEntity(postJson, Charset.forName("utf-8")))
+				.build();
+		
+		return LocalHttpClient.executeJsonResult(httpUriRequest, 	PayGiftResult.class);
+		
+	}
+	
+	/*
+	 *  删除支付后投放卡券规则
+	 */
+	public static BaseResult payGiftCardDelete(String accessToken,	String postJson) throws ClientProtocolException, IOException {
+		
+		HttpUriRequest httpUriRequest = RequestBuilder
+				.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/card/paygiftcard/delete")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(accessToken))
+				.setEntity(new StringEntity(postJson, Charset.forName("utf-8")))
+				.build();
+		
+		return LocalHttpClient.executeJsonResult(httpUriRequest, 	PayGiftResult.class);
+		
+	}
+	/*
+	 *  删除支付后投放卡券规则
+	 */
+	public static BaseResult payGiftCardDelete(String accessToken,	Integer ruleId) throws ClientProtocolException, IOException {
+		return payGiftCardDelete(accessToken,"{\"rule_id\":" + ruleId + "}");
+	}
+	
+	/*
+	 * 添加支付后投放卡券规则
+	 */
+	public static PayGiftResult payGiftCardAdd(String accessToken,PayGiftRule rule) throws ClientProtocolException, IOException {
+		return payGiftCardAdd(accessToken, JsonUtil.toJSONString(rule));
 	}
 
 }

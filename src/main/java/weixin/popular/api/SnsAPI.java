@@ -158,7 +158,11 @@ public class SnsAPI extends BaseAPI{
 	public static User userinfo(String access_token,String openid,String lang) throws ClientProtocolException, IOException {
 		return userinfo(access_token, openid, lang,0);
 	}
-
+	
+	public static String connectOauth2Authorize(String appid,String redirect_uri,String state) throws ClientProtocolException, IOException{
+		return connectOauth2Authorize(appid,redirect_uri,false,state,null);
+	}
+	
 	/**
 	 * 生成网页授权 URL
 	 * @param appid appid

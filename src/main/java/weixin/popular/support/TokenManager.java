@@ -157,7 +157,8 @@ public class TokenManager{
 	 * 取消 token 刷新
 	 */
 	public static void destroyed(){
-		scheduledExecutorService.shutdownNow();
+		if(scheduledExecutorService != null)
+			scheduledExecutorService.shutdownNow();
 		logger.info("destroyed");
 	}
 	

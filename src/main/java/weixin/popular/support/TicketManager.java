@@ -182,7 +182,8 @@ public class TicketManager {
 	 * 取消 ticket 刷新
 	 */
 	public static void destroyed(){
-		scheduledExecutorService.shutdownNow();
+		if(scheduledExecutorService != null)
+			scheduledExecutorService.shutdownNow();
 		logger.info("destroyed");
 	}
 	

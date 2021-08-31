@@ -98,6 +98,46 @@ public class WxaAPI extends BaseAPI {
 				.build();
 		return LocalHttpClient.executeJsonResult(httpUriRequest,BaseResult.class);
 	}
+		
+	/*
+	 * 加急审核申请
+	 * */
+	public static BaseResult speedupaudit(String access_token, String auditid) throws ClientProtocolException, IOException {
+		String json = String.format("{\"auditid\":\"%s\"}",auditid);
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI+"/wxa/speedupaudit")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
+				.setEntity(new StringEntity(json,Charset.forName("utf-8")))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,BaseResult.class);
+
+	}
+	
+	/*
+	 * 查询第三方平台的可加急次数
+	 * */
+	public static QueryQuotaResult queryquota(String access_token) throws ClientProtocolException, IOException {
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+				.setUri(BASE_URI+"/wxa/queryquota")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,QueryQuotaResult.class);
+	}
+	
+	/*
+	 * 设置业务域名
+	 * */
+	public static BaseResult setwebviewdomain(String access_token, WebviewDomain webviewDomain) throws ClientProtocolException, IOException {
+		String json = JsonUtil.toJSONString(webviewDomain);
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI+"/wxa/setwebviewdomain")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(access_token))
+				.setEntity(new StringEntity(json,Charset.forName("utf-8")))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,BaseResult.class);
+	}
 	
 	/**
 	 * 成员管理 <br>

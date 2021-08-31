@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import weixin.popular.bean.BaseResult;
 import weixin.popular.bean.component.*;
+import weixin.popular.bean.wxa.ComponentTemplateResult;
 import weixin.popular.client.LocalHttpClient;
 
 /**
@@ -25,6 +26,31 @@ public class ComponentAPI extends BaseAPI {
 
     private static Logger logger = LoggerFactory.getLogger(CommentAPI.class);
 
+	/**
+	 * 生成授权 二维码URL 
+	 * @param component_appid 第三方平台ID
+	 * @param pre_auth_code 预授权码
+	 * @param redirect_uri 重定向URI
+	 * @return URL
+	 */
+	public static String generateComponentAuthUrl(String componentAppId,
+			String preCode,
+			String reDirectUrl) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append(MP_URI + "/safe/bindcomponent?")
+			.append("action=bindcomponent&no_scan=1")
+			.append("&component_appid=").append(componentAppId)
+			.append("&pre_auth_code=").append(preCode)
+			.append("&redirect_uri=").append(URLEncoder.encode(reDirectUrl, "utf-8"))
+			.append("&auth_type=2#wechat_redirect");
+			return sb.toString();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
     /**
      * 生成授权页 URL
      *
@@ -67,7 +93,34 @@ public class ComponentAPI extends BaseAPI {
         }
         return null;
     }
-
+    
+	/*
+	 * 将草稿箱草稿添加到代码库里面
+	 * */
+	public static BaseResult addtotemplate(String component_access_token, String draft_id) throws ClientProtocolException, IOException {
+		
+		String postJsonData = String.format("{\"draft_id\":\"%1$s\"}",
+				draft_id);
+		HttpUriRequest httpUriRequest = RequestBuilder.post()
+		.setHeader(jsonHeader)
+		.setUri(BASE_URI + "/cgi-bin/component/addtotemplate")
+		.setEntity(new StringEntity(postJsonData,Charset.forName("utf-8")))
+		.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest,BaseResult.class);
+	}
+	
+	/*
+	 * 获取草稿箱列表
+	 * */
+	public static GetDraftListResult gettemplatedraftlist(String component_access_token) throws ClientProtocolException, IOException {
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/wxa/gettemplatedraftlist")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(component_access_token))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest, GetDraftListResult.class);
+	}
+	
     /**
      * 生成移动端快速授权URL
      * @since 2.8.22
@@ -307,4 +360,14 @@ public class ComponentAPI extends BaseAPI {
 
         return LocalHttpClient.executeJsonResult(httpUriRequest, ApiGetAuthorizerListResult.class);
     }
+    
+	public static ComponentTemplateResult get_template_list(String component_access_token) throws ClientProtocolException, IOException {
+		HttpUriRequest httpUriRequest = RequestBuilder.get()
+				.setHeader(jsonHeader)
+				.setUri(BASE_URI + "/wxa/gettemplatelist")
+				.addParameter(PARAM_ACCESS_TOKEN, API.accessToken(component_access_token))
+				.build();
+		return LocalHttpClient.executeJsonResult(httpUriRequest, ComponentTemplateResult.class);
+	}
+    
 }

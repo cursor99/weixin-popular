@@ -17,6 +17,15 @@ import org.w3c.dom.Node;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EventMessage {
 
+	//第三方平台票据和授权通知事件
+	@XmlElement(name="AppId")
+	private String appId;
+	
+	@XmlElement(name="InfoType")
+	private String infoType;
+	
+	private String msgContent;
+	
 	//base
 	@XmlElement(name="ToUserName")
 	private String toUserName; 		//开发者微信号
@@ -385,7 +394,7 @@ public class EventMessage {
 	 */
 	@XmlAnyElement
 	private List<org.w3c.dom.Element> otherElements;	//com.sun.org.apache.xerces.internal.dom.ElementNSImpl
-
+	
 	public List<org.w3c.dom.Element> getOtherElements() {
 		return otherElements;
 	}
@@ -862,4 +871,27 @@ public class EventMessage {
 		this.copyrightCheckResult = copyrightCheckResult;
 	}
 	
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getInfoType() {
+		return infoType;
+	}
+
+	public void setInfoType(String infoType) {
+		this.infoType = infoType;
+	}
+
+	public String getMsgContent() {
+		return msgContent;
+	}
+
+	public void setMsgContent(String msgContent) {
+		this.msgContent = msgContent;
+	}
 }

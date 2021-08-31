@@ -1,5 +1,7 @@
 package weixin.popular.bean.component;
 
+import java.util.Date;
+
 import weixin.popular.bean.BaseResult;
 
 public class ComponentAccessToken extends BaseResult{
@@ -7,7 +9,9 @@ public class ComponentAccessToken extends BaseResult{
 	private String component_access_token;
 
 	private int expires_in;
-
+	
+	private long startTime;
+	
 	public String getComponent_access_token() {
 		return component_access_token;
 	}
@@ -24,5 +28,16 @@ public class ComponentAccessToken extends BaseResult{
 		this.expires_in = expires_in;
 	}
 
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+	
+	public boolean isExpired() {
+		return ((new Date()).getTime() - startTime)/1000 >= expires_in;
+	}
 
 }

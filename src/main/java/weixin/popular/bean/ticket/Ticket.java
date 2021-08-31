@@ -37,7 +37,7 @@ public class Ticket extends BaseResult{
 	}
 	
 	public boolean isExpired() {
-		return (new Date()).getTime() - startTime >= expires_in;
+		return ((new Date()).getTime() - startTime)/1000 >= expires_in;
 	}
 	
 }

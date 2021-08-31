@@ -5,7 +5,7 @@ import java.util.Date;
 import weixin.popular.bean.BaseResult;
 
 public class Token extends BaseResult {
-
+	
 	private String access_token;
 	private int expires_in;
 	private long startTime;
@@ -35,6 +35,6 @@ public class Token extends BaseResult {
 	}
 	
 	public boolean isExpired() {
-		return (new Date()).getTime() - startTime >= expires_in;
+		return ((new Date()).getTime() - startTime)/1000 >= expires_in;
 	}
 }

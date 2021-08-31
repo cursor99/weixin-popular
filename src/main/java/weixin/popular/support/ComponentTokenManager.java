@@ -194,20 +194,21 @@ public class ComponentTokenManager {
 	
 	public static AuthToken getAuthToken(String authAppId)  throws Exception{
 		AuthToken token = authTokenMap.get(authAppId);
+		if(token == null)
+			throw new Exception("AuthToken is not initialized. AuthAppId" + authAppId);
+		
 		int maxRetries = 10,retries = 0;
 		while((token == null || token.isExpired()) && retries < maxRetries) {
-			if(retries > 0)
-				Thread.sleep(1000);
-			
-			if(token == null)
-				continue;
-			
 			doRunRefreshAuthAppAccessToken(token.getPlatformAppId(), authAppId, token.getRefreshToken());
 			token = authTokenMap.get(authAppId);
+			if(token != null && !token.isExpired())
+				break;
+			
 			retries++;
+			Thread.sleep(100);
 		}
 		
-		if(token == null)
+		if(token.isExpired())
 			throw new Exception("Get authToken timeout.");
 		
 		return token;
@@ -221,16 +222,22 @@ public class ComponentTokenManager {
 		ComponentAccessToken token = accessTokenCacheMap.get(appId);
 		int maxRetries = 10,retries = 0;
 		while((token == null || token.isExpired()) && retries < maxRetries) {
-			if(retries > 0)
-				Thread.sleep(100);
 			
 			PlatformConfigInfo conf = platformConfig.get(appId);
+			if(conf == null)
+				throw new Exception("Platform is not initialized. Platform appid = " + appId);
+			
 			doRunRefreshComponentAccessToken(appId,conf.getSecret(),conf.getTicket());
 			token = accessTokenCacheMap.get(appId);
+			if(token != null && !token.isExpired())
+				break;
+			
 			retries++;
+			Thread.sleep(100);
+			
 		}
 		
-		if(token == null)
+		if(token == null || token.isExpired())
 			throw new Exception("Get token exception");
 		
 		return token.getComponent_access_token();

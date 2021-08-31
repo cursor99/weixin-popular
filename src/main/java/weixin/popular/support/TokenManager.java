@@ -183,14 +183,16 @@ public class TokenManager{
 		Token token = tokenMap.get(appid);
 		int maxRetries = 10,retries = 0;
 		while((token == null || token.isExpired()) && retries < maxRetries) {
-			if(retries > 0)
-				Thread.sleep(100);
-			
 			doRun(appid);
 			token = tokenMap.get(appid);
+			if(token != null && !token.isExpired())
+				break;
+			
 			retries++;
+			Thread.sleep(100);
 		}
-		if(token == null)
+		
+		if(token == null || token.isExpired())
 			throw new Exception("Get token exception");
 		
 		return token.getAccess_token();

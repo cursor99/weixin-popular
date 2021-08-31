@@ -231,14 +231,16 @@ public class TicketManager {
 		Ticket ticket = ticketMap.get(key);
 		int maxRetries = 10,retries = 0;
 		while((ticket == null || ticket.isExpired()) && retries < maxRetries) {
-			if(retries > 0)
-				Thread.sleep(100);
-			
 			doRun(appid,type,key);
 			ticket = ticketMap.get(key);
+			if(ticket != null && !ticket.isExpired())
+				break;
+			
+			retries++;
+			Thread.sleep(100);
 		}
 		
-		if(ticket == null)
+		if(ticket == null || ticket.isExpired())
 			throw new Exception("Get token exception");
 			
 		return ticket.getTicket();

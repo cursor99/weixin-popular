@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.JAXBException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -86,8 +87,9 @@ public abstract class PayUtil {
 	 * @param key
 	 *            key
 	 * @return xml
+	 * @throws JAXBException 
 	 */
-	public static String generateMchPayNativeReplyXML(MchPayNativeReply mchPayNativeReply, String key) {
+	public static String generateMchPayNativeReplyXML(MchPayNativeReply mchPayNativeReply, String key) throws JAXBException {
 		Map<String, String> map = MapUtil.objectToMap(mchPayNativeReply);
 		String sign = SignatureUtil.generateSign(map, key);
 		mchPayNativeReply.setSign(sign);

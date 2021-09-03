@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,6 +18,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
+import org.xml.sax.SAXException;
 
 import weixin.popular.bean.paymch.Authcodetoopenid;
 import weixin.popular.bean.paymch.AuthcodetoopenidResult;
@@ -123,9 +127,10 @@ public class PayMchAPI extends BaseAPI{
 	 * @return sandbox_signkey
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
+	 * @throws JAXBException 
 	 * @since 2.8.13
 	 */
-	public static SandboxSignkey sandboxnewPayGetsignkey(String mch_id,String key) throws ClientProtocolException, IOException{
+	public static SandboxSignkey sandboxnewPayGetsignkey(String mch_id,String key) throws ClientProtocolException, IOException, JAXBException{
 		MchBaseResult mchBaseResult = new MchBaseResult();
 		mchBaseResult.setMch_id(mch_id);
 		mchBaseResult.setNonce_str(UUID.randomUUID().toString().replace("-", ""));
@@ -146,8 +151,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param unifiedorder unifiedorder
 	 * @param key key
 	 * @return UnifiedorderResult
+	 * @throws JAXBException 
 	 */
-	public static UnifiedorderResult payUnifiedorder(Unifiedorder unifiedorder,String key) throws ClientProtocolException, IOException {
+	public static UnifiedorderResult payUnifiedorder(Unifiedorder unifiedorder,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(unifiedorder, "detail", "scene_info");
 		//@since 2.8.8 detail 字段签名处理
 		if(unifiedorder.getDetail() != null){
@@ -175,8 +181,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param micropay micropay
 	 * @param key key
 	 * @return MicropayResult
+	 * @throws JAXBException 
 	 */
-	public static MicropayResult payMicropay(Micropay micropay,String key) throws ClientProtocolException, IOException {
+	public static MicropayResult payMicropay(Micropay micropay,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(micropay);
 		//@since 2.8.14 detail 字段签名处理
 		if(micropay.getDetail() != null){
@@ -202,8 +209,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param mchOrderquery mchOrderquery
 	 * @param key key
 	 * @return MchOrderInfoResult
+	 * @throws JAXBException 
 	 */
-	public static MchOrderInfoResult payOrderquery(MchOrderquery mchOrderquery,String key) throws ClientProtocolException, IOException {
+	public static MchOrderInfoResult payOrderquery(MchOrderquery mchOrderquery,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(mchOrderquery);
 		String sign = SignatureUtil.generateSign(map,mchOrderquery.getSign_type(),key);
 		mchOrderquery.setSign(sign);
@@ -223,8 +231,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param closeorder closeorder
 	 * @param key 商户支付密钥
 	 * @return MchBaseResult
+	 * @throws JAXBException 
 	 */
-	public static MchBaseResult payCloseorder(Closeorder closeorder,String key) throws ClientProtocolException, IOException {
+	public static MchBaseResult payCloseorder(Closeorder closeorder,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(closeorder);
 		String sign = SignatureUtil.generateSign(map,closeorder.getSign_type(),key);
 		closeorder.setSign(sign);
@@ -247,8 +256,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param secapiPayRefund secapiPayRefund
 	 * @param key 商户支付密钥
 	 * @return SecapiPayRefundResult
+	 * @throws JAXBException 
 	 */
-	public static SecapiPayRefundResult secapiPayRefund(SecapiPayRefund secapiPayRefund,String key) throws ClientProtocolException, IOException {
+	public static SecapiPayRefundResult secapiPayRefund(SecapiPayRefund secapiPayRefund,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( secapiPayRefund);
 		String sign = SignatureUtil.generateSign(map,secapiPayRefund.getSign_type(),key);
 		secapiPayRefund.setSign(sign);
@@ -268,8 +278,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param mchReverse mchReverse
 	 * @param key key
 	 * @return MchReverseResult
+	 * @throws JAXBException 
 	 */
-	public static MchReverseResult secapiPayReverse(MchReverse mchReverse,String key) throws ClientProtocolException, IOException {
+	public static MchReverseResult secapiPayReverse(MchReverse mchReverse,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( mchReverse);
 		String sign = SignatureUtil.generateSign(map,mchReverse.getSign_type(),key);
 		mchReverse.setSign(sign);
@@ -290,8 +301,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param refundquery refundquery
 	 * @param key 商户支付密钥
 	 * @return RefundqueryResult
+	 * @throws JAXBException 
 	 */
-	public static RefundqueryResult payRefundquery(Refundquery refundquery,String key) throws ClientProtocolException, IOException {
+	public static RefundqueryResult payRefundquery(Refundquery refundquery,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(refundquery);
 		String sign = SignatureUtil.generateSign(map,refundquery.getSign_type(),key);
 		refundquery.setSign(sign);
@@ -309,8 +321,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param downloadbill downloadbill
 	 * @param key key
 	 * @return DownloadbillResult
+	 * @throws JAXBException 
 	 */
-	public static DownloadbillResult payDownloadbill(MchDownloadbill downloadbill,String key) throws ClientProtocolException, IOException {
+	public static DownloadbillResult payDownloadbill(MchDownloadbill downloadbill,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(downloadbill);
 		String sign = SignatureUtil.generateSign(map,downloadbill.getSign_type(),key);
 		downloadbill.setSign(sign);
@@ -340,7 +353,12 @@ public class PayMchAPI extends BaseAPI{
 					
 					// 失败
                     if(str.startsWith("<xml>")){
-                    	return XMLConverUtil.convertToObject(DownloadbillResult.class,str);
+                    	try {
+							return XMLConverUtil.convertToObject(DownloadbillResult.class,str);
+						} catch (ParserConfigurationException | JAXBException | SAXException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }else{
                     	DownloadbillResult dr = new DownloadbillResult();
                     	dr.setData(str);
@@ -356,6 +374,7 @@ public class PayMchAPI extends BaseAPI{
                 } else {
                     throw new ClientProtocolException("Unexpected response status: " + status);
                 }
+				return null;
 			}
 		});
 	}
@@ -374,8 +393,9 @@ public class PayMchAPI extends BaseAPI{
 	 * data 文本表格数据 <br>
 	 * sign_type 签名类型 <br>
 	 * sign 签名
+	 * @throws JAXBException 
 	 */
-	public static PayDownloadfundflowResult payDownloadfundflow(PayDownloadfundflow payDownloadfundflow,String key) throws ClientProtocolException, IOException {
+	public static PayDownloadfundflowResult payDownloadfundflow(PayDownloadfundflow payDownloadfundflow,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(payDownloadfundflow);
 		String sign_type = map.get("sign_type");
 		//设置默认签名类型HMAC-SHA256
@@ -408,7 +428,11 @@ public class PayMchAPI extends BaseAPI{
 							}
 							EntityUtils.consume(entity);
 							if(str.startsWith("<xml>")){
-								return XMLConverUtil.convertToObject(PayDownloadfundflowResult.class, str);
+								try {
+									return XMLConverUtil.convertToObject(PayDownloadfundflowResult.class, str);
+								}catch(Exception e) {
+									throw new ClientProtocolException(e);
+								}
 							} else {
 								PayDownloadfundflowResult dr = new PayDownloadfundflowResult();
 								dr.setData(str);
@@ -433,8 +457,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param shorturl shorturl
 	 * @param key 商户支付密钥
 	 * @return MchShorturlResult
+	 * @throws JAXBException 
 	 */
-	public static MchShorturlResult toolsShorturl(MchShorturl shorturl,String key) throws ClientProtocolException, IOException {
+	public static MchShorturlResult toolsShorturl(MchShorturl shorturl,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(shorturl);
 		String sign = SignatureUtil.generateSign(map,shorturl.getSign_type(),key);
 		shorturl.setSign(sign);
@@ -454,8 +479,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @return AuthcodetoopenidResult
 	 * @throws IOException 
 	 * @throws ClientProtocolException 
+	 * @throws JAXBException 
 	 */
-	public static AuthcodetoopenidResult toolsAuthcodetoopenid(Authcodetoopenid authcodetoopenid,String key) throws ClientProtocolException, IOException{
+	public static AuthcodetoopenidResult toolsAuthcodetoopenid(Authcodetoopenid authcodetoopenid,String key) throws ClientProtocolException, IOException, JAXBException{
 		Map<String,String> map = MapUtil.objectToMap(authcodetoopenid);
 		String sign = SignatureUtil.generateSign(map,authcodetoopenid.getSign_type(),key);
 		authcodetoopenid.setSign(sign);
@@ -474,8 +500,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param report report
 	 * @param key key
 	 * @return MchBaseResult
+	 * @throws JAXBException 
 	 */
-	public static MchBaseResult payitilReport(Report report,String key) throws ClientProtocolException, IOException {
+	public static MchBaseResult payitilReport(Report report,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(report);
 		String sign = SignatureUtil.generateSign(map,report.getSign_type(),key);
 		report.setSign(sign);
@@ -493,8 +520,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param sendCoupon sendCoupon
 	 * @param key key
 	 * @return SendCouponResult
+	 * @throws JAXBException 
 	 */
-	public static SendCouponResult mmpaymkttransfersSend_coupon(SendCoupon sendCoupon,String key){
+	public static SendCouponResult mmpaymkttransfersSend_coupon(SendCoupon sendCoupon,String key) throws JAXBException{
 		Map<String,String> map = MapUtil.objectToMap( sendCoupon);
 		String sign = SignatureUtil.generateSign(map,sendCoupon.getSign_type(),key);
 		sendCoupon.setSign(sign);
@@ -512,8 +540,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param queryCouponStock queryCouponStock
 	 * @param key key
 	 * @return QueryCouponStockResult
+	 * @throws JAXBException 
 	 */
-	public static QueryCouponStockResult mmpaymkttransfersQuery_coupon_stock(QueryCouponStock queryCouponStock,String key) throws ClientProtocolException, IOException {
+	public static QueryCouponStockResult mmpaymkttransfersQuery_coupon_stock(QueryCouponStock queryCouponStock,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( queryCouponStock);
 		String sign = SignatureUtil.generateSign(map,queryCouponStock.getSign_type(),key);
 		queryCouponStock.setSign(sign);
@@ -531,8 +560,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param queryCoupon queryCoupon
 	 * @param key key
 	 * @return QueryCouponResult
+	 * @throws JAXBException 
 	 */
-	public static QueryCouponResult promotionQuery_coupon(QueryCoupon queryCoupon,String key) throws ClientProtocolException, IOException {
+	public static QueryCouponResult promotionQuery_coupon(QueryCoupon queryCoupon,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( queryCoupon);
 		String sign = SignatureUtil.generateSign(map,queryCoupon.getSign_type(),key);
 		queryCoupon.setSign(sign);
@@ -563,8 +593,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key
 	 *            key
 	 * @return SendredpackResult
+	 * @throws JAXBException 
 	 */
-	public static SendredpackResult mmpaymkttransfersSendredpack(Sendredpack sendredpack,String key) throws ClientProtocolException, IOException {
+	public static SendredpackResult mmpaymkttransfersSendredpack(Sendredpack sendredpack,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( sendredpack);
 		String sign = SignatureUtil.generateSign(map,sendredpack.getSign_type(),key);
 		sendredpack.setSign(sign);
@@ -583,8 +614,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param sendgroupredpack sendgroupredpack
 	 * @param key key
 	 * @return SendredpackResult
+	 * @throws JAXBException 
 	 */
-	public static SendredpackResult mmpaymkttransfersSendgroupredpack(Sendgroupredpack sendgroupredpack,String key) throws ClientProtocolException, IOException {
+	public static SendredpackResult mmpaymkttransfersSendgroupredpack(Sendgroupredpack sendgroupredpack,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( sendgroupredpack);
 		String sign = SignatureUtil.generateSign(map,sendgroupredpack.getSign_type(),key);
 		sendgroupredpack.setSign(sign);
@@ -604,8 +636,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param gethbinfo gethbinfo
 	 * @param key key
 	 * @return GethbinfoResult
+	 * @throws JAXBException 
 	 */
-	public static GethbinfoResult mmpaymkttransfersGethbinfo(Gethbinfo gethbinfo,String key) throws ClientProtocolException, IOException {
+	public static GethbinfoResult mmpaymkttransfersGethbinfo(Gethbinfo gethbinfo,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( gethbinfo);
 		String sign = SignatureUtil.generateSign(map,gethbinfo.getSign_type(),key);
 		gethbinfo.setSign(sign);
@@ -634,8 +667,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param key
 	 *            key
 	 * @return TransfersResult
+	 * @throws JAXBException 
 	 */
-	public static TransfersResult mmpaymkttransfersPromotionTransfers(Transfers transfers,String key) throws ClientProtocolException, IOException {
+	public static TransfersResult mmpaymkttransfersPromotionTransfers(Transfers transfers,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( transfers);
 		String sign = SignatureUtil.generateSign(map,transfers.getSign_type(),key);
 		transfers.setSign(sign);
@@ -654,8 +688,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param gettransferinfo gettransferinfo
 	 * @param key key
 	 * @return GettransferinfoResult
+	 * @throws JAXBException 
 	 */
-	public static GettransferinfoResult mmpaymkttransfersGettransferinfo(Gettransferinfo gettransferinfo,String key) throws ClientProtocolException, IOException {
+	public static GettransferinfoResult mmpaymkttransfersGettransferinfo(Gettransferinfo gettransferinfo,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( gettransferinfo);
 		String sign = SignatureUtil.generateSign(map,gettransferinfo.getSign_type(),key);
 		gettransferinfo.setSign(sign);
@@ -673,8 +708,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param payContractorder payContractorder
 	 * @param key key
 	 * @return PayContractorderResult
+	 * @throws JAXBException 
 	 */
-	public static PayContractorderResult payContractorder(PayContractorder payContractorder,String key) throws ClientProtocolException, IOException {
+	public static PayContractorderResult payContractorder(PayContractorder payContractorder,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(payContractorder);
 		String sign = SignatureUtil.generateSign(map,payContractorder.getSign_type(),key);
 		payContractorder.setSign(sign);
@@ -692,8 +728,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param pappayapply pappayapply
 	 * @param key key
 	 * @return PappayapplyResult
+	 * @throws JAXBException 
 	 */
-	public static PappayapplyResult payPappayapply(Pappayapply pappayapply,String key) throws ClientProtocolException, IOException {
+	public static PappayapplyResult payPappayapply(Pappayapply pappayapply,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap( pappayapply);
 		String sign = SignatureUtil.generateSign(map,pappayapply.getSign_type(),key);
 		pappayapply.setSign(sign);
@@ -711,8 +748,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param mchOrderquery mchOrderquery
 	 * @param key key
 	 * @return MchOrderInfoResult
+	 * @throws JAXBException 
 	 */
-	public static MchOrderInfoResult payPaporderquery(MchOrderquery mchOrderquery,String key) throws ClientProtocolException, IOException {
+	public static MchOrderInfoResult payPaporderquery(MchOrderquery mchOrderquery,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(mchOrderquery);
 		String sign = SignatureUtil.generateSign(map,mchOrderquery.getSign_type(),key);
 		mchOrderquery.setSign(sign);
@@ -730,8 +768,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param papayQuerycontract papayQuerycontract
 	 * @param key key
 	 * @return PapayQuerycontractResult
+	 * @throws JAXBException 
 	 */
-	public static PapayQuerycontractResult papayQuerycontract(PapayQuerycontract papayQuerycontract,String key) throws ClientProtocolException, IOException {
+	public static PapayQuerycontractResult papayQuerycontract(PapayQuerycontract papayQuerycontract,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(papayQuerycontract);
 		String sign = SignatureUtil.generateSign(map,papayQuerycontract.getSign_type(),key);
 		papayQuerycontract.setSign(sign);
@@ -749,8 +788,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param papayDeletecontract papayDeletecontract
 	 * @param key key
 	 * @return PapayDeletecontractResult
+	 * @throws JAXBException 
 	 */
-	public static PapayDeletecontractResult papayDeletecontract(PapayDeletecontract papayDeletecontract,String key) throws ClientProtocolException, IOException {
+	public static PapayDeletecontractResult papayDeletecontract(PapayDeletecontract papayDeletecontract,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(papayDeletecontract);
 		String sign = SignatureUtil.generateSign(map,papayDeletecontract.getSign_type(),key);
 		papayDeletecontract.setSign(sign);
@@ -796,8 +836,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param secapiPayProfitsharing secapiPayProfitsharing
 	 * @param key key
 	 * @return SecapiPayProfitsharingResult
+	 * @throws JAXBException 
 	 */
-	public static SecapiPayProfitsharingResult secapiPayProfitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key) throws ClientProtocolException, IOException {
+	public static SecapiPayProfitsharingResult secapiPayProfitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(secapiPayProfitsharing, "receivers");
 		if(secapiPayProfitsharing.getReceivers() != null){
 			map.put("receivers", JsonUtil.toJSONString(secapiPayProfitsharing.getReceivers()));
@@ -819,8 +860,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param secapiPayProfitsharing secapiPayProfitsharing
 	 * @param key key
 	 * @return SecapiPayProfitsharingResult
+	 * @throws JAXBException 
 	 */
-	public static SecapiPayProfitsharingResult secapiPayMultiprofitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key) throws ClientProtocolException, IOException {
+	public static SecapiPayProfitsharingResult secapiPayMultiprofitsharing(SecapiPayProfitsharing secapiPayProfitsharing,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(secapiPayProfitsharing, "receivers");
 		if(secapiPayProfitsharing.getReceivers() != null){
 			map.put("receivers", JsonUtil.toJSONString(secapiPayProfitsharing.getReceivers()));
@@ -842,8 +884,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param profitsharingfinish profitsharingfinish
 	 * @param key key
 	 * @return SecapiPayProfitsharingfinishResult
+	 * @throws JAXBException 
 	 */
-	public static SecapiPayProfitsharingfinishResult secapiPayProfitsharingfinish(SecapiPayProfitsharingfinish profitsharingfinish,String key) throws ClientProtocolException, IOException {
+	public static SecapiPayProfitsharingfinishResult secapiPayProfitsharingfinish(SecapiPayProfitsharingfinish profitsharingfinish,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(profitsharingfinish);
 		String sign = SignatureUtil.generateSign(map,profitsharingfinish.getSign_type() == null? "HMAC-SHA256": profitsharingfinish.getSign_type(),key);
 		profitsharingfinish.setSign(sign);
@@ -862,8 +905,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param payProfitsharingquery payProfitsharingquery
 	 * @param key key
 	 * @return PayProfitsharingqueryResult
+	 * @throws JAXBException 
 	 */
-	public static PayProfitsharingqueryResult payProfitsharingquery(PayProfitsharingquery payProfitsharingquery,String key) throws ClientProtocolException, IOException {
+	public static PayProfitsharingqueryResult payProfitsharingquery(PayProfitsharingquery payProfitsharingquery,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(payProfitsharingquery);
 		String sign = SignatureUtil.generateSign(map,payProfitsharingquery.getSign_type() == null? "HMAC-SHA256": payProfitsharingquery.getSign_type(),key);
 		payProfitsharingquery.setSign(sign);
@@ -882,8 +926,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param payProfitsharingOperation payProfitsharingOperation
 	 * @param key key
 	 * @return MchBaseResult
+	 * @throws JAXBException 
 	 */
-	public static MchBaseResult payProfitsharingaddreceiver(PayProfitsharingOperation payProfitsharingOperation,String key) throws ClientProtocolException, IOException {
+	public static MchBaseResult payProfitsharingaddreceiver(PayProfitsharingOperation payProfitsharingOperation,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(payProfitsharingOperation, "receiver");
 		if(payProfitsharingOperation.getReceiver() != null){
 			map.put("receiver", JsonUtil.toJSONString(payProfitsharingOperation.getReceiver()));
@@ -905,8 +950,9 @@ public class PayMchAPI extends BaseAPI{
 	 * @param payProfitsharingOperation payProfitsharingOperation
 	 * @param key key
 	 * @return MchBaseResult
+	 * @throws JAXBException 
 	 */
-	public static MchBaseResult payProfitsharingremovereceiver(PayProfitsharingOperation payProfitsharingOperation,String key) throws ClientProtocolException, IOException {
+	public static MchBaseResult payProfitsharingremovereceiver(PayProfitsharingOperation payProfitsharingOperation,String key) throws ClientProtocolException, IOException, JAXBException {
 		Map<String,String> map = MapUtil.objectToMap(payProfitsharingOperation, "receiver");
 		if(payProfitsharingOperation.getReceiver() != null){
 			map.put("receiver", JsonUtil.toJSONString(payProfitsharingOperation.getReceiver()));

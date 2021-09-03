@@ -57,22 +57,26 @@ public class XmlResponseHandler{
                 	str = new String(str.getBytes("iso-8859-1"),"utf-8");
                 }
                 logger.info("URI[{}] elapsed time:{} ms RESPONSE DATA:{}",super.uriId,System.currentTimeMillis()-super.startTime,str);
-            	T t = XMLConverUtil.convertToObject(clazz,str);
-            	if(t instanceof DynamicField ||(t instanceof MchBase && key != null)){
-            		Map<String,String> map = XMLConverUtil.convertToMap(str);
-            		//转换动态属性 @since 2.8.5
-            		if(t instanceof DynamicField){
-	            		DynamicField dynamicField = (DynamicField)t;
-	            		dynamicField.buildDynamicField(map);
-            		}
-            		
-            		//返回数据验证签名 @since 2.8.5
-            		if((t instanceof MchBase && key != null)){
-            			MchBase mchBase = (MchBase)t;
-            			mchBase.setSign_status(SignatureUtil.validateSign(map,sign_type,key));
-            		}
+            	try {
+	                T t = XMLConverUtil.convertToObject(clazz,str);
+	            	if(t instanceof DynamicField ||(t instanceof MchBase && key != null)){
+	            		Map<String,String> map = XMLConverUtil.convertToMap(str);
+	            		//转换动态属性 @since 2.8.5
+	            		if(t instanceof DynamicField){
+		            		DynamicField dynamicField = (DynamicField)t;
+		            		dynamicField.buildDynamicField(map);
+	            		}
+	            		
+	            		//返回数据验证签名 @since 2.8.5
+	            		if((t instanceof MchBase && key != null)){
+	            			MchBase mchBase = (MchBase)t;
+	            			mchBase.setSign_status(SignatureUtil.validateSign(map,sign_type,key));
+	            		}
+	            	}
+	            	return t;
+            	}catch(Exception e) {
+            		throw new ClientProtocolException(e);
             	}
-            	return t;
             } else {
                 throw new ClientProtocolException("Unexpected response status: " + status);
             }

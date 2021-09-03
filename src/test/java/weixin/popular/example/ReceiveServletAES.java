@@ -87,29 +87,29 @@ public class ReceiveServletAES extends HttpServlet{
         }
 
         EventMessage eventMessage = null;
-        if(isAes){
-        	try {
+    	try {
+	        if(isAes){
 				//获取XML数据（含加密参数）
 				String postData = StreamUtils.copyToString(inputStream, Charset.forName("utf-8"));
 				//解密XML 数据
 				String xmlData = wxBizMsgCrypt.decryptMsg(msg_signature, timestamp, nonce, postData);
 				//XML 转换为bean 对象
 				eventMessage = XMLConverUtil.convertToObject(EventMessage.class, xmlData);
-			} catch (AesException e) {
-				e.printStackTrace();
-			}
-        }else{
-	        //验证请求签名
-	        if(!signature.equals(SignatureUtil.generateEventMessageSignature(token,timestamp,nonce))){
-	            System.out.println("The request signature is invalid");
-	            return;
+	        }else{
+		        //验证请求签名
+		        if(!signature.equals(SignatureUtil.generateEventMessageSignature(token,timestamp,nonce))){
+		            System.out.println("The request signature is invalid");
+		            return;
+		        }
+	
+		        if(inputStream!=null){
+		        	//XML 转换为bean 对象
+		            eventMessage = XMLConverUtil.convertToObject(EventMessage.class,inputStream);
+		        }
 	        }
-
-	        if(inputStream!=null){
-	        	//XML 转换为bean 对象
-	            eventMessage = XMLConverUtil.convertToObject(EventMessage.class,inputStream);
-	        }
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
         String key = eventMessage.getFromUserName() + "__"
 				   + eventMessage.getToUserName() + "__"

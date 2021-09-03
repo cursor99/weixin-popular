@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
 
 import weixin.popular.api.PayMchAPI;
 import weixin.popular.bean.paymch.Unifiedorder;
@@ -45,17 +46,22 @@ public class PayMchJsServlet extends HttpServlet{
 		unifiedorder.setNotify_url("http://mydomain.com/test/notify");
 		unifiedorder.setTrade_type("JSAPI");//JSAPI，NATIVE，APP，MWEB
 
-		UnifiedorderResult unifiedorderResult = PayMchAPI.payUnifiedorder(unifiedorder,key);
-		
-		//@since 2.8.5  API返回数据签名验证
-		if(unifiedorderResult.getSign_status() !=null && unifiedorderResult.getSign_status()){
-			String json = PayUtil.generateMchPayJsRequestJson(unifiedorderResult.getPrepay_id(), appid, key);
-			
-			//将json 传到jsp 页面
-			request.setAttribute("json", json);
-			//示例jsp
-			request.getRequestDispatcher("pay_example.jsp").forward(request,response);
+		try {
+			UnifiedorderResult unifiedorderResult = PayMchAPI.payUnifiedorder(unifiedorder,key);
+			//@since 2.8.5  API返回数据签名验证
+			if(unifiedorderResult.getSign_status() !=null && unifiedorderResult.getSign_status()){
+				String json = PayUtil.generateMchPayJsRequestJson(unifiedorderResult.getPrepay_id(), appid, key);
+				
+				//将json 传到jsp 页面
+				request.setAttribute("json", json);
+				//示例jsp
+				request.getRequestDispatcher("pay_example.jsp").forward(request,response);
+			}
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 	}
 
 

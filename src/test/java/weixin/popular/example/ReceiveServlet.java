@@ -60,26 +60,30 @@ public class ReceiveServlet extends HttpServlet{
         }
 
         if(inputStream!=null){
-            //转换XML
-            EventMessage eventMessage = XMLConverUtil.convertToObject(EventMessage.class,inputStream);
-            String key = eventMessage.getFromUserName() + "__"
-            				   + eventMessage.getToUserName() + "__"
-            				   + eventMessage.getMsgId() + "__"
-            				   + eventMessage.getCreateTime();
-            if(expireKey.exists(key)){
-            	//重复通知不作处理
-            	return;
-            }else{
-            	expireKey.add(key);
-            }
-
-            //创建回复
-            XMLMessage xmlTextMessage = new XMLTextMessage(
-                    eventMessage.getFromUserName(),
-                    eventMessage.getToUserName(),
-                    "你好");
-            //回复
-            xmlTextMessage.outputStreamWrite(outputStream);
+        	try {
+	            //转换XML
+	            EventMessage eventMessage = XMLConverUtil.convertToObject(EventMessage.class,inputStream);
+	            String key = eventMessage.getFromUserName() + "__"
+	            				   + eventMessage.getToUserName() + "__"
+	            				   + eventMessage.getMsgId() + "__"
+	            				   + eventMessage.getCreateTime();
+	            if(expireKey.exists(key)){
+	            	//重复通知不作处理
+	            	return;
+	            }else{
+	            	expireKey.add(key);
+	            }
+	
+	            //创建回复
+	            XMLMessage xmlTextMessage = new XMLTextMessage(
+	                    eventMessage.getFromUserName(),
+	                    eventMessage.getToUserName(),
+	                    "你好");
+	            //回复
+	            xmlTextMessage.outputStreamWrite(outputStream);
+        	}catch(Exception e) {
+        		e.printStackTrace();
+        	}
             return;
         }
         outputStreamWrite(outputStream,"");

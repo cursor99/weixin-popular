@@ -37,35 +37,39 @@ public class SecapiPayRefundNotifyServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// 获取请求数据
-		String xmlData = StreamUtils.copyToString(request.getInputStream(), Charset.forName("utf-8"));
-		// 转换数据对象
-		SecapiPayRefundNotify refundNotify = XMLConverUtil.convertToObject(SecapiPayRefundNotify.class, xmlData);
-
-		// 退款通知成功
-		if (refundNotify != null && "SUCCESS".equals(refundNotify.getReturn_code())) {
-			// 解密数据 req_info
-			RefundNotifyReqInfo refundNotifyReqInfo = PayUtil.decryptRefundNotifyReqInfo(refundNotify.getReq_info(),
-					key);
-			if (refundNotifyReqInfo == null) {
-				MchBaseResult baseResult = new MchBaseResult();
-				baseResult.setReturn_code("FAIL");
-				baseResult.setReturn_msg("ERROR");
-				response.getOutputStream().write(XMLConverUtil.convertToXML(baseResult).getBytes());
-				return;
+		try {
+			// 获取请求数据
+			String xmlData = StreamUtils.copyToString(request.getInputStream(), Charset.forName("utf-8"));
+			// 转换数据对象
+			SecapiPayRefundNotify refundNotify = XMLConverUtil.convertToObject(SecapiPayRefundNotify.class, xmlData);
+	
+			// 退款通知成功
+			if (refundNotify != null && "SUCCESS".equals(refundNotify.getReturn_code())) {
+				// 解密数据 req_info
+				RefundNotifyReqInfo refundNotifyReqInfo = PayUtil.decryptRefundNotifyReqInfo(refundNotify.getReq_info(),
+						key);
+				if (refundNotifyReqInfo == null) {
+					MchBaseResult baseResult = new MchBaseResult();
+					baseResult.setReturn_code("FAIL");
+					baseResult.setReturn_msg("ERROR");
+					response.getOutputStream().write(XMLConverUtil.convertToXML(baseResult).getBytes());
+					return;
+				}
+				// 业务处理标记检查
+				if (!expireKey.exists("WX_REFUND_NOTIFY" + refundNotifyReqInfo.getRefund_id())) {
+					// 添加业务处理标记
+					expireKey.add("WX_REFUND_NOTIFY" + refundNotifyReqInfo.getRefund_id(), 60);
+	
+					// TODO 添加业务代码，修改退款申请状态
+				}
 			}
-			// 业务处理标记检查
-			if (!expireKey.exists("WX_REFUND_NOTIFY" + refundNotifyReqInfo.getRefund_id())) {
-				// 添加业务处理标记
-				expireKey.add("WX_REFUND_NOTIFY" + refundNotifyReqInfo.getRefund_id(), 60);
-
-				// TODO 添加业务代码，修改退款申请状态
-			}
+			MchBaseResult baseResult = new MchBaseResult();
+			baseResult.setReturn_code("SUCCESS");
+			baseResult.setReturn_msg("OK");
+			response.getOutputStream().write(XMLConverUtil.convertToXML(baseResult).getBytes());
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		MchBaseResult baseResult = new MchBaseResult();
-		baseResult.setReturn_code("SUCCESS");
-		baseResult.setReturn_msg("OK");
-		response.getOutputStream().write(XMLConverUtil.convertToXML(baseResult).getBytes());
 	}
 
 }

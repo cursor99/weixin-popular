@@ -1,6 +1,5 @@
 package weixin.popular.support;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -109,32 +108,32 @@ public class ComponentTokenManager {
 		platformConfig.put(appId, new PlatformConfigInfo().setAppid(appId).setSecret(secret).setTicket(ticket));
 		
 		try {
-			doRunRefreshComponentAccessToken(appId, secret, ticket);
-		} catch (ClientProtocolException e) {
+			doRunRefreshComponentAccessToken(appId);
+		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
-		} catch (IOException e) {
-			logger.error(e.getMessage(),e);
-		}
-								
+		} 
+
 		ScheduledFuture<?> scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					doRunRefreshComponentAccessToken(appId, secret, ticket);
-				} catch (ClientProtocolException e) {
+					doRunRefreshComponentAccessToken(appId);
+				} catch (Exception e) {
 					logger.error(e.getMessage(),e);
-				} catch (IOException e) {
-					logger.error(e.getMessage(),e);
-				}
+				} 
 			}
 		}, 118, 118, TimeUnit.MINUTES);
 		
 		futureMap.put(appId, scheduledFuture);
 	}
 	
-	private static void doRunRefreshComponentAccessToken(String appId,String secret,String ticket) throws ClientProtocolException, IOException {
-						
-		ComponentAccessToken componentToken = ComponentAPI.api_component_token(appId, secret, ticket);
+	private static void doRunRefreshComponentAccessToken(String appId) throws Exception {
+		
+		PlatformConfigInfo conf = platformConfig.get(appId);
+		if(conf == null)
+			throw new Exception("Platform is not initialized. Platform appid = " + appId);
+
+		ComponentAccessToken componentToken = ComponentAPI.api_component_token(appId, conf.getSecret(), conf.getTicket());
 		if(!componentToken.isSuccess()) 
 			throw new ClientProtocolException("COMPONENT_TOKEN FUN ERROR!errcode:" + componentToken.getErrcode() + " errMsg:" + componentToken.getErrmsg());
 
@@ -195,7 +194,7 @@ public class ComponentTokenManager {
 	public static AuthToken getAuthToken(String authAppId)  throws Exception{
 		AuthToken token = authTokenMap.get(authAppId);
 		if(token == null)
-			throw new Exception("AuthToken is not initialized. AuthAppId" + authAppId);
+			throw new Exception("AuthToken is not initialized. AuthAppId = " + authAppId);
 		
 		int maxRetries = 10,retries = 0;
 		while((token == null || token.isExpired()) && retries < maxRetries) {
@@ -222,12 +221,8 @@ public class ComponentTokenManager {
 		ComponentAccessToken token = accessTokenCacheMap.get(appId);
 		int maxRetries = 10,retries = 0;
 		while((token == null || token.isExpired()) && retries < maxRetries) {
-			
-			PlatformConfigInfo conf = platformConfig.get(appId);
-			if(conf == null)
-				throw new Exception("Platform is not initialized. Platform appid = " + appId);
-			
-			doRunRefreshComponentAccessToken(appId,conf.getSecret(),conf.getTicket());
+					
+			doRunRefreshComponentAccessToken(appId);
 			token = accessTokenCacheMap.get(appId);
 			if(token != null && !token.isExpired())
 				break;

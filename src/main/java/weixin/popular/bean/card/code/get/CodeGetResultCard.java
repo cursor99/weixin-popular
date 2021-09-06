@@ -20,13 +20,13 @@ public class CodeGetResultCard {
 	 * 起始使用时间
 	 */
 	@JSONField(name = "begin_time")
-	private Integer beginTime;
+	private Long beginTime;
 	
 	/**
 	 * 结束时间
 	 */
 	@JSONField(name = "end_time")
-	private Integer endTime;
+	private Long endTime;
 
 	/**
 	 * @return 卡券ID
@@ -45,28 +45,28 @@ public class CodeGetResultCard {
 	/**
 	 * @return 起始使用时间
 	 */
-	public Integer getBeginTime() {
+	public Long getBeginTime() {
 		return beginTime;
 	}
 
 	/**
 	 * @param beginTime 起始使用时间
 	 */
-	public void setBeginTime(Integer beginTime) {
+	public void setBeginTime(Long beginTime) {
 		this.beginTime = beginTime;
 	}
 
 	/**
 	 * @return 结束时间
 	 */
-	public Integer getEndTime() {
+	public Long getEndTime() {
 		return endTime;
 	}
 
 	/**
 	 * @param endTime 结束时间
 	 */
-	public void setEndTime(Integer endTime) {
+	public void setEndTime(Long endTime) {
 		this.endTime = endTime;
 	}
 }

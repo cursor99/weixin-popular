@@ -25,7 +25,7 @@ public class BaseInfoDateInfo {
 	 * 添加必填
 	 */
 	@JSONField(name = "begin_timestamp")
-	private Integer beginTimestamp;
+	private Long beginTimestamp;
 
 	/**
 	 * 表示结束时间，建议设置为截止日期的23:59:59过期。（东八区时间，单位为秒）<br>
@@ -34,7 +34,7 @@ public class BaseInfoDateInfo {
 	 * 添加必填
 	 */
 	@JSONField(name = "end_timestamp")
-	private Integer endTimestamp;
+	private Long endTimestamp;
 
 	/**
 	 * type为DATE_TYPE_FIX_TERM时专用，表示自领取后多少天内有效，不支持填写0。 <br>
@@ -74,7 +74,7 @@ public class BaseInfoDateInfo {
 	 * 从1970年1月1日00:00:00至起用时间的秒数，<br>
 	 * 最终需转换为字符串形态传入。（东八区时间，单位为秒）
 	 */
-	public Integer getBeginTimestamp() {
+	public Long getBeginTimestamp() {
 		return beginTimestamp;
 	}
 
@@ -84,7 +84,7 @@ public class BaseInfoDateInfo {
 	 * 最终需转换为字符串形态传入。（东八区时间，单位为秒） <br>
 	 * 添加必填
 	 */
-	public void setBeginTimestamp(Integer beginTimestamp) {
+	public void setBeginTimestamp(Long beginTimestamp) {
 		this.beginTimestamp = beginTimestamp;
 	}
 
@@ -93,7 +93,7 @@ public class BaseInfoDateInfo {
 	 * 可用于DATE_TYPE_FIX_TERM时间类型，表示卡券统一过期时间，建议设置为截止日期的23:59:59过期。（东八区时间，单位为秒），<br>
 	 * 设置了fixed_term卡券，当时间达到end_timestamp时卡券统一过期
 	 */
-	public Integer getEndTimestamp() {
+	public Long getEndTimestamp() {
 		return endTimestamp;
 	}
 
@@ -103,7 +103,7 @@ public class BaseInfoDateInfo {
 	 * 设置了fixed_term卡券，当时间达到end_timestamp时卡券统一过期<br>
 	 * 添加必填
 	 */
-	public void setEndTimestamp(Integer endTimestamp) {
+	public void setEndTimestamp(Long endTimestamp) {
 		this.endTimestamp = endTimestamp;
 	}
 

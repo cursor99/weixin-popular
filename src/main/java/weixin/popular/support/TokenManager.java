@@ -180,6 +180,10 @@ public class TokenManager{
 	 * @throws InterruptedException 
 	 */
 	public static String getToken(String appid) throws Exception{
+		return getTokenInfo(appid).getAccess_token();
+	}
+
+	public static Token getTokenInfo(String appid) throws Exception{
 		Token token = tokenMap.get(appid);
 		int maxRetries = 10,retries = 0;
 		while((token == null || token.isExpired()) && retries < maxRetries) {
@@ -195,9 +199,9 @@ public class TokenManager{
 		if(token == null || token.isExpired())
 			throw new Exception("Get token exception");
 		
-		return token.getAccess_token();
+		return token;
 	}
-
+	
 	/**
 	 * 获取第一个appid 的 access_token
 	 * 适用于单一微信号

@@ -227,6 +227,10 @@ public class TicketManager {
 	 * @return ticket
 	 */
 	public static String getTicket(final String appid,String type) throws Exception{
+		return getTicketInfo(appid,type).getTicket();
+	}
+	
+	public static Ticket getTicketInfo(final String appid,String type) throws Exception{
 		String key = getKey(appid, type);
 		Ticket ticket = ticketMap.get(key);
 		int maxRetries = 10,retries = 0;
@@ -243,7 +247,7 @@ public class TicketManager {
 		if(ticket == null || ticket.isExpired())
 			throw new Exception("Get token exception");
 			
-		return ticket.getTicket();
+		return ticket;
 	}
 	
 
